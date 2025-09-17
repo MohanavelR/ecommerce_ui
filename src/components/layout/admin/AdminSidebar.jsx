@@ -37,7 +37,7 @@ return (
        
           <li>
             <button onClick={()=>{
-              navigate('products')
+              navigate('/admin/products')
               setSidebarOpen(false)
             }}  className="flex items-center p-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 group">
               <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-indigo-200">

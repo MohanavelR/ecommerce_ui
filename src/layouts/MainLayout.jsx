@@ -8,22 +8,22 @@ const MainLayout = ({ isAuthenticated, user, children }) => {
   if (path === "/") {
     if (!isAuthenticated) return <Navigate to="/auth/login" />;
     if (user?.role === "admin") return <Navigate to="/admin/dashboard" />;
-    if (user?.role === "user") return <Navigate to="/shop" />;
+    if (user?.role === "user") return <Navigate to="/shop"/>;
   }
 
   // Protect admin routes
-  if (path.startsWith("/admin")) {
-    if (!isAuthenticated) return <Navigate to="/shop" />;
+  if (path.includes("/admin")) {
+    if (!isAuthenticated) return <Navigate to="/auth/login" />;
     if (user?.role === "user") return <Navigate to="/shop" />;
   }
 
   // Protect shop routes
-  if (path.startsWith("/shop")) {
+  if (path.includes("/shop")) {
     if (user?.role === "admin") return <Navigate to="/admin/dashboard" />;
   }
 
   // Protect auth routes (only allow when not authenticated)
-  if (path.startsWith("/auth")) {
+  if (path.includes("/auth")) {
     if (isAuthenticated && user?.role === "admin") {
       return <Navigate to="/admin/dashboard" />;
     }
