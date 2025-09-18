@@ -24,3 +24,73 @@ export const registerError={
         matchError:false
     }
 }
+export const productError = {
+  productName: {
+    isRequired: false,
+  },
+  price: {
+    current: {
+      isRequired: false,
+      invalidNumber: false,
+    },
+    original: {
+      invalidNumber: false,
+    },
+  },
+  category: {
+    isRequired: false,
+  },
+  subCategory: {
+    isRequired: false,
+  },
+  brand: {
+    isRequired: false,
+  },
+  offer: {
+    invalidFormat: false,
+  },
+  description: {
+    isRequired: false,
+  },
+  features: {
+    isRequired: false,
+  },
+  additionalInfo: {
+    isRequired: false,
+  },
+  images: {
+    isRequired: false,
+    invalidFormat: false,
+  },
+  isTrending: {
+    invalidValue: false,
+  },
+  variations: {
+    missingType: false,
+    missingValue: false,
+    invalidPrice: false,
+    invalidStock: false,
+  },
+};
+
+export const variationError = {
+  type: {
+    isRequired: false
+  },
+  value: {
+    isRequired: false
+  },
+  price: {
+    isRequired: false,
+    mustBePositive: false
+  },
+  stock: {
+    isRequired: false,
+    mustBePositive: false
+  },
+  images: {
+    isRequired: false,
+    formatError: false // e.g., not a valid URL
+  }
+};
+

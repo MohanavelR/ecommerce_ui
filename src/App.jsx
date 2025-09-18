@@ -17,7 +17,7 @@ import { useAuth } from "./store/authSlice";
 import Message from "./components/common/Message";
 import Logout from "./components/common/Logout";
 import { LogoutContext, MessageContext } from "./context/context";
-import AddProductFrom from "./pages/admin/forms/AddProductFrom";
+
 import AdminProducts from "./pages/admin/AdminProducts";
 import PageLoader from "./components/common/PageLoader";
 
@@ -76,7 +76,6 @@ const App = () => {
           </MainLayout>
         }
       >
-      <Route path="add-product" element={<AddProductFrom/>} />
        <Route path="products" element={<AdminProducts/>} />
       </Route>
       <Route path="*" element={<NotFound/>} />
