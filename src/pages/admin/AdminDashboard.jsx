@@ -1,201 +1,192 @@
-import React, { useState, useContext, useRef, useEffect } from 'react'
-import { MessageContaxt } from '../../context/message_context'
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { useAddFeatureImage, useGetFeatureImage } from '../../store/feature-slice';
+import React from 'react'
 
-export const AdminDashboard = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [imageFile, setImageFile] = useState(null);
-  const {images}=useSelector(state=>state.featureImage)
-  const [image, setImage] = useState(null);
-  const inputRef = useRef(null);
-  const dispatch = useDispatch()
-
- const { setMessage, setIsSuccess, setMessageDisplay } = useContext(MessageContaxt)
-  const [processbar, setProcessbar] = useState({
-    is_show: false,
-    percentage: 0,
-    loading: false,
-  });
-
-  function handleImageFile(event) {
-    const selectedFile = event?.target?.files?.[0];
-    if (selectedFile) {
-      setImageFile(selectedFile);
-    }
-  }
-
-  async function uploadImageToCloudinary() {
-    setIsLoading(true);
-    setProcessbar({ is_show: true, percentage: 0, loading: false });
-
-    const data = new FormData();
-    data.append("my_file", imageFile);
-
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/admin/products/upload-image`,
-        data,
-        {
-          onUploadProgress: (progressEvent) => {
-            const progress = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
-            );
-            setProcessbar(prev => ({
-              ...prev,
-              percentage: Math.min(progress - 1, 99)
-            }));
-          },
-        }
-      );
-
-      if (response?.data?.isSuccess) {
-        setImage(response.data.result.url);
-        setProcessbar({ is_show: true, percentage: 100, loading: true });
-      } else {
-        setProcessbar({ is_show: false, percentage: 0, loading: false });
-      }
-    } catch (error) {
-      console.error("Upload failed:", error);
-      setProcessbar({ is_show: false, percentage: 0, loading: false });
-    } finally {
-      setIsLoading(false);
-    }
-  }
-  function handleSubmit(e) {
-    setIsLoading(true)
-    e.preventDefault()
-    if(image){
-       dispatch(useAddFeatureImage({image})).then((data)=>{
-        if(data.payload?.isSuccess){
-          setMessageDisplay(true)
-          setIsSuccess(true)
-          setMessage(data.payload?.message)
-           setIsLoading(false)
-           setImageFile(null)
-           setImage(null)
-           dispatch(useGetFeatureImage())
-        }
-        else{
-           setMessageDisplay(true)
-          setIsSuccess(false)
-          setMessage(data.payload?.message)
-        }
-       })
-    }
-    else{
-      setMessageDisplay(true)
-          setIsSuccess(false)
-          setMessage("Select Image")
-           setIsLoading(false)
-    }
-
-  }
-
-  useEffect(() => {
-    if (imageFile && !image) {
-      uploadImageToCloudinary();
-    }
-  }, [imageFile]);
-
-  const handleReset = () => {
-    setImage(null);
-    setImageFile(null);
-    inputRef.current.value = '';
-    setProcessbar({ is_show: false, percentage: 0, loading: false });
-  };
-
+const AdminDashboard = () => {
   return (
     <>
-      <form className="flex-grow border-b border-gray-300 p-8 overflow-y-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="w-full col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Feature Image</label>
-          <div className="flex flex-col items-center justify-center w-full">
-            <label
-              htmlFor="product-image"
-              className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all"
-            >
-              <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <svg className="w-8 h-8 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                </svg>
-                <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                <p className="text-xs text-gray-500">PNG, JPG or GIF (MAX. 2MB)</p>
-              </div>
-              <input
-                id="product-image"
-                type="file"
-                accept="image/*"
-                ref={inputRef}
-                disabled={imageFile !== null}
-                onChange={handleImageFile}
-                className="hidden"
-              />
-            </label>
-          </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-          {/* Uploaded Image URL + Clear Button */}
-          {image && (
-            <div className='text-center flex justify-center items-center space-x-3 mt-2'>
-              <p className='truncate max-w-xs text-sm '>{imageFile?.name}</p>
-              <button onClick={handleReset} type="button" className='cursor-pointer'>
-                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="red">
-                  <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-                </svg>
-              </button>
-            </div>
-          )}
-
-          {/* Image File with Progress or Loading */}
-          {imageFile && !image && (
-            <div className='text-center flex justify-center items-center space-x-3 mt-2 text-sm text-gray-500'>
-              {/* <p>{imageFile?.name}</p> */}
-              {processbar.loading ? (
-                <span className='text-green-500'>Uploaded!</span>
-              ) : (
-                <span className='text-gray-400'>loading...</span>
-              )}
-            </div>
-          )}
-
-          {/* Progress Bar */}
-          {processbar.is_show && imageFile && (
-            <div className="w-full col-span-2 mt-2">
-              <div className='flex w-full justify-between text-sm'>
-                <p>{processbar.percentage}%</p>
-                <span className='text-gray-400'>{processbar.loading ? 'Uploaded!' : 'Uploading...'}</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden mt-1">
-                <div
-                  className="bg-green-500 h-4 rounded-full transition-all duration-300"
-                  style={{ width: `${processbar.percentage}%` }}
-                ></div>
-              </div>
-            </div>
-          )}
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+            <p class="text-gray-600 mt-2">Welcome back! Here's what's happening with your store today.</p>
         </div>
-        <button
-          type="submit"
-          className="px-6 py-3 w-50 cursor-pointer disabled:cursor-progress disabled:bg-indigo-900 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all"
-          onClick={handleSubmit}     
-          disabled={isLoading && !processbar.loading }
-        >
-          {isLoading ? <div className='loader border-t-amber-50 border-r-amber-50'></div> : 'Upload'}
-        </button>
-      </form>
-        <div className='grid grid-cols-1 gap-5 md:grid-cols-3'>
-          {
-            (images && images.length > 0 )?images.map(image=>(
 
-          <div className=''>
-            <img className='object-cover' src={image?.image} alt="" />
-          </div>  
-            )):""
-          }
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+
+            <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow duration-300">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                        <i class="fas fa-folder text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Categories</p>
+                        <p class="text-2xl font-bold text-gray-900">24</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow duration-300">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-600">
+                        <i class="fas fa-box text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Products</p>
+                        <p class="text-2xl font-bold text-gray-900">156</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow duration-300">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                        <i class="fas fa-images text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Active Slides</p>
+                        <p class="text-2xl font-bold text-gray-900">8</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow duration-300">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                        <i class="fas fa-ad text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Active Ads</p>
+                        <p class="text-2xl font-bold text-gray-900">12</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow duration-300">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-red-100 text-red-600">
+                        <i class="fas fa-clock text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Coming Soon Products</p>
+                        <p class="text-2xl font-bold text-gray-900">5</p>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                <button class="inline-flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                    <i class="fas fa-folder-plus mr-2"></i>
+                    Add Category
+                </button>
+
+
+                <button class="inline-flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
+                    <i class="fas fa-plus-square mr-2"></i>
+                    Add Product
+                </button>
+
+                <button class="inline-flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
+                    <i class="fas fa-image mr-2"></i>
+                    Add Slide
+                </button>
+
+
+                <button class="inline-flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-200">
+                    <i class="fas fa-ad mr-2"></i>
+                    Add Ad/Banner
+                </button>
+            </div>
+        </div>
+
+
+        <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                <i class="fas fa-plus text-blue-600 text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">New product added</p>
+                            <p class="text-sm text-gray-500">iPhone 15 Pro Max - 2 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                                <i class="fas fa-edit text-green-600 text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">Category updated</p>
+                            <p class="text-sm text-gray-500">Electronics - 5 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
+                                <i class="fas fa-trash text-purple-600 text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">Slide deleted</p>
+                            <p class="text-sm text-gray-500">Summer Sale Banner - 1 day ago</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">System Status</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="h-3 w-3 rounded-full bg-green-500 mr-2"></div>
+                            <span class="text-sm font-medium text-gray-900">Server Status</span>
+                        </div>
+                        <span class="text-sm text-gray-500">Operational</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="h-3 w-3 rounded-full bg-green-500 mr-2"></div>
+                            <span class="text-sm font-medium text-gray-900">Database</span>
+                        </div>
+                        <span class="text-sm text-gray-500">Connected</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="h-3 w-3 rounded-full bg-yellow-500 mr-2"></div>
+                            <span class="text-sm font-medium text-gray-900">Storage</span>
+                        </div>
+                        <span class="text-sm text-gray-500">75% Used</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="h-3 w-3 rounded-full bg-green-500 mr-2"></div>
+                            <span class="text-sm font-medium text-gray-900">API</span>
+                        </div>
+                        <span class="text-sm text-gray-500">Normal</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </>
+  )
+}
 
-
-  );
-};
+export default AdminDashboard

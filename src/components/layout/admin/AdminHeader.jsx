@@ -16,7 +16,7 @@ import Logo from '../../common/Logo'
             <nav className="flex" aria-label="Breadcrumb">
               <ol className="inline-flex items-center space-x-1 md:space-x-3">
                 <li className="inline-flex items-center">
-                  <Link to='dashboard' className="text-gray-700 hover:text-indigo-600">
+                  <Link to='/admin/dashboard' className="text-gray-700 hover:text-indigo-600">
                     <i className="fas fa-home"></i>
                   </Link>
                 </li>

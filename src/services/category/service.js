@@ -5,7 +5,7 @@ const api=axios.create({
     withCredentials:true
 })
 
-const apiOfCreateCategory =async(data)=>{
+export const apiOfCreateCategory =async(data)=>{
 try {
     const response =await api.post("/create",data)
     return  response.data
@@ -13,7 +13,7 @@ try {
     return error
 }
 }
-const apiOfGetAllCategory = async()=>{
+export const apiOfGetAllCategory = async()=>{
     try {
         const response=await api.get("get_all")
          return  response.data
@@ -21,15 +21,16 @@ const apiOfGetAllCategory = async()=>{
          return error
     }
 }
-const apiOfGetsubCategoryByCategory = async(categotyName)=>{
+export const apiOfGetsubCategoryByCategory = async(categoryName)=>{
     try {
-        const response=await api.get(`get_all/${categotyName}`)
+        console.log(categoryName)
+        const response=await api.get(`get_subcategory/${categoryName}`)
          return  response.data
     } catch (error) {
          return error
     }
 }
-const apiOfUpdateCategory = async(id,data)=>{
+export const apiOfUpdateCategory = async(id,data)=>{
     try {
         const response=await api.put(`update/${id}`,data)
          return  response.data
@@ -37,7 +38,7 @@ const apiOfUpdateCategory = async(id,data)=>{
          return error
     }
 }
-const apiOfDeleteCategory = async(id,data)=>{
+export const apiOfDeleteCategory = async(id,data)=>{
     try {
         const response=await api.delete(`delete/${id}`)
          return  response.data

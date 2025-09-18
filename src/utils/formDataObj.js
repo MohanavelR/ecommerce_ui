@@ -10,25 +10,17 @@ export const productFormData = {
   subCategory: "",
   brand: "",
   offer: "",
-  description: [""],   // can be multiple
-  features: [""],      // can be multiple
-  additionalInfo: [""],
-  images: [""],        // image URLs
+  description: [],   // can be multiple
+  features: [],      // can be multiple
+  additionalInfo: [],
+  images: [],        // image URLs
   isTrending: false,
-  variations: [
-    {
-      type: "",
-      value: "",
-      price: 0,
-      stock: 0,
-      images: [""]
-    }
-  ]
+  variations: []
 };
 export const variationFormData = {
   type: "",
   value: "",
   price: 0,
   stock: 0,
-  images: [""]
+  image: null
 };

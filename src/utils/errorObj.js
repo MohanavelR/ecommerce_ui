@@ -88,7 +88,7 @@ export const variationError = {
     isRequired: false,
     mustBePositive: false
   },
-  images: {
+  image: {
     isRequired: false,
     formatError: false // e.g., not a valid URL
   }

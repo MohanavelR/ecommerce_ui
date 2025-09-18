@@ -24,7 +24,7 @@ return (
   
           <li>
             <button onClick={()=>{
-              navigate('dashboard')
+              navigate('/admin/dashboard')
               setSidebarOpen(false)
             }}  className="flex items-center p-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 group">
               <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-indigo-200">
@@ -50,7 +50,7 @@ return (
          
           <li>
             <button onClick={()=>{
-              navigate('orders')
+              navigate('/admin/orders')
               setSidebarOpen(false)
             }} className="flex items-center p-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 group">
               <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-indigo-200">
@@ -62,42 +62,65 @@ return (
           
           
           <li>
-            <a href="#" className="flex items-center p-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 group">
+            <button onClick={()=>{
+              navigate('/admin/customers')
+              setSidebarOpen(false)
+            }}   className="flex items-center p-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 group">
               <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-indigo-200">
                 <i className="fas fa-users text-indigo-600"></i>
               </div>
               <span className="font-medium">Customers</span>
-            </a>
+            </button>
           </li>
           
          
           <li>
-            <a href="#" className="flex items-center p-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 group">
+            <button onClick={()=>{
+              navigate('/admin/categories')
+              setSidebarOpen(false)
+            }}   className="flex items-center p-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 group">
               <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-indigo-200">
                 <i className="fas fa-tags text-indigo-600"></i>
               </div>
               <span className="font-medium">Categories</span>
-            </a>
+            </button>
           </li>
           
        
           <li>
-            <a href="#" className="flex items-center p-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 group">
+            <button onClick={()=>{
+              navigate('/admin/ad-banner')
+              setSidebarOpen(false)
+            }}  className="flex items-center p-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 group">
               <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-indigo-200">
                 <i className="fas fa-chart-bar text-indigo-600"></i>
               </div>
-              <span className="font-medium">Analytics</span>
-            </a>
+              <span className="font-medium">Ad/Banners</span>
+            </button>
           </li>
           
    
           <li>
-            <a href="#" className="flex items-center p-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 group">
+            <button onClick={()=>{
+              navigate('/admin/coming-soon')
+              setSidebarOpen(false)
+            }}  className="flex items-center p-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 group">
               <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-indigo-200">
                 <i className="fas fa-bullhorn text-indigo-600"></i>
               </div>
-              <span className="font-medium">Marketing</span>
-            </a>
+              <span className="font-medium">Coming soon </span>
+            </button>
+          </li>
+          <li>
+            <button onClick={()=>{
+              navigate('/admin/slider')
+              setSidebarOpen(false)
+            }}  className="flex items-center p-3 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 group">
+              <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-indigo-200">
+                <i className="fas fa-bullhorn text-indigo-600"></i>
+              </div>
+              <span className="font-medium">Slider</span>
+            </button>
           </li>
           
  

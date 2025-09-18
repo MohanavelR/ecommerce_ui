@@ -23,9 +23,9 @@ const Logout=() => {
     }
   return (
     <>
-<div className="bg-gradient-to-br z-[2000] fixed opacity-80 from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center p-4">
+<div className="bg-gradient-to-br z-[2000] fixed  from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center p-4">
     {/* <!-- Logout Confirmation Dialog --> */}
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
+    <div className="fixed inset-0 bg-black/70  flex items-center justify-center p-4 z-50 backdrop-blur-sm">
         <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden transform transition-all">
             {/* <!-- Header --> */}
             <div className="bg-gradient-to-r from-red-500 to-rose-600 p-6 text-center">

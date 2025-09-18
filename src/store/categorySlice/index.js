@@ -1,4 +1,5 @@
 import {createAsyncThunk,createSlice} from "@reduxjs/toolkit"
+import { apiOfCreateCategory, apiOfDeleteCategory, apiOfGetAllCategory, apiOfGetsubCategoryByCategory, apiOfUpdateCategory } from "../../services/category/service";
 
 const initialState={
     isLoading:false,
@@ -36,6 +37,7 @@ export const useGetSubCategory = createAsyncThunk(
   "/category/getSubCategory",
   async (categoryName, thunkAPI) => {
     try {
+      
       return await apiOfGetsubCategoryByCategory(categoryName);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -72,8 +74,8 @@ const categorySlice = createSlice({
   name: "category",
   initialState,
   reducers: {
-    setCategory: (state, action) => {
-      // optional custom reducer
+    setSubCategory: (state, action) => {
+      state.subcategories=null
     },
   },
   extraReducers: (builder) => {
@@ -144,5 +146,5 @@ const categorySlice = createSlice({
   },
 });
 
-export const { setCategory } = categorySlice.actions;
+export const { setSubCategory } = categorySlice.actions;
 export default categorySlice.reducer;

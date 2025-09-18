@@ -1,18 +1,26 @@
-import React, { useState } from 'react'
-import AddProductForm from '../../components/layout/admin/forms/AddProductFrom'
+import React, { useEffect, useState } from 'react'
+// import AddProductForm from '../../components/layout/admin/forms/AddProductFrom'
 import { deepcopyObj } from '../../utils/deepCopyObj'
 import { productFormData } from '../../utils/formDataObj'
+import { useDispatch } from 'react-redux'
+import { setSubCategory, useGetAllCategory } from '../../store/categorySlice'
+import AddProductForm from '../../components/layout/admin/forms/AddProductFrom'
 
 const AdminProducts = () => {
   const [openAddProductForm,setOpenAddProductForm]=useState(false)
   const [productData,setProductData]=useState(deepcopyObj(productFormData))
+  const dispatch=useDispatch()
   function closeProductForm(){
      setOpenAddProductForm(false)
      setProductData(deepcopyObj(productFormData))
+     dispatch(setSubCategory())
   }
   function openProductForm(){
     setOpenAddProductForm(true)
   }
+  useEffect(()=>{
+  dispatch(useGetAllCategory())
+  },[])
   return (
     <div>
       {
@@ -26,11 +34,11 @@ const AdminProducts = () => {
            
     <div class="max-w-7xl mx-auto ">
         {/* <!-- Header Section --> */}
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">Product Management</h1>
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+            <h1 class="text-3xl font-bold text-gray-900">Manage Products</h1>
             
-            {/* <!-- Add Product Button --> */}
-            <button onClick={openProductForm} id="addProductBtn" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-101">
+            {/* <!-- Add Category Button --> */}
+            <button onClick={openProductForm} class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
                 <i class="fas fa-plus mr-2"></i>
                 Add Product
             </button>
