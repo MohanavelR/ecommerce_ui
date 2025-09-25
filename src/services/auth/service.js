@@ -45,3 +45,35 @@ export const apiOfLogout=async()=>{
         return error
     }
 } 
+export const apiOfSendOtpForResetPassword=async(formData)=>{
+    try {
+        const response = await api.post('/send_otp_for_reset_password',formData)
+        return response.data
+    } catch (error) {
+        return error
+    } 
+}
+export const apiOfResetPassword=async(formData)=>{
+    try {
+        const response = await api.post('/reset_password',formData)
+        return response.data
+    } catch (error) {
+        return error
+    } 
+}
+export const apiOfSendOtpForVerifyAccount=async(formData)=>{
+    try {
+        const response = await api.post('/send_otp_for_verify_account',formData)
+        return response.data
+    } catch (error) {
+        return error
+    } 
+}
+export const apiOfVerifyAccount=async(formData)=>{
+    try {
+        const response = await api.post('/verify_account',formData)
+        return response.data
+    } catch (error) {
+        return error
+    } 
+}

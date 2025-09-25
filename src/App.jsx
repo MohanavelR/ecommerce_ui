@@ -27,6 +27,10 @@ import AdminCustomers from "./pages/admin/AdminCustomers";
 import AdminAd_Banner from "./pages/admin/AdminAd_Banner";
 import AdminSlider from "./pages/admin/AdminSlider";
 import AdminOrders from "./pages/admin/AdminOrders";
+import ResetOTPVerify from "./components/layout/auth/ResetOTPVerify";
+import ChangeNewPassword from "./components/layout/auth/ChangeNewPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
+import VerifyAccount from "./pages/shop/VerifyAccount";
 
 const App = () => {
   const {logoutContextState,setLogoutContextState}=useContext(LogoutContext)
@@ -59,6 +63,7 @@ const App = () => {
         <ShopLayout/>
       </MainLayout>}>
       <Route path="home" element={<Home/>} />
+      <Route path="verify-account" element={<VerifyAccount/>} />
       </Route>
 
       {/* Auth routes */}
@@ -72,6 +77,8 @@ const App = () => {
       >
         <Route path="login" element={<Login/>}/>
         <Route path="register" element={<Register/>}/>
+        <Route path="forget-password" element={<ResetPassword/>}/>
+       
       </Route>
 
 

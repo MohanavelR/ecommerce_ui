@@ -6,7 +6,9 @@ const ShopLayout = () => {
   return (
     <>
     <ShopHeader/>
+    <div className='z-[500]'> 
       <Outlet/>
+    </div>
     </>
   )
 }

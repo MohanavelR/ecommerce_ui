@@ -3,17 +3,15 @@ import React from 'react'
 const Logo = () => {
   return (
     <>
-                <div className="flex items-center">
-                    {/* <!-- Logo Image --> */}
-                    <div className="flex-shrink-0">
-                        <img className="h-12 w-12 rounded-full object-cover" src="https://picsum.photos/seed/brandlogo/48/48.jpg" alt="Brand Logo"/>
+               <a href="/" class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-primary-light rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">E</span>
                     </div>
-                    {/* <!-- Brand Name and Tagline --> */}
-                    <div className="ml-4">
-                        <div className="text-xl font-bold text-gray-900">BrandName</div>
-                        <div className="text-sm text-gray-600">Your trusted digital partner</div>
+                    <div class="hidden sm:block">
+                        <h1 class="text-xl font-bold text-primary">EcoShop</h1>
+                        <p class="text-xs text-muted-foreground">Green Shopping Experience</p>
                     </div>
-                </div>
+                </a>
     </>
   )
 }

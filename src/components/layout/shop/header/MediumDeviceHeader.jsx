@@ -3,228 +3,97 @@ import React from 'react'
 const MediumDeviceHeader = () => {
   return (
     <>
-            <div
-          id="sticky-header"
-          className="bg-white shadow-md sticky top-0 z-50 transition-all duration-300 hidden md:block"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between">
-              <div className="flex space-x-1 md:space-x-4">
-                 <a href="#" className="py-4 px-2 text-gray-700 hover:text-blue-600 font-medium transition-colors">Home</a>
-                {/* Dogs 🐶 */}
-<div className="group relative">
-  <button className="py-4 px-2 flex items-center text-gray-700 hover:text-blue-600 font-medium transition-colors">
-    <span>Dogs </span>
-    <svg className="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-    </svg>
-  </button>
-  <div className="absolute left-0 mt-0 w-56 bg-white shadow-lg rounded-b-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
-    <div className="py-1">
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Dry Food</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Wet Food</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Treats</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Toys</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Grooming</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Health & Wellness</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Apparel</a>
+ <nav className="hidden lg:flex items-center z-[9999] space-x-6 xl:space-x-8 font-medium">
+  {/* Home Link */}
+  <a href="/" className="text-foreground hover:text-primary transition-colors duration-300 relative group">
+    Home
+    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out"></span>
+  </a>
+
+  {/* Shop Dropdown */}
+  <div className="relative group">
+    <button className="text-foreground hover:text-primary transition-colors duration-300 flex items-center space-x-1 relative">
+      <span>Shop</span>
+      <svg className="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+      </svg>
+      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out"></span>
+    </button>
+    <div className="absolute  top-full left-1/2 -translate-x-1/2 mt-4 w-52 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 bg-background border border-border rounded-lg shadow-xl overflow-hidden">
+      <div className="py-2">
+        <a href="/shop" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">
+          All Products
+        </a>
+        <a href="/shop?category=electronics" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">
+          Electronics
+        </a>
+        <a href="/shop?category=clothing" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">
+          Clothing
+        </a>
+        <a href="/shop?category=home-garden" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">
+          Home & Garden
+        </a>
+        <a href="/shop?category=sports" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">
+          Sports
+        </a>
+      </div>
     </div>
   </div>
-</div>
 
-{/* Cats 🐱 */}
-<div className="group relative">
-  <button className="py-4 px-2 flex items-center text-gray-700 hover:text-blue-600 font-medium transition-colors">
-    <span>Cats </span>
-    <svg className="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-    </svg>
-  </button>
-  <div className="absolute left-0 mt-0 w-56 bg-white shadow-lg rounded-b-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
-    <div className="py-1">
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Dry Food</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Wet Food</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Treats</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Toys</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Litter & Accessories</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Grooming</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Health & Wellness</a>
+  {/* Categories Dropdown */}
+  <div className="relative group">
+    <button className="text-foreground hover:text-primary transition-colors duration-300 flex items-center space-x-1 relative">
+      <span>Categories</span>
+      <svg className="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+      </svg>
+      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out"></span>
+    </button>
+    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-52 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 bg-background border border-border rounded-lg shadow-xl overflow-hidden">
+      <div className="py-2">
+        <a href="/shop?filter=new" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">
+          New Arrivals
+        </a>
+        <a href="/shop?filter=bestseller" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">
+          Best Sellers
+        </a>
+        <a href="/shop?filter=sale" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">
+          On Sale
+        </a>
+        <a href="/shop?filter=featured" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">
+          Featured
+        </a>
+      </div>
     </div>
   </div>
-</div>
 
-{/* Fish & Aquatics 🐠 */}
-<div className="group relative">
-  <button className="py-4 px-2 flex items-center text-gray-700 hover:text-blue-600 font-medium transition-colors">
-    <span>Fish & Aquatics </span>
-    <svg className="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-    </svg>
-  </button>
-  <div className="absolute left-0 mt-0 w-56 bg-white shadow-lg rounded-b-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
-    <div className="py-1">
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Fish Food</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Aquarium Supplies</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Water Treatments</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Heaters & Filters</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Decorations</a>
+  {/* Services Dropdown */}
+  <div className="relative group">
+    <button className="text-foreground hover:text-primary transition-colors duration-300 flex items-center space-x-1 relative">
+      <span>Services</span>
+      <svg className="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+      </svg>
+      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out"></span>
+    </button>
+    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-52 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 bg-background border border-border rounded-lg shadow-xl overflow-hidden">
+      <div className="py-2">
+        <a href="/contact" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">
+          Customer Support
+        </a>
+        <a href="/faq#shipping" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">
+          Shipping Info
+        </a>
+        <a href="/faq#returns" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">
+          Returns
+        </a>
+        <a href="/orders" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">
+          Track Order
+        </a>
+      </div>
     </div>
   </div>
-</div>
-
-{/* Birds 🦜 */}
-<div className="group relative">
-  <button className="py-4 px-2 flex items-center text-gray-700 hover:text-blue-600 font-medium transition-colors">
-    <span>Birds </span>
-    <svg className="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-    </svg>
-  </button>
-  <div className="absolute left-0 mt-0 w-56 bg-white shadow-lg rounded-b-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
-    <div className="py-1">
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Bird Food</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Cages & Stands</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Toys & Perches</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Health & Wellness</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Breeding & Nesting</a>
-    </div>
-  </div>
-</div>
-
-{/* Small Animals 🐹 */}
-<div className="group relative">
-  <button className="py-4 px-2 flex items-center text-gray-700 hover:text-blue-600 font-medium transition-colors">
-    <span>Small Animals </span>
-    <svg className="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-    </svg>
-  </button>
-  <div className="absolute left-0 mt-0 w-56 bg-white shadow-lg rounded-b-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
-    <div className="py-1">
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Food</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Habitats</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Bedding & Litter</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Toys & Chews</a>
-      <a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50 hover:text-blue-600">Health & Wellness</a>
-    </div>
-  </div>
-</div>
-
-
-                {/* Dropdown 2 */}
-                <div className="group relative">
-                  <button className="py-4 px-2 flex items-center text-gray-700 hover:text-blue-600 font-medium transition-colors">
-                    <span>Fashion</span>
-                    <svg
-                      className="ml-1 h-4 w-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  <div className="absolute left-0 mt-0 w-56 bg-white shadow-lg rounded-b-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
-                    <div className="py-1">
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Men's Clothing</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Women's Clothing</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Shoes</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Accessories</a>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Dropdown 3 */}
-                <div className="group relative">
-                  <button className="py-4 px-2 flex items-center text-gray-700 hover:text-blue-600 font-medium transition-colors">
-                    <span>Home & Kitchen</span>
-                    <svg
-                      className="ml-1 h-4 w-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  <div className="absolute left-0 mt-0 w-56 bg-white shadow-lg rounded-b-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
-                    <div className="py-1">
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Furniture</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Kitchen Appliances</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Decor</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Bedding</a>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Dropdown 4 */}
-                <div className="group relative">
-                  <button className="py-4 px-2 flex items-center text-gray-700 hover:text-blue-600 font-medium transition-colors">
-                    <span>Beauty</span>
-                    <svg
-                      className="ml-1 h-4 w-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  <div className="absolute left-0 mt-0 w-56 bg-white shadow-lg rounded-b-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
-                    <div className="py-1">
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Skincare</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Makeup</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Hair Care</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Fragrance</a>
-                    </div>
-                  </div>
-                </div>
-
-                <a href="#" className="py-4 px-2 text-gray-700 hover:text-blue-600 font-medium transition-colors">Deals</a>
-                <a href="#" className="py-4 px-2 text-gray-700 hover:text-blue-600 font-medium transition-colors">Services</a>
-              </div>
-
-              {/* Search Bar (hidden on mobile)
-              <div className="hidden md:flex items-center">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search products..."
-                    className="py-2 pl-4 pr-10 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                  <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-blue-600">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div> */}
-            </div>
-          </div>
-        </div>
+</nav>
     </>
   )
 }

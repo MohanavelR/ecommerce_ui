@@ -15,14 +15,16 @@ import AdminHeader from '../../components/layout/admin/AdminHeader'
 
   return (
     <>
-  <div className="flex h-screen">
-       <AdminSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />    
-      <div className="flex-1 flex flex-col">
-       <AdminHeader sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}  />  
-    <main className="flex-1 overflow-y-auto p-6 bg-gray-50">
-    <Outlet/>
-    </main>
-    </div>  
+  <div className="min-h-screen bg-gray-50">
+       <AdminHeader sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+       <div className="flex">
+        <AdminSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
+        <main className="flex-1 max-h-[90vh] overflow-auto lg:ml-0">
+          <div className="p-6">
+            <Outlet />
+          </div>
+        </main>
+       </div>
     </div>  
     </>
   )

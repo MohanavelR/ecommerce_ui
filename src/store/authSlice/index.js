@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import { apiOfCreateUser, apiOfGetCurrentUser, apiOfLogin, apiOfLogout } from '../../services/auth/service';
+import { apiOfCreateUser, apiOfGetCurrentUser, apiOfLogin, apiOfLogout, apiOfResetPassword, apiOfSendOtpForResetPassword, apiOfSendOtpForVerifyAccount, apiOfVerifyAccount } from '../../services/auth/service';
 
 
 const initialState={
@@ -36,6 +36,38 @@ export const useAuth = createAsyncThunk('/auth/checkauth', async (_, thunkAPI) =
 export const useLogout =createAsyncThunk('/auth/logout',async(_,thunkAPI)=>{
   try{
   return await apiOfLogout()
+  }
+  catch(e){
+    return thunkAPI.rejectWithValue(e)
+  }
+})
+export const useSendResetOTP =createAsyncThunk('/auth/forget-paasowrd',async(formData,thunkAPI)=>{
+  try{
+  return await apiOfSendOtpForResetPassword(formData)
+  }
+  catch(e){
+    return thunkAPI.rejectWithValue(e)
+  }
+})
+export const useResetPassword =createAsyncThunk('/auth/reset-password',async(formData,thunkAPI)=>{
+  try{
+  return await apiOfResetPassword(formData)
+  }
+  catch(e){
+    return thunkAPI.rejectWithValue(e)
+  }
+})
+export const useSendverifyOTP =createAsyncThunk('/auth/verify-otp',async(formData,thunkAPI)=>{
+  try{
+  return await apiOfSendOtpForVerifyAccount(formData)
+  }
+  catch(e){
+    return thunkAPI.rejectWithValue(e)
+  }
+})
+export const useVerifyAccount =createAsyncThunk('/auth/verify-account',async(formData,thunkAPI)=>{
+  try{
+  return await apiOfVerifyAccount(formData)
   }
   catch(e){
     return thunkAPI.rejectWithValue(e)
@@ -95,6 +127,31 @@ const authSlice=createSlice({
             state.isLoading=true
             state.user=null
             state.isAuthenticated=false 
+        })
+        .addCase(useSendResetOTP.pending,(state)=>{
+            state.isLoading=true
+        }).addCase(useSendResetOTP.fulfilled,(state,action)=>{
+       state.isLoading=false
+        }).addCase(useSendResetOTP.rejected,(state,action)=>{
+          state.isLoading=false
+        }).addCase(useResetPassword.pending,(state,action)=>{
+          state.isLoading=true
+        }).addCase(useResetPassword.fulfilled,(state,action)=>{
+          state.isLoading=false
+        }).addCase(useResetPassword.rejected,(state,action)=>{
+          state.isLoading=false
+        }) .addCase(useSendverifyOTP.pending,(state)=>{
+            state.isLoading=true
+        }).addCase(useSendverifyOTP.fulfilled,(state,action)=>{
+       state.isLoading=false
+        }).addCase(useSendverifyOTP.rejected,(state,action)=>{
+          state.isLoading=false
+        }).addCase(useVerifyAccount.pending,(state,action)=>{
+          state.isLoading=true
+        }).addCase(useVerifyAccount.fulfilled,(state,action)=>{
+          state.isLoading=false
+        }).addCase(useVerifyAccount.rejected,(state,action)=>{
+          state.isLoading=false
         })
     }
 })

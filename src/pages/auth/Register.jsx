@@ -71,15 +71,9 @@ const Register = () => {
    
   return (
     <div className="flex min-h-full flex-col justify-center px-6 mt-2">
-      <div className="sm:mx-auto  sm:w-full sm:max-w-sm">
-        <img
-          src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
-          className="mx-auto h-10 w-auto"
-        />
-        <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-          Create Your Account
-        </h2>
+     <div className="text-center mb-8">
+        <h2 className="text-2xl font-bold text-foreground mb-2">Create Account</h2>
+        <p className="text-muted-foreground">Join EcoShop for a sustainable future</p>
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -208,7 +202,7 @@ const Register = () => {
               onClick={handlesubmit}
               type="submit"
               disabled={isLoading}
-              className="flex w-full justify-center disabled:cursor-progress  bg-black px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-gray-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="w-full btn-hero"
             >
               {
                 isLoading ?<Loader/>:"Create Account"
@@ -219,12 +213,15 @@ const Register = () => {
         </form>
 
         <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 text-center">
-          <p className="text-sm text-gray-600">
-            Have an Account ?
-            <Link to="/auth/login"  className="font-medium text-blue-600 hover:text-blue-500">
-              Sign in
-            </Link>
-          </p>
+          <p className="text-center text-sm text-muted-foreground">
+          Already have an account?{" "}
+          <Link 
+            to="/auth/login" 
+            className="text-primary hover:text-primary/80 transition-colors duration-200 font-medium"
+          >
+            Sign in
+          </Link>
+        </p>
         </div>
       </div>
     </div>

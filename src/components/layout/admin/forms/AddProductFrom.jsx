@@ -674,7 +674,7 @@ const handleImageChange = (e) => {
               </button>
               <button
                 type="submit"
-                onClick={handleCreateProduct}
+                // onClick={handleCreateProduct}
                 className="order-1 sm:order-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center justify-center"
               >
                 <i className="fas fa-save mr-2"></i> Save Product

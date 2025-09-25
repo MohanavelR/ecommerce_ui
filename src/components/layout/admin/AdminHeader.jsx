@@ -1,36 +1,39 @@
 import React,{useContext} from 'react'
 import { Link } from 'react-router-dom'
 import Logo from '../../common/Logo'
-
+import { LogoutContext, MessageContext } from '../../../context/context';
 
 
  const AdminHeader = ({sidebarOpen,setSidebarOpen}) => {
+   const {logoutContextState,setLogoutContextState} =useContext(LogoutContext)
   return (
        <>
-      <header className="bg-white   shadow-sm border-b border-gray-200">
-        <div className="flex justify-between items-center px-6 py-4">
-          <div className='md:hidden block'>
-           <Logo/>
+      <header class="bg-white border-b border-gray-200">
+    <div class="flex items-center justify-between h-16 px-4">
+      <div class="flex items-center space-x-4">
+        {/* <!-- Mobile Menu Toggle --> */}
+        <button class="lg:hidden p-2 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+          <i class="fas fa-bars w-5 h-5"></i>
+        </button>
+
+        {/* <!-- Logo --> */}
+        <a href="/admin" class="flex items-center space-x-2">
+          <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-400 rounded-lg flex items-center justify-center">
+            <span class="text-white font-bold">E</span>
           </div>
-          <div className="lg:flex hidden  items-center">
-            <nav className="flex" aria-label="Breadcrumb">
-              <ol className="inline-flex items-center space-x-1 md:space-x-3">
-                <li className="inline-flex items-center">
-                  <Link to='/admin/dashboard' className="text-gray-700 hover:text-indigo-600">
-                    <i className="fas fa-home"></i>
-                  </Link>
-                </li>
-              </ol>
-            </nav>
-          </div>         
-          <div className="flex items-center space-x-4">
-            <div className="">
-              <button  onClick={()=>setSidebarOpen(!sidebarOpen)} className='transform lg:hidden hover-duration hover:scale-120 top-2 hover:text-black cursor-pointer  text-amber-950'>
-              <svg  xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" ><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
-          </button></div>
-          </div>
-        </div>
-      </header>
+          <h1 class="text-xl font-bold text-blue-600">EcoShop Admin</h1>
+        </a>
+      </div>
+
+      {/* <!-- Admin Actions --> */}
+      <div class="flex items-center space-x-4">
+        <a href="/" class="text-sm text-gray-500 hover:text-blue-600 transition-colors duration-200">View Store</a>
+        <button onClick={()=>setLogoutContextState(!logoutContextState)} class="p-2 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+          <i class="fas fa-sign-out-alt w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </header>
       
     </>
   )
