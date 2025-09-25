@@ -2,18 +2,25 @@ import React, { useEffect, useState } from 'react'
 // import AddProductForm from '../../components/layout/admin/forms/AddProductFrom'
 import { deepcopyObj } from '../../utils/deepCopyObj'
 import { productFormData } from '../../utils/formDataObj'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setSubCategory, useGetAllCategory } from '../../store/categorySlice'
 import AddProductForm from '../../components/layout/admin/forms/AddProductFrom'
+import ProductCard from '../../components/layout/admin/ProductCard'
 
 const AdminProducts = () => {
+
+  const {productList,productDetails}=useSelector(state=>state.adminProducts)
   const [openAddProductForm,setOpenAddProductForm]=useState(false)
+  const [isEditMode,setIsEditMode]=useState(false)
   const [productData,setProductData]=useState(deepcopyObj(productFormData))
+  const [id,setId]=useState(null)
   const dispatch=useDispatch()
   function closeProductForm(){
      setOpenAddProductForm(false)
      setProductData(deepcopyObj(productFormData))
      dispatch(setSubCategory())
+     setId(null)
+     setIsEditMode(null)
   }
   function openProductForm(){
     setOpenAddProductForm(true)
@@ -28,7 +35,7 @@ const AdminProducts = () => {
            <div className="fixed inset-0 bg-amber-50 z-[900] overflow-y-auto">
           <div className="flex justify-end p-4">
           </div>
-          <AddProductForm productData={productData} setProductData={setProductData} closeProductForm={closeProductForm} />
+          <AddProductForm isEditMode={isEditMode} id={id} setId={setId} setIsEditMode={setIsEditMode} productData={productData} setProductData={setProductData} closeProductForm={closeProductForm} />
         </div>
       }
            
@@ -44,6 +51,14 @@ const AdminProducts = () => {
             </button>
         </div>
     </div>
+     <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3'>
+      {
+        productList && productList.length > 0 && productList.map(product=>(
+          <ProductCard openProductForm={openProductForm} id={id} setId={setId} isEditMode={isEditMode} setIsEditMode={setIsEditMode} product={product} />
+        ))
+      }
+     </div>
+
     </div>
   )
 }

@@ -67,7 +67,7 @@ export const useGetProductsBySubcategory = createAsyncThunk(
 // Update Product
 export const useUpdateProduct = createAsyncThunk(
   "/product/update",
-  async ({ id, data }, thunkAPI) => {
+  async ({id,data}, thunkAPI) => {
     try {
       return await apiOfUpdateProduct(id, data);
     } catch (error) {

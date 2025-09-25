@@ -6,12 +6,15 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import AdminSidebar from '../../components/layout/admin/AdminSidebar'
 import AdminHeader from '../../components/layout/admin/AdminHeader'
+import { useGetAllProducts } from '../../store/productSlice'
 
 
  const AdminLayout = () => {
    const [sidebarOpen,setSidebarOpen]=useState(false)
    const dispatch=useDispatch()
-
+   useEffect(()=>{
+    dispatch(useGetAllProducts())
+   },[])
 
   return (
     <>

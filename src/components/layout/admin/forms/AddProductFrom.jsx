@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ProductVariationForm from "./ProductVariationForm";
 import { deepcopyObj } from "../../../../utils/deepCopyObj";
 import { productFormData, variationFormData } from "../../../../utils/formDataObj";
@@ -7,22 +7,43 @@ import { productError } from "../../../../utils/errorObj";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetSubCategory } from "../../../../store/categorySlice";
 import Loader from "../../../common/Loader";
+import Progress from "../../../common/Progress";
 import CloseBtn from "../../../common/CloseBtn";
+import { uploadImageToCloudinary } from "../../../../utils/imageUploader";
+import { useCreateProduct, useGetAllProducts, useGetProductById, useUpdateProduct } from "../../../../store/productSlice";
+import { MessageContext } from "../../../../context/context";
 
-const AddProductForm = ({ productData, setProductData, closeProductForm }) => {
+const AddProductForm = ({ productData, setProductData,id,setId, closeProductForm,isEditMode,setIsEditMode }) => {
   const [fieldErrors, setFieldErrors] = useState(deepcopyObj(productError));
-  const [variationData, setVariationData] = useState(
-    deepcopyObj(variationFormData)
+  const {productdetails,isLoading:productLoading }=useSelector(state=>state.adminProducts)
+  const {messageContextState,setMessageContextState}=useContext(MessageContext)
+  const [isUpload,setUpload]=useState(false)  
+  const dispatch = useDispatch();
+
+  const { isLoading, categoryList, subcategories } = useSelector(
+    (state) => state.category
   );
+  useEffect(()=>{
+    if(isEditMode){
+     dispatch(useGetProductById(id)).then(res=>{
+      if(res.payload.success)
+        setProductData(res.payload.data)
+     }) 
+    }
+  },[isEditMode])
+  const [progressbar,setprogressbar]=useState({
+    is_show:false,
+    percentage:0,
+    text:""
+  })
+  const [variationData, setVariationData] = useState(deepcopyObj(variationFormData));
   const [openVariationForm, setOpenVariationForm] = useState(false);
-  console.log(productData);
   const [listInformation, setListInformation] = useState({
     des: "",
     feature: "",
     addInfo: "",
   });
   function addlistDataMethod(key, value) {
-    
     if (value !== "") {
       setProductData({ ...productData, [key]: [...productData[key], value] });
       setListInformation({ des: "", feature: "", addInfo: "" });
@@ -35,29 +56,26 @@ const AddProductForm = ({ productData, setProductData, closeProductForm }) => {
       [key]: productData[key].filter((_, i) => i !== index),
     });
   }
-const handleImageChange = (e) => {
-  const files = Array.from(e.target.files);
 
-  setProductData((prev) => {
-    // Combine old images and new files
-    const combined = [...(prev.images || []), ...files];
+async function handleImageChange(e){
+  setUpload(true)
+  setprogressbar({...progressbar,is_show:true,text:"Uploading...",percentage:0})
+  const file = e.target.files[0];
+  const uploadedUrl = await uploadImageToCloudinary(file, (percent) => {
+      console.log(percent)
+      setprogressbar({...progressbar,is_show:true,percentage:(percent-1),text:"Uploading..."});
+    });
+  setprogressbar({...progressbar,is_show:true,percentage:100,text:"Uploaded!"})  
+  setProductData({...productData,images:[...productData.images,uploadedUrl]})
+  setUpload(false)
+  setTimeout(()=>{
+    setprogressbar({is_show:false})
 
-    // Only keep first 4
-    const limited = combined.slice(0, 4);
-
-    return {
-      ...prev,
-      images: limited
-    };
-  });
+  },8000)
 };
 
 
-  const dispatch = useDispatch();
-  const { isLoading, categoryList, subcategories } = useSelector(
-    (state) => state.category
-  );
-  console.log();
+
   function closevariationForm() {
     setOpenVariationForm(false);
     setVariationData(deepcopyObj(variationFormData));
@@ -74,7 +92,102 @@ const handleImageChange = (e) => {
     }
   }, [productData.category]);
 
+async function handleCreateProduct(e){
+  e.preventDefault()
+  let hasError = false;
+const localError = deepcopyObj(productError); // clone the error object
 
+if (productData.productName?.trim()==="") {
+  hasError = true;
+  localError.productName.isRequired = true;
+}
+
+if (!productData.price?.current && productData.price?.current !== 0) {
+  hasError = true;
+  localError.price.current.isRequired = true;
+} else if (productData.price?.current <= 0) {
+  hasError = true;
+  localError.price.current.invalidNumber = true;
+}
+
+if (productData.price?.original && productData.price?.original <=0 ) {
+  hasError = true;
+  localError.price.original.invalidNumber = true;
+}
+
+if (productData.category?.trim()==="") {
+  hasError = true;
+  localError.category.isRequired = true;
+}
+
+if (productData.subCategory?.trim()==="") {
+  hasError = true;
+  localError.subCategory.isRequired = true;
+}
+
+if (productData.brand?.trim()==="") {
+  hasError = true;
+  localError.brand.isRequired = true;
+}
+
+if (productData.offer && productData.offer<=0) { // example format check
+  hasError = true;
+  localError.offer.invalidFormat = true;
+}
+
+if (!productData.description?.length >0) {
+  hasError = true;
+  localError.description.isRequired = true;
+}
+
+// if (!productData.features?.trim()) {
+//   hasError = true;
+//   localError.features.isRequired = true;
+// }
+
+// if (!productData.additionalInfo?.trim()) {
+//   hasError = true;
+//   localError.additionalInfo.isRequired = true;
+// }
+
+if (!productData.images || productData.images.length === 0) {
+  hasError = true;
+  localError.images.isRequired = true;
+}
+
+// Example for trending check
+if (productData.isTrending !== true && productData.isTrending !== false) {
+  hasError = true;
+  localError.isTrending.invalidValue = true;
+}
+
+// Update state with errors
+setFieldErrors(deepcopyObj(localError));
+
+// Proceed if no errors
+if (!hasError) {
+  (isEditMode?dispatch(useUpdateProduct({id,data:productData})):
+  dispatch(useCreateProduct(productData))).then(res=>{
+   if(res.payload?.success){
+        console.log(res.payload)
+        closeProductForm()
+        dispatch(useGetAllProducts())
+        setProductData(deepcopyObj(productFormData));
+        setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
+      }
+      else{
+       
+        setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:false})
+      }
+  })
+   // reset form
+}
+else{
+  setTimeout(()=>{
+    setFieldErrors(deepcopyObj(productError))
+  },3000)
+}
+}
 
 
 
@@ -83,12 +196,18 @@ const handleImageChange = (e) => {
     "w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:border-transparent transition-colors duration-200";
 
   return (
+    <>
+    {
+      productLoading?<Loader/>:
     <div className="bg-gray-100 min-h-screen py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-            Add New Product
+            {
+              isEditMode?"Update Product" :"Add New Product"
+            }
+            
           </h1>
           <p className="text-gray-600">
             Fill in the details below to add a new product to your inventory.
@@ -119,6 +238,7 @@ const handleImageChange = (e) => {
                     id="productName"
                     name="productName"
                     className={inputClasses}
+                    value={productData.productName}
                     placeholder="productName"
                     onChange={(e) =>
                       setProductData({
@@ -145,6 +265,7 @@ const handleImageChange = (e) => {
                   <select
                     id="category"
                     name="category"
+                    value={productData.category}
                     onChange={(e) =>
                       setProductData({
                         ...productData,
@@ -181,15 +302,18 @@ const handleImageChange = (e) => {
                   </label>
                   <select
                     className={inputClasses}
+                    value={productData.subCategory}
                     onChange={(e) =>
                       setProductData({
                         ...productData,
-                        subCategory: e.target.value,
+                        subCategory:e.target.value,
                       })
                     }
                     name=""
                     id=""
-                  >
+                  ><option value="" >
+                           
+                          </option>
                     {subcategories &&
                       (subcategories.length > 0 ? (
                         subcategories.map((subcategory, index) => (
@@ -220,6 +344,7 @@ const handleImageChange = (e) => {
                     type="text"
                     id="brand"
                     name="brand"
+                    value={productData.brand}
                     onChange={(e) =>
                       setProductData({ ...productData, brand: e.target.value })
                     }
@@ -245,6 +370,7 @@ const handleImageChange = (e) => {
                     type="number"
                     id="offer"
                     name="offer"
+                    value={productData.offer}
                     className={inputClasses}
                     onChange={(e) =>
                       setProductData({ ...productData, offer: e.target.value })
@@ -284,7 +410,7 @@ const handleImageChange = (e) => {
                       type="number"
                       id="currentPrice"
                       name="currentPrice"
-                      required
+                       value={productData.price.current}
                       min="0"
                       step="0.01"
                       className={`${inputClasses} pl-8`}
@@ -324,6 +450,7 @@ const handleImageChange = (e) => {
                       id="originalPrice"
                       name="originalPrice"
                       min="0"
+                      value={productData.price.original}
                       step="0.01"
                       className={`${inputClasses} pl-8`}
                       placeholder="0.00"
@@ -356,6 +483,7 @@ const handleImageChange = (e) => {
                   <select
                     id="currency"
                     name="currency"
+                    value={productData.price.urrency}
                     onChange={(e) =>
                       setProductData({
                         ...productData,
@@ -564,13 +692,21 @@ const handleImageChange = (e) => {
               </h2>
 
               <ImageField handleImageChange={handleImageChange} />
-
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 ">
+              {
+                progressbar.is_show && 
+                <div>
+                  <p className="text-end text-base font-medium text-gray-600">{progressbar.text}</p>
+                  <Progress width={progressbar.percentage} />
+                </div>
+               
+              }
+              
+              <div className="grid mt-3 grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 ">
                    {productData?.images &&
                       productData.images.length > 0 &&
                       productData?.images.map((image, index) => (
                         <div className="flex bg-gray-300 relative">
-                          <img src={URL.createObjectURL(image)} alt="" />
+                          <img src={image} alt="" />
                           <span className="absolute p-3 w-full z-[100] text-white flex justify-end">
                             <button
                               onClick={(e) =>
@@ -673,17 +809,25 @@ const handleImageChange = (e) => {
                 <i className="fas fa-times mr-2"></i> Cancel
               </button>
               <button
-                type="submit"
-                // onClick={handleCreateProduct}
-                className="order-1 sm:order-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center justify-center"
-              >
+                type="button"
+                onClick={handleCreateProduct}
+                className="order-1 btn-hero disabled:cursor-progress"
+                disabled={isUpload}
+              >{
+                isUpload ?<Loader/>:
+              <div>
+
                 <i className="fas fa-save mr-2"></i> Save Product
+              </div>
+              }
               </button>
             </div>
           </form>
         </div>
       </div>
     </div>
+    }
+    </>
   );
 };
 

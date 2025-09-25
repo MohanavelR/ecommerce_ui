@@ -4,17 +4,37 @@ import { deepcopyObj } from '../../../../utils/deepCopyObj'
 import { variationError } from '../../../../utils/errorObj'
 import CloseBtn from '../../../common/CloseBtn'
 import { variationFormData } from '../../../../utils/formDataObj'
+import { uploadImageToCloudinary } from '../../../../utils/imageUploader'
+import Progress from '../../../common/Progress'
+import Loader from '../../../common/Loader'
 
 const ProductVariationForm = ({variationData, save,setVariationData, closevariationForm}) => {
   const [fieldErrors,setFieldErrors]=useState(deepcopyObj(variationError))
-const handleImageChangeVariation = (files) => {
-
-  const file = files[0] ;
+  const [progressbar,setprogressbar]=useState({
+      is_show:false,
+      percentage:0,
+      text:""
+    })
+  const [isUpload,setUpload]=useState(false)  
+ const handleImageChangeVariation = async(files) => {
+    setUpload(true)
+   setprogressbar({...progressbar,is_show:true,text:"Uploading...",percentage:0})
+    const file =files[0];
+    const uploadedUrl = await uploadImageToCloudinary(file, (percent) => {
+        console.log(percent)
+        setprogressbar({...progressbar,is_show:true,percentage:(percent-1),text:"Uploading..."});
+      });
+    setprogressbar({...progressbar,is_show:true,percentage:100,text:"Uploaded!"})  
 
   setVariationData((prev) => ({
     ...prev,
-    image: file ? file :null   // store as an array with only 1 file
+    image: uploadedUrl   // store as an array with only 1 file
   }));
+  setUpload(false)
+    setTimeout(()=>{
+    setprogressbar({is_show:false})
+
+  },8000)
 };
 
   
@@ -37,7 +57,7 @@ const handleImageChangeVariation = (files) => {
     hasError = true;
     localError.value.isRequired = true;
   }
-  if (!variationData.price) {
+  if (variationData.price<=0) {
     hasError = true;
     localError.price.isRequired = true;
   } else if (variation.price <= 0) {
@@ -133,6 +153,11 @@ const handleImageChangeVariation = (files) => {
               className="w-full pl-8 pr-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
             />
           </div>
+          {fieldErrors.price.isRequired && (
+            <p className="text-xs font-medium text-red-700 mt-1">
+              price is required
+            </p>
+          )}
           {fieldErrors.price.mustBePositive && (
             <p className="text-xs font-medium text-red-700 mt-1">
               Price must be positive
@@ -209,11 +234,19 @@ const handleImageChangeVariation = (files) => {
                             <i class="fas fa-plus-circle mr-1"></i> Add another image
                         </button> */}
                     </div> 
-         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+           {
+                           progressbar.is_show &&
+                           <div>
+                             <p className="text-end text-base font-medium text-gray-600">{progressbar.text}</p>
+                             <Progress width={progressbar.percentage} />
+                           </div>
+                          
+                         }         
+         <div className="grid grid-cols-2 mt-3 gap-3 sm:grid-cols-3 md:grid-cols-4">
  {
   variationData.image && 
   <div className='relative flex'>
-    <img src={URL.createObjectURL(variationData.image)} ></img>
+    <img src={variationData.image} ></img>
      <span className="absolute p-3  z-[100] text-white flex justify-end">
                                 <button
                                   onClick={()=>setVariationData({...variationData,image:null})}
@@ -240,9 +273,12 @@ const handleImageChangeVariation = (files) => {
           <button
             type="button"
             onClick={handleVariation}
-            className="bg-blue-600 rounded mt-3 hover-duration text-sm p-3 text-white hover:bg-blue-700 flex items-center"
-          >
-            Add Variation
+            disabled={isUpload}
+            className=" disabled:cursor-copy mt-3 btn-hero"
+          >{
+            isUpload ?<Loader/>:"Add Variation"
+          }
+           
           </button>
           <button
             onClick={closevariationForm}
