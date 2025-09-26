@@ -142,7 +142,12 @@
   .btn-outline {
     @apply border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-2 rounded-lg transition-all duration-300;
   }
-  
+  .admin-add-btn{
+    @apply px-5 py-3 rounded-full bg-cyan-700 text-white font-medium hover:scale-102 duration-500 hover:bg-cyan-800 
+  }
+  .admin-form-btn{
+    @apply px-5 py-3 rounded mt-4 bg-blue-700 text-white font-medium hover:scale-102 duration-500 hover:bg-blue-800 
+  }
   .btn-accent-gold {
     @apply bg-accent-gold hover:bg-accent-gold/90 text-white px-6 py-2 rounded-lg transition-all duration-300;
   }

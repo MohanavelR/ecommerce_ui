@@ -4,7 +4,8 @@ import { apiOfCreateCategory, apiOfDeleteCategory, apiOfGetAllCategory, apiOfGet
 const initialState={
     isLoading:false,
     categoryList:null,
-    subcategories:null
+    subcategories:null,
+    count:0
 }
 
 // ---------------- Thunks ----------------
@@ -48,9 +49,9 @@ export const useGetSubCategory = createAsyncThunk(
 // Update Category
 export const useUpdateCategory = createAsyncThunk(
   "/category/update",
-  async ({ id, data }, thunkAPI) => {
+  async ({ id,formData }, thunkAPI) => {
     try {
-      return await apiOfUpdateCategory(id, data);
+      return await apiOfUpdateCategory(id, formData);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -100,6 +101,8 @@ const categorySlice = createSlice({
       .addCase(useGetAllCategory.fulfilled, (state, action) => {
         state.isLoading = false;
         state.categoryList = action.payload?.success ?action.payload?.data:[];
+        state.count = action.payload?.success ?action.payload?.count:0;
+        
       })
       .addCase(useGetAllCategory.rejected, (state) => {
         state.isLoading = false;

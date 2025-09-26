@@ -24,3 +24,24 @@ export const variationFormData = {
   stock: 0,
   image: null
 };
+
+export const categoryFormData={
+  categoryName:"",
+  subcategories:[]
+}
+export const comingSoonFormData={
+  title:"",
+  image:"",isActive:false
+}
+export const bannerFormData={
+  title:"",
+  image:"",isActive:false
+}
+
+export const SliderData = {
+  title: "",
+  subtitle: "",     
+  description: "",  
+  image: "",        
+  isActive: true    
+};

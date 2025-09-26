@@ -94,3 +94,23 @@ export const variationError = {
   }
 };
 
+export const categoryError={
+  categoryName:false,
+  subCategory:false
+}
+export const comingError={
+  title:false,
+  image:false
+}
+export const bannerError={
+  title:false,
+  image:false
+}
+
+export const SliderErrors = {
+  title: null,        // "Title is required"
+  subtitle: null,     // optional → can stay null
+  description: null,  // optional → can stay null
+  image: null,        // "Image is required"
+  isActive: null      // generally no error (boolean)
+};

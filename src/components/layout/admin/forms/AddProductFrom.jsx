@@ -78,6 +78,7 @@ async function handleImageChange(e){
 
   function closevariationForm() {
     setOpenVariationForm(false);
+    setIsEditMode(false)
     setVariationData(deepcopyObj(variationFormData));
   }
 

@@ -13,6 +13,7 @@ const initialState = {
   isLoading: false,
   productList: null,
   productDetails: null,
+  count:0
 };
 
 // ---------------- Thunks ----------------
@@ -118,6 +119,7 @@ const productSlice = createSlice({
       .addCase(useGetAllProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.productList = action.payload?.success ? action.payload?.data : [];
+        state.count = action.payload?.success ? action.payload?.count : 0;
       })
       .addCase(useGetAllProducts.rejected, (state) => {
         state.isLoading = false;

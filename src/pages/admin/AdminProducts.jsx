@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setSubCategory, useGetAllCategory } from '../../store/categorySlice'
 import AddProductForm from '../../components/layout/admin/forms/AddProductFrom'
 import ProductCard from '../../components/layout/admin/ProductCard'
+import Loader from '../../components/common/Loader'
+import NotAvailable from '../../components/common/NotAvailable'
 
 const AdminProducts = () => {
 
@@ -28,8 +30,11 @@ const AdminProducts = () => {
   useEffect(()=>{
   dispatch(useGetAllCategory())
   },[])
+
+  
   return (
     <div>
+
       {
         openAddProductForm &&
            <div className="fixed inset-0 bg-amber-50 z-[900] overflow-y-auto">
@@ -45,19 +50,22 @@ const AdminProducts = () => {
             <h1 class="text-3xl font-bold text-gray-900">Manage Products</h1>
             
             {/* <!-- Add Category Button --> */}
-            <button onClick={openProductForm} class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+            <button onClick={openProductForm} class="admin-add-btn">
                 <i class="fas fa-plus mr-2"></i>
                 Add Product
             </button>
         </div>
     </div>
-     <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3'>
       {
-        productList && productList.length > 0 && productList.map(product=>(
+        productList && (productList.length > 0 ? productList.map(product=>(
+          <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3'>
           <ProductCard openProductForm={openProductForm} id={id} setId={setId} isEditMode={isEditMode} setIsEditMode={setIsEditMode} product={product} />
+        </div>
         ))
+        
+        :<NotAvailable/>)
       }
-     </div>
+
 
     </div>
   )

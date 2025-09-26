@@ -62,7 +62,7 @@ async function sendOtpForReset(){
               <p className="text-xs font-medium text-red-700">Email is required</p>
               }
             </div>
-            <button onClick={sendOtpForReset} className='w-full mt-2 btn-hero'>Verify Email</button>
+            <button onClick={sendOtpForReset} className='w-full mt-2 btn-hero'>Send OTP</button>
           </div>:(
 
       

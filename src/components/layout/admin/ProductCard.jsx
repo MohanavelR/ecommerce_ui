@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { useGetProductById } from '../../../store/productSlice'
+import { useDeleteProduct, useGetAllProducts} from '../../../store/productSlice'
+import { MessageContext } from '../../../context/context'
 
 const ProductCard = ({product,isEditMode,openProductForm,setIsEditMode,id,setId}) => {
 async  function setIsEditModeMethod(id){
@@ -9,77 +10,87 @@ async  function setIsEditModeMethod(id){
         setId(id)
        openProductForm()
   }
+  const {messageContextState,setMessageContextState}=useContext(MessageContext)
+  const dispatch=useDispatch()
+async function handleProductDelete(id){
+ if(confirm("Are Sure To Delete")){
+  dispatch(useDeleteProduct(id)).then(res=>{
+if(res.payload?.success){
+        dispatch(useGetAllProducts())
+        setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
+      }
+      else{
+       
+        setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:false})
+      }
+  })
+ }
+}
+
   return (
     <>
-<div className="card-product group">
-      <div className="relative overflow-hidden">
-        <button onClick={()=>setIsEditModeMethod(product?._id)}>
-          <img
-            src={product.images[0]}
-            alt={product.productName}
-            className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        </button>
-        
-        {/* Badge */}
-        {product.badge && (
-          <div className={`absolute top-4 left-4 px-2 py-1 rounded text-xs font-semibold ${getBadgeColor(product.badge)}`}>
-            {product.badge}
-          </div>
-        )}
+<div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
+                {/* <!-- Image Section --> */}
+                <div class="relative">
+                    <img src={product?.images[0]} alt="Product Image" class="w-full h-48 object-cover"/>
+                    
+                    {/* <!-- Trending Badge --> */}
+                    {
+                      product?.isTrending &&
+                    <div class="absolute top-3 right-3  bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 ">
+                        <i class="fas fa-fire"></i>
+                        <span>Trending</span>
+                    </div>
+                    }
+                    
+                    {/* <!-- Offer Badge --> */}
+                    {
+                      product?.offer &&
+                    <div class="absolute top-3 left-3 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                        {product?.offer}% OFF
+                    </div>
+                    }
+                    
+                    {/* <!-- Action Buttons --> */}
+                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <button onClick={()=>setIsEditModeMethod(product._id)} class="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-full mx-1 transform transition-transform duration-300 hover:scale-110">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onClick={()=>handleProductDelete(product._id)} class="bg-red-500 hover:bg-red-600 text-white p-3 rounded-full mx-1 transform transition-transform duration-300 hover:scale-110">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                {/* <!-- Product Details --> */}
+                <div class="p-5">
+                    {/* <!-- Brand --> */}
+                    <p class="text-sm text-gray-500 mb-1">{product?.brand}</p>
+                    
+                    {/* <!-- Product Name --> */}
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">{product?.productName}</h3>
+                    
+                    {/* <!-- Category & SubCategory --> */}
+                    <div class="flex gap-2 mb-3">
+                        <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">{product?.category}</span>
+                        <span class="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full">{product?.subCategory}</span>
+                    </div>
+                    
+                    {/* <!-- Price Section --> */}
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <span class="text-2xl font-bold text-gray-800">{product?.price?.currency}{product?.price?.current}</span>
+                            <span class="text-sm text-gray-500 line-through ml-2">{product?.price.original && (product?.price?.currency +product?.price.original   )}</span>
+                        </div>
+                        <div class="text-green-600 font-semibold">
+                            Save $300
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
 
-        {/* Wishlist Button */}
-        <button className="absolute top-4 right-4 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center transition-colors duration-200 opacity-0 group-hover:opacity-100">
-          {/* <Heart className="w-4 h-4 text-muted-foreground hover:text-destructive" /> */}
-        </button>
-
-        {/* Quick Add to Cart */}
-        <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 flex items-center space-x-2">
-          {/* <ShoppingCart className="w-4 h-4" /> */}
-          <span className="text-sm font-medium">Add to Cart</span>
-        </button>
-      </div>
-
-      <div className="p-6">
-        {/* Rating */}
-        <div className="flex items-center space-x-1 mb-2">
-          <div className="flex items-center">
-            {/* {[...Array(5)].map((_, i) => (
-            //   <Star
-            //     key={i}
-            //     className={`w-4 h-4 ${
-            //       i < Math.floor(product.rating)
-            //         ? 'text-accent-gold fill-current'
-            //         : 'text-muted-foreground'
-            //     }`}
-            //   />
-            ))} */}
-          </div>
-          {/* <span className="text-sm text-muted-foreground">
-            {product} ({product.reviews})
-          </span> */}
-        </div>
-
-        {/* Product Name */}
-        <Link to={`/product/${product.id}`}>
-          <h3 className="text-lg font-semibold text-foreground mb-3 hover:text-primary transition-colors duration-200 line-clamp-2">
-            {product.productName}
-          </h3>
-        </Link>
-
-        {/* Price */}
-        <div className="flex items-center space-x-2">
-          <span className="text-xl font-bold text-primary">
-            ${product.price.current}
-          </span>
-          {product.originalPrice && (
-            <span className="text-sm text-muted-foreground line-through">
-              ${product.price.original}
-            </span>
-          )}
-        </div>
-      </div>
-    </div>
     </>
   )
 }
