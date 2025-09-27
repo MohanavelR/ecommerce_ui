@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux"
 import { useCreateUser } from "../../store/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { MessageContext } from '../../context/context'
+
 const Register = () => {
     const {  messageContextState,setMessageContextState}=useContext(MessageContext)
   const [formData,setFormData]=useState({
@@ -19,11 +20,13 @@ const Register = () => {
   const [confirm_password,setconfirm_password]=useState("")
   const dispatch=useDispatch()
   const nav = useNavigate()
+  
   async function handlesubmit(e){
     setIsLoading(true)
     e.preventDefault()
     let hasError=false;
     const localError=deepcopyObj(registerError)
+    
     if(formData.firstName===""){
       hasError=true
       localError.firstname.isRequired=true
@@ -70,139 +73,168 @@ const Register = () => {
   }
    
   return (
-    <div className="flex min-h-full flex-col justify-center px-6 mt-2">
-     <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-foreground mb-2">Create Account</h2>
-        <p className="text-muted-foreground">Join EcoShop for a sustainable future</p>
+    // IMPRESSIVE CARD: High contrast white background, prominent shadow, subtle hover lift (shadow-2xl, hover:shadow-primary/30).
+    // Width increased to max-w-lg (512px)
+    <div className="bg-white rounded-3xl shadow-2xl p-8  max-w-md w-full mx-auto border border-gray-100 transition-all duration-300 hover:shadow-primary/30 transform hover:-translate-y-1 my-8">
+     <div className="text-center mb-10">
+        {/* IMPRESSIVE HEADER: Gradient text for strong visual appeal */}
+        <h2 className="text-4xl font-extrabold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-teal-600 tracking-tight">
+          Create Account
+        </h2>
+        <p className="text-gray-500 text-lg">Join EcoShop for a sustainable future</p>
       </div>
 
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form   className="space-y-6">
+      <div className="sm:mx-auto sm:w-full">
+        <form onSubmit={handlesubmit} className="space-y-6">
+          
+          {/* First Name / Last Name Group: Using flex-1 to distribute width equally */}
           <div className="flex space-x-4">
-            <div className="mt-2">
+            <div className="flex-1">
               <label
-                for="firstname"
-                className="block text-sm/6 font-medium text-gray-900"
+                htmlFor="firstname"
+                className="block text-sm font-semibold text-gray-700 mb-1"
               >
-                <span>
-                First Name<span className="text-red-500 text-lg">*</span>
-                </span>
+                First Name<span className="text-red-500 ">*</span>
               </label>
-              <input
-                id="firstname"
-                type="firstname"
-                name="firstname"
-                value={formData.firstName}
-                onChange={(e)=>setFormData({...formData,firstName:e.target.value.trim()})}
-                autocomplete="firstname"
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              <div className="relative">
+                <i className="fas fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-primary w-5 h-5"></i>
+                <input
+                  id="firstname"
+                  type="text"
+                  name="firstname"
+                  value={formData.firstName}
+                  onChange={(e)=>setFormData({...formData,firstName:e.target.value})}
+                  autoComplete="given-name"
+                  // IMPRESSIVE INPUTS: Clean design, strong primary focus ring/shadow, large padding
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-white text-gray-800 placeholder-gray-400 transition-all duration-300"
+                  placeholder="John"
+                />
+              </div>
               {
                 fieldErrors.firstname.isRequired && 
-              <p className="text-xs font-medium text-red-700">Name is required</p>
+              <p className="text-xs font-medium text-red-600 mt-1">First name is required</p>
               }
             </div>
-            <div className="mt-2">
+            
+            <div className="flex-1">
               <label
-                for="lastname"
-                
-                className="block text-sm/6 font-medium text-gray-900"
+                htmlFor="lastname"
+                className="block text-sm font-semibold text-gray-700 mb-1"
               >
                 Last Name
               </label>
-              <input
-                id="lastname"
-                type="lastname"
-                value={formData.lastName}
-                name="lastname"
-                onChange={(e)=>setFormData({...formData,lastName:e.target.value.trim()})}
-                autocomplete="lastname"
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
-              
+               <div className="relative">
+                <i className="fas fa-user-tag absolute left-4 top-1/2 transform -translate-y-1/2 text-primary w-5 h-5"></i>
+                <input
+                  id="lastname"
+                  type="text"
+                  value={formData.lastName}
+                  name="lastname"
+                  onChange={(e)=>setFormData({...formData,lastName:e.target.value})}
+                  autoComplete="family-name"
+                  // IMPRESSIVE INPUTS: Clean design, strong primary focus ring/shadow, large padding
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-white text-gray-800 placeholder-gray-400 transition-all duration-300"
+                  placeholder="Doe"
+                />
+              </div>
             </div>
           </div>
-          <div></div>
+          
+          {/* Email */}
           <div>
             <label
-              for="email"
-              className="block text-sm/6 font-medium text-gray-900"
+              htmlFor="email"
+              className="block text-sm font-semibold text-gray-700 mb-1"
             >
               Email address<span className="text-red-500 text-lg">*</span>
             </label>
-            <div className="mt-2">
+            <div className="mt-1 relative">
+               <i className="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-primary w-5 h-5"></i>
               <input
                 id="email"
                 type="email"
                 name="email"
                 value={formData.email}
-                onChange={(e)=>setFormData({...formData,email:e.target.value.trim()})}
-                autocomplete="email"
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                onChange={(e)=>setFormData({...formData,email:e.target.value})}
+                autoComplete="email"
+                // IMPRESSIVE INPUTS
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-white text-gray-800 placeholder-gray-400 transition-all duration-300"
+                placeholder="you@example.com"
               />
               {
                 fieldErrors.email.isRequired && 
-              <p className="text-xs font-medium text-red-700">Email is required</p>
+              <p className="text-xs font-medium text-red-600 mt-1">Email is required</p>
               }
             </div>
           </div>
+          
+          {/* Password */}
           <div>
             <label
-              for="password"
-              className="block text-sm/6 font-medium text-gray-900"
+              htmlFor="password"
+              className="block text-sm font-semibold text-gray-700 mb-1"
             >
               Password<span className="text-red-500 text-lg">*</span>
             </label>
-            <div className="mt-2">
+            <div className="mt-1 relative">
+                <i className="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-primary w-5 h-5"></i>
               <input
                 id="password"
                 type="password"
                 name="password"
                 value={formData.password}
-                onChange={(e)=>setFormData({...formData,password:e.target.value.trim()})}
-                autocomplete="password"
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                onChange={(e)=>setFormData({...formData,password:e.target.value})}
+                autoComplete="new-password"
+                // IMPRESSIVE INPUTS
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-white text-gray-800 placeholder-gray-400 transition-all duration-300"
+                placeholder="••••••••"
               />
               {
                 fieldErrors.password.isRequired && 
-              <p className="text-xs font-medium text-red-700">password is required</p>
+              <p className="text-xs font-medium text-red-600 mt-1">Password is required</p>
               }
               {
                 fieldErrors.password.lengthError && 
-              <p className="text-xs font-medium text-red-700">Password must be 8 charators</p>
+              <p className="text-xs font-medium text-red-600 mt-1">Password must be at least 8 characters</p>
               }
             </div>
           </div>
+          
+          {/* Confirm Password */}
           <div>
             <label
-              for="confirm-passowrd"
-              className="block text-sm/6 font-medium text-gray-900"
+              htmlFor="confirm-password"
+              className="block text-sm font-semibold text-gray-700 mb-1"
             >
               Confirm Password<span className="text-red-500 text-lg">*</span>
             </label>
-            <div className="mt-2">
+            <div className="mt-1 relative">
+                <i className="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-primary w-5 h-5"></i>
               <input
                 id="confirm-password"
-                type="confirm-password"
+                type="password"
                 value={confirm_password}
                 name="confirm-password"
-                onChange={(e)=>setconfirm_password(e.target.value.trim())}
-                autocomplete="confirm-password"
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                onChange={(e)=>setconfirm_password(e.target.value)}
+                autoComplete="new-password"
+                // IMPRESSIVE INPUTS
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-white text-gray-800 placeholder-gray-400 transition-all duration-300"
+                placeholder="••••••••"
               />
               {
               fieldErrors.re_password.matchError && 
-              <p className="text-xs font-medium text-red-700">passwords are not match</p>
+              <p className="text-xs font-medium text-red-600 mt-1">Passwords do not match</p>
               }
             </div>
           </div>
 
           <div>
+            {/* IMPRESSIVE BUTTON: Gradient background, large size, shadow/lift on hover */}
             <button
               onClick={handlesubmit}
               type="submit"
               disabled={isLoading}
-              className="w-full btn-hero"
+              className="w-full bg-gradient-to-r from-primary to-green-600 text-white font-bold rounded-xl py-3.5 text-lg shadow-lg shadow-primary/40 hover:shadow-xl hover:shadow-primary/50 transition-all duration-300 transform hover:scale-[1.01] flex justify-center items-center h-14 disabled:opacity-70 disabled:shadow-none"
             >
               {
                 isLoading ?<Loader/>:"Create Account"
@@ -212,12 +244,13 @@ const Register = () => {
           </div>
         </form>
 
-        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 text-center">
-          <p className="text-center text-sm text-muted-foreground">
+        {/* IMPRESSIVE FOOTER: Clear separation and bold link */}
+        <div className="px-6 py-4 mt-8 border-t border-gray-200 text-center">
+          <p className="text-center text-sm text-gray-500">
           Already have an account?{" "}
           <Link 
             to="/auth/login" 
-            className="text-primary hover:text-primary/80 transition-colors duration-200 font-medium"
+            className="text-primary hover:text-green-700 transition-colors duration-200 font-bold ml-1"
           >
             Sign in
           </Link>

@@ -8,17 +8,18 @@ import { uploadImageToCloudinary } from '../../../../utils/imageUploader'
 import Progress from '../../../common/Progress'
 import Loader from '../../../common/Loader'
 
-const ProductVariationForm = ({variationData, save,setVariationData, closevariationForm}) => {
+const ProductVariationForm = ({variationData,isUpload,setUpload,save,setVariationData, closevariationForm}) => {
   const [fieldErrors,setFieldErrors]=useState(deepcopyObj(variationError))
   const [progressbar,setprogressbar]=useState({
       is_show:false,
       percentage:0,
       text:""
     })
-  const [isUpload,setUpload]=useState(false)  
- const handleImageChangeVariation = async(files) => {
+  // const [isUpload,setUpload]=useState(false)  
+  
+  const handleImageChangeVariation = async(files) => {
     setUpload(true)
-   setprogressbar({...progressbar,is_show:true,text:"Uploading...",percentage:0})
+    setprogressbar({...progressbar,is_show:true,text:"Uploading...",percentage:0})
     const file =files[0];
     const uploadedUrl = await uploadImageToCloudinary(file, (percent) => {
         console.log(percent)
@@ -26,16 +27,15 @@ const ProductVariationForm = ({variationData, save,setVariationData, closevariat
       });
     setprogressbar({...progressbar,is_show:true,percentage:100,text:"Uploaded!"})  
 
-  setVariationData((prev) => ({
-    ...prev,
-    image: uploadedUrl   // store as an array with only 1 file
-  }));
-  setUpload(false)
-    setTimeout(()=>{
-    setprogressbar({is_show:false})
-
-  },8000)
-};
+    setVariationData((prev) => ({
+      ...prev,
+      image: uploadedUrl   // store as an array with only 1 file
+    }));
+    setUpload(false)
+      setTimeout(()=>{
+      setprogressbar({is_show:false})
+    },8000)
+  };
 
   
   function removeListDataMethod(e,key, index) {
@@ -46,9 +46,11 @@ const ProductVariationForm = ({variationData, save,setVariationData, closevariat
     });
   }
   
-  function handleVariation(variation) {
+  function handleVariation() {
   const localError = deepcopyObj(variationError);
   let hasError = false;
+  
+  // Validation checks
   if (!variationData.type || variationData.type.trim() === "") {
     hasError = true;
     localError.type.isRequired = true;
@@ -57,242 +59,245 @@ const ProductVariationForm = ({variationData, save,setVariationData, closevariat
     hasError = true;
     localError.value.isRequired = true;
   }
-  if (variationData.price<=0) {
+  
+  // Price validation
+  const price = parseFloat(variationData.price);
+  if (isNaN(price)) {
     hasError = true;
     localError.price.isRequired = true;
-  } else if (variation.price <= 0) {
+  } else if (price <= 0) {
     hasError = true;
     localError.price.mustBePositive = true;
   }
-  if (!variationData.stock) {
+  
+  // Stock validation
+  const stock = parseInt(variationData.stock);
+  if (isNaN(stock) || variationData.stock === "") {
     hasError = true;
     localError.stock.isRequired = true;
-  } else if (variation.stock < 0) {
+  } else if (stock < 0) {
     hasError = true;
     localError.stock.mustBePositive = true;
   }
+
   if (!variationData.image) {
     hasError = true;
     localError.image.isRequired = true;
   }
 
   setFieldErrors(localError);
-  console.log(variationData)
+  
   if(!hasError){
     save("variations",variationData)
     setVariationData(deepcopyObj(variationFormData))
   }
-
-   // true if valid
 }
+
     return (
     <>
-    <div id="variationsContainer" className="space-y-6">
-  <div className="variation-template">
-    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="font-medium text-gray-900">Variation</h3>
-        {/* <button
-          type="button"
-          className="bg-gray-200 hover:bg-red-100 text-gray-600 hover:text-red-600 px-3 py-1 rounded transition"
-        >
-          <i className="fas fa-trash-alt"></i>
-        </button> */}
-      </div>
-
-      <form  className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Type */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Type <span className="text-red-500">*</span>
-          </label>
-          <input type="text" value={variationData.type} onChange={e=>setVariationData({...variationData,type:e.target.value})} placeholder='ex:Color' className='w-full pl-8 pr-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900' />
-          {fieldErrors.type.isRequired && (
-            <p className="text-xs font-medium text-red-700 mt-1">
-              Type is required
-            </p>
-          )}
-        </div>
-
-        {/* Value */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Value <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            value={variationData.value}
-            name="variationValue"
-            onChange={e=>setVariationData({...variationData,value:e.target.value})}
-            placeholder='ex:Red'
-            className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
-          />
-          {fieldErrors.value.isRequired && (
-            <p className="text-xs font-medium text-red-700 mt-1">
-              Value is required
-            </p>
-          )}
-        </div>
-
-        {/* Price */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Price Adjustment
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <span className="text-gray-500">₹</span>
+      <div id="variationsContainer" className="space-y-6">
+        <div className="variation-template">
+          {/* Main Card Container */}
+          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-xl">
+            <div className="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
+              <h3 className="text-2xl font-extrabold text-gray-900">Add Product Variation</h3>
             </div>
-            <input
-              type="number"
-              name="variationPrice"
+
+            <form className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={(e) => e.preventDefault()}>
+              {/* Type */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                  Type <span className="text-red-500">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  value={variationData.type} 
+                  onChange={e=>setVariationData({...variationData,type:e.target.value.toLowerCase()})} 
+                  placeholder='e.g., Color, Size, Material' 
+                  className='w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900 placeholder-gray-400' 
+                />
+                {fieldErrors.type.isRequired && (
+                  <p className="text-xs font-medium text-red-700 mt-1">
+                    Variation type (e.g., 'Color') is required
+                  </p>
+                )}
+              </div>
+
+              {/* Value */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                  Value <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={variationData.value}
+                  name="variationValue"
+                  onChange={e=>setVariationData({...variationData,value:e.target.value.toLowerCase()})}
+                  placeholder='e.g., Red, Large'
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900 placeholder-gray-400"
+                />
+                {fieldErrors.value.isRequired && (
+                  <p className="text-xs font-medium text-red-700 mt-1">
+                    Variation value (e.g., 'Red') is required
+                  </p>
+                )}
+              </div>
+
+              {/* Price */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                  Price Adjustment <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span className="text-gray-500 font-medium">₹</span>
+                  </div>
+                  <input
+                    type="number"
+                    name="variationPrice"
+                    value={variationData.price}
+                    onChange={e=>setVariationData({...variationData,price:e.target.value})}
+                    className="w-full pl-8 pr-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900"
+                    min="0.01"
+                    step="0.01"
+                  />
+                </div>
+                {fieldErrors.price.isRequired && (
+                  <p className="text-xs font-medium text-red-700 mt-1">
+                    Price is required
+                  </p>
+                )}
+                {fieldErrors.price.mustBePositive && (
+                  <p className="text-xs font-medium text-red-700 mt-1">
+                    Price must be greater than 0
+                  </p>
+                )}
+              </div>
+
+              {/* Stock */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                  Stock <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="variationStock"
+                  min="0"
+                  value={variationData.stock}
+                  onChange={e=>setVariationData({...variationData,stock:e.target.value})}
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900"
+                />
+                {fieldErrors.stock.isRequired && (
+                  <p className="text-xs font-medium text-red-700 mt-1">
+                    Stock quantity is required
+                  </p>
+                )}
+                {fieldErrors.stock.mustBePositive && (
+                  <p className="text-xs font-medium text-red-700 mt-1">
+                    Stock must be 0 or greater
+                  </p>
+                )}
+              </div>
+            </form>
+
+            {/* Images */}
+            <div className="mt-8 border-t pt-6 border-gray-200">
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Variation Image <span className="text-red-500">*</span>
+              </label>
               
-              value={variationData.price}
-              
-              onChange={e=>setVariationData({...variationData,price:e.target.value})}
-              className="w-full pl-8 pr-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
-            />
+              {/* Upload Area */}
+              <div className="mb-4">
+                <div id="imagesContainer" className="space-y-3">
+                  <div className="relative">
+                    <input 
+                      type="file" 
+                      id="image" 
+                      className="hidden" 
+                      accept="image/*"
+                      onChange={(e)=>handleImageChangeVariation(e.target.files)}
+                      disabled={isUpload}
+                    />
+                    
+                    <label 
+                      htmlFor="image" 
+                      className={`flex flex-col items-center justify-center w-full h-36 border-2 border-dashed rounded-lg cursor-pointer transition-colors p-4 
+                      ${isUpload ? "bg-gray-100 border-gray-400" : "bg-gray-50 border-gray-300 hover:bg-gray-100"}`}
+                    >
+                      <svg 
+                        className="w-12 h-12 mb-2 text-gray-500" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24" 
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                      </svg>
+                      
+                      <p className="mb-1 text-sm text-gray-500">
+                        <span className="font-semibold">Click to upload</span> or drag and drop
+                      </p>
+                      <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                    </label>
+                  </div>
+                </div>
+              </div> 
+            
+              {/* Progress Bar */}
+              {progressbar.is_show && (
+                <div className="mt-3">
+                  <p className="text-end text-sm font-medium text-gray-600">{progressbar.text}</p>
+                  <Progress width={progressbar.percentage} />
+                </div>
+              )}
+                      
+              {/* Image Preview */}
+              <div className="grid grid-cols-1 mt-4">
+                {variationData.image && 
+                  <div className='relative w-48 border border-gray-300 rounded-lg shadow-md p-2 bg-white'>
+                    <img src={variationData.image} alt="Variation Preview" className='rounded w-full h-auto object-cover' />
+                    <span className="absolute top-[-8px] right-[-8px] p-0">
+                      <button
+                        onClick={() => setVariationData({...variationData, image: null})}
+                        type="button"
+                        className="bg-red-600 p-1 rounded-full text-white hover:bg-red-700 transition shadow-lg flex items-center justify-center h-6 w-6"
+                      >
+                        <i className="fas fa-times text-xs"></i>
+                      </button>
+                    </span>
+                  </div>
+                }
+              </div>
+
+              {fieldErrors.image.isRequired && (
+                <p className="text-xs font-medium text-red-700 mt-1">
+                  Image is required
+                </p>
+              )}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex space-x-4 pt-6 border-t border-gray-200 mt-6">
+              <button
+                type="button"
+                onClick={handleVariation}
+                disabled={isUpload}
+                className={`flex items-center justify-center px-8 py-3 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md shadow-indigo-500/50 text-base
+                ${isUpload ? 'bg-indigo-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'}`}
+              >
+                {isUpload ? <Loader /> : "Add Variation"}
+              </button>
+              <button
+                onClick={closevariationForm}
+                type="button"
+                className="px-8 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-200 font-medium text-base shadow-sm"
+              >
+                Close
+              </button>
+            </div>
           </div>
-          {fieldErrors.price.isRequired && (
-            <p className="text-xs font-medium text-red-700 mt-1">
-              price is required
-            </p>
-          )}
-          {fieldErrors.price.mustBePositive && (
-            <p className="text-xs font-medium text-red-700 mt-1">
-              Price must be positive
-            </p>
-          )}
-        </div>
-
-        {/* Stock */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Stock <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            name="variationStock"
-            min="0"
-            value={variationData.stock}
-            onChange={e=>setVariationData({...variationData,stock:e.target.value})}
-            className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
-          />
-          {fieldErrors.stock.isRequired && (
-            <p className="text-xs font-medium text-red-700 mt-1">
-              Stock is required
-            </p>
-          )}
-          {fieldErrors.stock.mustBePositive && (
-            <p className="text-xs font-medium text-red-700 mt-1">
-              Stock must be greater than 0
-            </p>
-          )}
-        </div>
-      </form>
-
-      {/* Images */}
-      <div className="mt-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Variation Images
-        </label>
-       <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Image URLs
-                        </label>
-                        <div id="imagesContainer" class="space-y-3">
-                           <div class=" mx-auto p-6">
-  <div class="relative">
-    <input 
-      type="file" 
-      id="image" 
-      class="hidden" 
-      accept="image/*"
-      onChange={(e)=>handleImageChangeVariation(e.target.files)}
-    />
-    
-    {/* <!-- Upload Trigger --> */}
-    <label 
-      for="image" 
-      class="flex flex-col items-center justify-center w-full h-30 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors"
-    >
-      {/* <!-- Upload Icon --> */}
-      <svg class="w-12 h-12 mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-      </svg>
-      
-      {/* <!-- Upload Text --> */}
-      <p class="mb-2 text-sm text-gray-500">
-        <span class="font-semibold">Click to upload</span> or drag and drop
-      </p>
-      <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-    </label>
-  </div>
-</div>
-                        </div>
-                        {/* <button type="button" id="addImage" class="mt-3 text-sm text-blue-600 hover:text-blue-700 flex items-center">
-                            <i class="fas fa-plus-circle mr-1"></i> Add another image
-                        </button> */}
-                    </div> 
-           {
-                           progressbar.is_show &&
-                           <div>
-                             <p className="text-end text-base font-medium text-gray-600">{progressbar.text}</p>
-                             <Progress width={progressbar.percentage} />
-                           </div>
-                          
-                         }         
-         <div className="grid grid-cols-2 mt-3 gap-3 sm:grid-cols-3 md:grid-cols-4">
- {
-  variationData.image && 
-  <div className='relative flex'>
-    <img src={variationData.image} ></img>
-     <span className="absolute p-3  z-[100] text-white flex justify-end">
-                                <button
-                                  onClick={()=>setVariationData({...variationData,image:null})}
-                                >
-                                  <CloseBtn/>
-                                </button>
-                              </span>
-  </div>
- }
-</div>
-
-        {fieldErrors.image.isRequired && (
-          <p className="text-xs font-medium text-red-700 mt-1">
-            At least one image is required
-          </p>
-        )}
-        {fieldErrors.image.formatError && (
-          <p className="text-xs font-medium text-red-700 mt-1">
-            Invalid image format
-          </p>
-        )}
-
-        <div className="flex space-x-4">
-          <button
-            type="button"
-            onClick={handleVariation}
-            disabled={isUpload}
-            className=" disabled:cursor-copy mt-3 btn-hero"
-          >{
-            isUpload ?<Loader/>:"Add Variation"
-          }
-           
-          </button>
-          <button
-            onClick={closevariationForm}
-            type="button"
-            className="bg-gray-900 rounded mt-3 hover-duration text-sm px-6 py-3 text-white hover:bg-gray-800 flex items-center"
-          >
-            Close
-          </button>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-
     </>
   )
 }

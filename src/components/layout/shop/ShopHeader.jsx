@@ -8,41 +8,58 @@ import Logo from "../../common/Logo";
 import { useSendverifyOTP } from "../../../store/authSlice";
 
 const ShopHeader = () => {
-  const { isAuthenticated,user } = useSelector((state) => state.auth);
+  // Destructure state values
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  
+  // State for mobile menu
   const [openMenu, setOpenMenu] = useState(false);
+  
+  // State for user dropdown (renamed for clarity, using boolean)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
+  
   const navigate = useNavigate();
-  const [openDropdown, setOpenDropdown] = useState(null);
   const { setLogoutContextState } = useContext(LogoutContext);
-  const {messageContextState,setMessageContextState}=useContext(MessageContext)
-  const dispatch=useDispatch()
-  const toggleDropdown = (dropdownName) => {
-    setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
+  const { messageContextState, setMessageContextState } = useContext(MessageContext);
+  const dispatch = useDispatch();
+
+  // Unified function to toggle dropdown
+  const toggleUserDropdown = () => {
+    setIsDropdownOpen(prev => !prev);
   };
+  
+  // Close menu and dropdown when navigating
+  const handleNavigation = (path) => {
+    navigate(path);
+    setOpenMenu(false);
+    setIsDropdownOpen(false);
+  }
 
   const handleLogout = () => {
     setLogoutContextState(true);
-   
+    setIsDropdownOpen(false); // Close dropdown on logout attempt
   };
-async function sendOTPforverify(){
-   dispatch(useSendverifyOTP({email:user.email})).then(res=>{
-               if(res.payload?.success){
-                 console.log(res.payload)
-                 sessionStorage.setItem("isSubmitted",true)
-                 setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
-                 navigate("/shop/verify-account")
-               }
-               else{
-                 setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:false})
-               }
-              })
-}
+
+  async function sendOTPforverify(){
+    setIsDropdownOpen(false); // Close dropdown before action
+    dispatch(useSendverifyOTP({email: user.email})).then(res => {
+      if(res.payload?.success){
+        sessionStorage.setItem("isSubmitted", true);
+        setMessageContextState({...messageContextState, is_show: true, text: res.payload?.message, success: true});
+        navigate("/shop/verify-account");
+      } else {
+        setMessageContextState({...messageContextState, is_show: true, text: res.payload?.message, success: false});
+      }
+    });
+  }
+
   return (
-    <header className="fixed top-0 left-0 w-full z-[999] bg-background/80 backdrop-blur-md transition-all duration-300">
+    // Updated header styling for a cleaner look and stronger shadow
+    <header className="sticky top-0 left-0 w-full z-[999] bg-white shadow-lg backdrop-blur-sm transition-all duration-300 border-b border-gray-100">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo Section */}
           <div className="flex items-center space-x-2">
-           <Logo/>
+           <Logo onClick={() => handleNavigation('/')} />
           </div>
 
           {/* Medium and Large Device Navigation */}
@@ -50,58 +67,95 @@ async function sendOTPforverify(){
 
           {/* Right-side Icons & Menu */}
           <div className="flex items-center space-x-2 sm:space-x-4">
+            
             {/* Search Icon */}
-            <button className="p-2 text-foreground hover:text-primary transition-colors duration-200" aria-label="Search">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <button className="p-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200" aria-label="Search">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
 
             {/* Wishlist Icon with count */}
-            <a href="/wishlist" className="p-2 text-foreground hover:text-primary transition-colors duration-200 relative" aria-label="Wishlist">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            {/* <a href="/wishlist" className="p-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200 relative" aria-label="Wishlist">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
-              <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-4 h-4 flex items-center justify-center leading-none font-bold">3</span>
-            </a>
+             
+              <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center leading-none transform translate-x-1/4 -translate-y-1/4">3</span>
+            </a> */}
 
             {/* Cart Icon with count */}
-            <a href="/cart" className="p-2 text-foreground hover:text-primary transition-colors duration-200 relative" aria-label="Cart">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <a href="/cart" className="p-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200 relative" aria-label="Cart">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5H21M7 13-1.6 8M14 21a1 1 0 100-2 1 1 0 000 2zM17 21a1 1 0 100-2 1 1 0 000 2z" />
               </svg>
-              <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-4 h-4 flex items-center justify-center leading-none font-bold">2</span>
+              {/* Refined badge styling */}
+              <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center leading-none transform translate-x-1/4 -translate-y-1/4">2</span>
             </a>
-            {
-              isAuthenticated ?
-            <div className="relative group">
-              <button className="p-2 text-foreground hover:text-primary transition-colors duration-200" aria-label="User menu">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </button>
-              <div className="absolute right-0 mt-4 w-48 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 bg-background border border-border rounded-lg shadow-xl overflow-hidden">
-                <div className="py-2">
-                  <a href="/profile" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">Profile</a>
-                  <a href="/orders" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">My Orders</a>
-                  {
-                    !user.isVerified &&
-                  <button onClick={sendOTPforverify} className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">Verify Account</button>
-                  }
-                  <hr className="my-2 border-border" />
-                  {
-                    isAuthenticated ?<button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">Logout</button>:
-                    <button onClick={()=>navigate("/auth/login")} className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition-colors duration-200">Login</button>
-                  }
-                </div>
+            
+            {/* --- User/Auth Section --- */}
+            {isAuthenticated ? (
+              <div className="relative group: ">
+                {/* User Dropdown Trigger (Avatar/Initial) */}
+                <button 
+                  onClick={toggleUserDropdown} 
+                  className={`flex items-center justify-center w-9 h-9 text-white bg-indigo-600 rounded-full font-bold text-sm ring-2 ring-transparent transition-all duration-200 ${isDropdownOpen ? 'ring-indigo-300 shadow-md' : 'hover:ring-indigo-300'}`}
+                  aria-label="User menu"
+                  aria-expanded={isDropdownOpen}
+                >
+                  {/* Display first initial or a generic icon */}
+                  {user?.username ? user.username.charAt(0).toUpperCase() : (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                  )}
+                </button>
+                
+                {/* User Dropdown Menu */}
+                {isDropdownOpen && (
+                  // Position and transition controlled by isDropdownOpen state
+                  <div className="absolute right-0 mt-3 w-56 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden animate-fade-in-down origin-top-right">
+                    <div className="p-4 border-b border-gray-100">
+                        <p className="text-sm font-semibold text-gray-900 truncate">{user?.username || 'User'}</p>
+                        <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                    </div>
+                    <div className="py-1">
+                      <button onClick={() => handleNavigation("/profile")} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors duration-200">
+                          <i className="fas fa-user-circle w-4 mr-2"></i> Profile
+                      </button>
+                      <button onClick={() => handleNavigation("/orders")} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors duration-200">
+                          <i className="fas fa-box w-4 mr-2"></i> My Orders
+                      </button>
+                      
+                      {/* Verify Account Link */}
+                      {!user.isVerified && (
+                        <button onClick={sendOTPforverify} className="block w-full text-left px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors duration-200">
+                            <i className="fas fa-bell w-4 mr-2"></i> Verify Account
+                        </button>
+                      )}
+                      
+                      <hr className="my-1 border-gray-100" />
+                      
+                      {/* Logout Button */}
+                      <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors duration-200">
+                          <i className="fas fa-sign-out-alt w-4 mr-2"></i> Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>:<button onClick={()=>navigate("/auth/login")}  className="btn-hero">Login</button>
-            }
-            {/* User Dropdown Menu */}
+            ) : (
+              // Login Button for unauthenticated users
+              <button 
+                onClick={() => navigate("/auth/login")}  
+                className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition duration-200 shadow-md hidden sm:block">
+                  Login
+              </button>
+            )}
 
             {/* Mobile Menu Toggle */}
-            <button onClick={() => setOpenMenu(!openMenu)} className="lg:hidden p-2 text-foreground hover:text-primary transition-colors duration-200" aria-expanded={openMenu} aria-controls="mobile-nav-menu">
-              <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <button onClick={() => setOpenMenu(!openMenu)} className="lg:hidden p-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200" aria-expanded={openMenu} aria-controls="mobile-nav-menu">
+              <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>

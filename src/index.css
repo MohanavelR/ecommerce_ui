@@ -194,11 +194,11 @@
     @apply translate-y-0 opacity-100;
   }
   
-  .fade-in {
+  .fadeIn {
     @apply opacity-0 transition-opacity duration-500;
   }
   
-  .fade-in.show {
+  .fadeIn.show {
     @apply opacity-100;
   }
 
@@ -236,4 +236,8 @@
   .hero-indicator.active {
     @apply bg-white;
   }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

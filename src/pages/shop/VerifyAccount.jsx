@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth, useVerifyAccount } from "../../store/authSlice";
 import { MessageContext } from "../../context/context";
+
 const VerifyAccount = () => {
     const {messageContextState,setMessageContextState}=useContext(MessageContext)
    const inputRef = useRef([]);
@@ -22,13 +23,21 @@ const VerifyAccount = () => {
        setError("Please enter a 6-digit OTP.");
        return;
      }
-     dispatch(useVerifyAccount({otp:otpValue,email:user.email})).then(res=>{
+     
+     // IMPORTANT: The email should only be pulled from the user object if it exists.
+     const userEmail = user?.email;
+     if (!userEmail) {
+         setError("User email not found. Please log in again.");
+         return;
+     }
+
+     dispatch(useVerifyAccount({otp:otpValue, email: userEmail})).then(res=>{
              if(res.payload?.success){
                console.log(res.payload)
                sessionStorage.removeItem("isSubmitted")
                setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
                dispatch(useAuth())
-               navigate("/shop")
+               navigate("/shop/home")
              }
              else{
                
@@ -53,19 +62,31 @@ const VerifyAccount = () => {
        inputRef.current[index - 1]?.focus();
      }
    };
-;
-   if(!sessionStorage.getItem('isSubmitted') || user.isVerified ){
+ 
+   // Redirect if not necessary to verify
+   if(!sessionStorage.getItem('isSubmitted') || user?.isVerified ){
       return <Navigate to="/shop"/>
    }
+   
    return (
-     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
-       <form className="space-y-6" onSubmit={handleVerifyAccount}>
+     // IMPRESSIVE CARD: Consistent with Register component
+     <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-lg w-full mx-auto border border-gray-100 transition-all duration-300 hover:shadow-green-500/30 transform hover:-translate-y-1 my-8">
+       
+        <div className="text-center mb-10">
+           {/* IMPRESSIVE HEADER: Gradient text for strong visual appeal */}
+           <h2 className="text-4xl font-extrabold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-teal-600 tracking-tight">
+             Verify Account
+           </h2>
+           <p className="text-gray-500 text-lg">A 6-digit code has been sent to your email.</p>
+        </div>
+
+       <form className="space-y-8" onSubmit={handleVerifyAccount}>
          {/* OTP Input Fields */}
          <div>
-           <label className="form-label text-center block mb-4 text-gray-700 font-medium">
+           <label className="form-label text-center block mb-6 text-gray-700 font-semibold text-lg">
              Enter Verification Code
            </label>
-           <div className="flex justify-center space-x-2">
+           <div className="flex justify-center space-x-3">
              {Array(6)
                .fill(0)
                .map((_, index) => (
@@ -76,20 +97,20 @@ const VerifyAccount = () => {
                    ref={(el) => (inputRef.current[index] = el)}
                    onInput={(e) => handleInput(e, index)}
                    onKeyDown={(e) => handleKeyDown(e, index)}
-                   className="w-12 h-12 text-center py-3 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent bg-background text-foreground placeholder-muted-foreground"
+                   // IMPRESSIVE INPUT STYLES: Larger, rounded, focused green ring
+                   className="w-12 h-14 text-2xl font-semibold text-center py-3 border-2 border-gray-300 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-gray-50 text-gray-800 transition-all duration-200 shadow-sm"
                    autoComplete="off" // Disable autocomplete
                  />
                ))}
            </div>
-           {error && <p className="text-xs font-medium text-red-700 text-center mt-3">{error}</p>}
+           {error && <p className="text-sm font-medium text-red-600 text-center mt-4">{error}</p>}
          </div>
- 
-         
  
          {/* Submit Button */}
          <button
            type="submit"
-           className="w-full btn-hero transition-transform transform hover:scale-105 disabled:bg-blue-400 disabled:cursor-not-allowed"
+           // IMPRESSIVE BUTTON: Gradient background, large size, shadow/lift on hover
+           className="w-full bg-gradient-to-r from-green-500 to-teal-600 text-white font-bold rounded-xl py-3.5 text-lg shadow-lg shadow-green-500/40 hover:shadow-xl hover:shadow-green-500/50 transition-all duration-300 transform hover:scale-[1.01] flex justify-center items-center h-14 disabled:opacity-70 disabled:shadow-none"
          >
           Verify Account
          </button>
@@ -99,4 +120,4 @@ const VerifyAccount = () => {
  };
  
 
-export default VerifyAccount
+export default VerifyAccount;

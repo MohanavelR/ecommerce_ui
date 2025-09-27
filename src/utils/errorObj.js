@@ -28,6 +28,10 @@ export const productError = {
   productName: {
     isRequired: false,
   },
+  stock: {
+      isRequired: false,
+      invalidNumber: false,
+    },
   price: {
     current: {
       isRequired: false,

@@ -31,6 +31,7 @@ import ResetOTPVerify from "./components/layout/auth/ResetOTPVerify";
 import ChangeNewPassword from "./components/layout/auth/ChangeNewPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import VerifyAccount from "./pages/shop/VerifyAccount";
+import SubLayout from "./layouts/shop/SubLayout";
 
 const App = () => {
   const {logoutContextState,setLogoutContextState}=useContext(LogoutContext)
@@ -60,11 +61,16 @@ const App = () => {
         
       </Route>
       <Route path="/shop" element={<MainLayout isAuthenticated={isAuthenticated} user={user} >
-        <ShopLayout/>
+        <ShopLayout>
+        </ShopLayout>
       </MainLayout>}>
+      <Route element={<SubLayout/>}>
+
       <Route path="home" element={<Home/>} />
       <Route path="verify-account" element={<VerifyAccount/>} />
       </Route>
+      </Route>
+      
 
       {/* Auth routes */}
       <Route

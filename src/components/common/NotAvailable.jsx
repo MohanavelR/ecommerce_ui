@@ -2,26 +2,28 @@ import React from 'react'
 
 const NotAvailable = () => {
   return (
-   
-    <div class="flex flex-col h-96 justify-center items-center">
-        {/* <!-- Main Icon --> */}
-        <div class="mb-8 animate-pulse-slow">
-            <i class="fas fa-times-circle text-3xl text-red-400"></i>
+    // Ensure the container fills the parent and is centered vertically and horizontally
+    <div className="flex flex-col h-full min-h-[400px] justify-center items-center p-8 bg-gray-50 border border-gray-100 rounded-xl shadow-lg">
+        {/* */}
+        {/* Using a larger icon for impact, with a softer red tone */}
+        <div className="mb-6">
+            <i className="fas fa-times-circle text-7xl text-red-500 opacity-80 animate-pulse-slow"></i>
         </div>
         
-        {/* <!-- Main Text --> */}
-        <h1 class="text-6xl md:text-2xl font-bold text-gray-800 mb-4">
-            Not <span class="gradient-text">Available</span>
+        {/* */}
+        {/* Using a clear, consistent heading size */}
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-2 tracking-tight">
+            Item <span className="text-red-600">Unavailable</span>
         </h1>
         
-        {/* <!-- Subtitle --> */}
-        <p class="text-xl md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            This item is currently unavailable or does not exist
+        {/* */}
+        <p className="text-base sm:text-lg text-gray-600 mb-6 max-w-sm text-center">
+            This item is currently out of stock, has been removed, or does not exist.
         </p>
+
+        {/* Optional: Add a button to navigate back or refresh */}
         
-      
-        </div>
-       
+    </div>
   )
 }
 

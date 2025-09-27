@@ -95,6 +95,7 @@ async function handleImageChange(e){
 
 async function handleCreateProduct(e){
   e.preventDefault()
+  console.log(productData)
   let hasError = false;
 const localError = deepcopyObj(productError); // clone the error object
 
@@ -114,6 +115,10 @@ if (!productData.price?.current && productData.price?.current !== 0) {
 if (productData.price?.original && productData.price?.original <=0 ) {
   hasError = true;
   localError.price.original.invalidNumber = true;
+}
+if (productData.stock && productData.stock<0 ) {
+  hasError = true;
+  localError.stock.invalidNumber = true;
 }
 
 if (productData.category?.trim()==="") {
@@ -197,31 +202,29 @@ else{
     "w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:border-transparent transition-colors duration-200";
 
   return (
-    <>
-    {
-      productLoading?<Loader/>:
-    <div className="bg-gray-100 min-h-screen py-8">
+   <>
+  {productLoading ? (
+    <Loader />
+  ) : (
+    <div className="bg-white min-h-screen py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-            {
-              isEditMode?"Update Product" :"Add New Product"
-            }
-            
+          <h1 className="text-3xl md:text-4xl font-extrabold text-teal-600 mb-2">
+            {isEditMode ? "Update Product" : "Add New Product"}
           </h1>
-          <p className="text-gray-600">
-            Fill in the details below to add a new product to your inventory.
+          <p className="text-gray-500">
+            Fill in the details below to manage your product inventory.
           </p>
         </div>
 
         {/* Form Container */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200">
+        <div className="bg-gray-50 rounded-2xl shadow-xl border border-gray-100 transition-all duration-300 hover:shadow-2xl">
           <form className="p-6 md:p-10">
             {/* Basic Information Section */}
             <div className="mb-10">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6 pb-4 border-b border-gray-200 flex items-center">
-                <i className="fas fa-info-circle text-blue-600 mr-3"></i>
+              <h2 className="text-xl font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200 flex items-center">
+                <i className="fas fa-info-circle text-orange-500 mr-3"></i>
                 Basic Information
               </h2>
 
@@ -238,9 +241,10 @@ else{
                     type="text"
                     id="productName"
                     name="productName"
-                    className={inputClasses}
+                    // New input style for light theme
+                    className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition"
                     value={productData.productName}
-                    placeholder="productName"
+                    placeholder="e.g., Wireless Headphones"
                     onChange={(e) =>
                       setProductData({
                         ...productData,
@@ -273,7 +277,8 @@ else{
                         category: e.target.value,
                       })
                     }
-                    className={inputClasses}
+                    // New select style for light theme
+                    className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition appearance-none pr-8"
                   >
                     <option value="">Select a category</option>
                     {categoryList && categoryList.length > 0 ? (
@@ -302,19 +307,18 @@ else{
                     Subcategory <span className="text-red-500">*</span>
                   </label>
                   <select
-                    className={inputClasses}
+                    className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition appearance-none pr-8"
                     value={productData.subCategory}
                     onChange={(e) =>
                       setProductData({
                         ...productData,
-                        subCategory:e.target.value,
+                        subCategory: e.target.value,
                       })
                     }
                     name=""
                     id=""
-                  ><option value="" >
-                           
-                          </option>
+                  >
+                    <option value="">Select a subcategory</option>
                     {subcategories &&
                       (subcategories.length > 0 ? (
                         subcategories.map((subcategory, index) => (
@@ -349,7 +353,7 @@ else{
                     onChange={(e) =>
                       setProductData({ ...productData, brand: e.target.value })
                     }
-                    className={inputClasses}
+                    className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition"
                     placeholder="e.g., Sony"
                   />
                   {fieldErrors.brand.isRequired && (
@@ -372,7 +376,7 @@ else{
                     id="offer"
                     name="offer"
                     value={productData.offer}
-                    className={inputClasses}
+                    className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition"
                     onChange={(e) =>
                       setProductData({ ...productData, offer: e.target.value })
                     }
@@ -384,12 +388,36 @@ else{
                     </p>
                   )}
                 </div>
+                <div>
+                  <label
+                    htmlFor="stock"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Stock
+                  </label>
+                  <input
+                    type="number"
+                    id="stock"
+                    name="stock"
+                    value={productData.stock}
+                    className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition"
+                    onChange={(e) =>
+                      setProductData({ ...productData, stock: e.target.value })
+                    }
+                    placeholder="e.g., 20"
+                  />
+                  {fieldErrors.stock.invalidNumber && (
+                    <p className="mt-1 text-xs font-medium text-red-700">
+                      stock must be a positive number.
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
 
             {/* Pricing Section */}
             <div className="mb-10">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6 pb-4 border-b border-gray-200 flex items-center">
+              <h2 className="text-xl font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200 flex items-center">
                 <i className="fas fa-tag text-green-600 mr-3"></i>
                 Pricing Information
               </h2>
@@ -411,10 +439,10 @@ else{
                       type="number"
                       id="currentPrice"
                       name="currentPrice"
-                       value={productData.price.current}
+                      value={productData.price.current}
                       min="0"
                       step="0.01"
-                      className={`${inputClasses} pl-8`}
+                      className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition pl-8"
                       placeholder="0.00"
                       onChange={(e) =>
                         setProductData({
@@ -453,7 +481,7 @@ else{
                       min="0"
                       value={productData.price.original}
                       step="0.01"
-                      className={`${inputClasses} pl-8`}
+                      className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition pl-8"
                       placeholder="0.00"
                       onChange={(e) =>
                         setProductData({
@@ -494,7 +522,7 @@ else{
                         },
                       })
                     }
-                    className={inputClasses}
+                    className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition appearance-none pr-8"
                   >
                     <option value="₹">₹ (INR)</option>
                     <option value="$">$ (USD)</option>
@@ -507,7 +535,7 @@ else{
 
             {/* Product Details Section */}
             <div className="mb-10">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6 pb-4 border-b border-gray-200 flex items-center">
+              <h2 className="text-xl font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200 flex items-center">
                 <i className="fas fa-align-left text-purple-600 mr-3"></i>
                 Product Details
               </h2>
@@ -523,7 +551,7 @@ else{
                       name="description"
                       rows="3"
                       value={listInformation.des}
-                      className={inputClasses}
+                      className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition"
                       placeholder="Enter a detailed product description."
                       onChange={(e) =>
                         setListInformation({
@@ -539,25 +567,29 @@ else{
                     </p>
                   )}
 
-                    {productData?.description &&
-                      productData.description.length > 0 &&
-                      productData?.description.map((desc, index) => (
-                        <div className="flex bg-gray-300 relative">
-                          <p className="w-[90%] truncate p-3 ">
-                            {desc}
-                          </p>
-                          <span className="absolute p-3 w-full z-[100] text-amber-800 flex justify-end">
-                            <button
-                              onClick={(e) =>
-                                removeListDataMethod(e,"description", index)
-                              }
-                            >
-                              <CloseBtn/>
-                            </button>
-                          </span>
-                        </div>
-                      ))}
-                  
+                  {productData?.description &&
+                    productData.description.length > 0 &&
+                    productData?.description.map((desc, index) => (
+                      <div
+                        key={`desc-${index}`}
+                        className="flex bg-gray-200 relative p-3 rounded-lg border border-gray-300"
+                      >
+                        <p className="w-[90%] truncate text-gray-700">
+                          {desc}
+                        </p>
+                        <span className="absolute top-1 right-1 z-[100] text-red-500 flex justify-end">
+                          <button
+                            type="button"
+                            className="p-1 rounded-full hover:bg-red-100 transition"
+                            onClick={(e) =>
+                              removeListDataMethod(e, "description", index)
+                            }
+                          >
+                            <CloseBtn />
+                          </button>
+                        </span>
+                      </div>
+                    ))}
                 </div>
                 <button
                   type="button"
@@ -565,7 +597,7 @@ else{
                   onClick={() =>
                     addlistDataMethod("description", listInformation.des)
                   }
-                  className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center text-sm"
+                  className="mt-3 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition flex items-center text-sm font-medium shadow-md hover:shadow-lg"
                 >
                   <i className="fas fa-plus-circle mr-2"></i> Add description
                 </button>
@@ -581,9 +613,9 @@ else{
                     <input
                       type="text"
                       name="features"
-                      className={inputClasses}
+                      className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition"
                       value={listInformation.feature}
-                     onChange={(e) =>
+                      onChange={(e) =>
                         setListInformation({
                           ...listInformation,
                           feature: e.target.value.trim(),
@@ -592,35 +624,38 @@ else{
                       placeholder="Enter a key feature."
                     />
                   </div>
-                 
-                   {productData?.features &&
-                      productData.features.length > 0 &&
-                      productData?.features.map((fea, index) => (
-                        <div className="flex bg-gray-300 relative">
-                          <p className="w-[90%] truncate p-3 ">
-                            {fea}
-                          </p>
-                          <span className="absolute p-3 w-full z-[100] text-amber-800 flex justify-end">
-                            <button
-                              onClick={(e) =>
-                                removeListDataMethod(e,"features", index)
-                              }
-                            >
-                              <CloseBtn/>
-                            </button>
-                          </span>
-                        </div>
-                      ))}
+
+                  {productData?.features &&
+                    productData.features.length > 0 &&
+                    productData?.features.map((fea, index) => (
+                      <div
+                        key={`fea-${index}`}
+                        className="flex bg-gray-200 relative p-3 rounded-lg border border-gray-300"
+                      >
+                        <p className="w-[90%] truncate text-gray-700">
+                          {fea}
+                        </p>
+                        <span className="absolute top-1 right-1 z-[100] text-red-500 flex justify-end">
+                          <button
+                            type="button"
+                            className="p-1 rounded-full hover:bg-red-100 transition"
+                            onClick={(e) =>
+                              removeListDataMethod(e, "features", index)
+                            }
+                          >
+                            <CloseBtn />
+                          </button>
+                        </span>
+                      </div>
+                    ))}
                 </div>
                 <button
                   type="button"
                   id="addFeature"
-                   onClick={() =>
-                    addlistDataMethod("features", listInformation.feature
-
-                    )
+                  onClick={() =>
+                    addlistDataMethod("features", listInformation.feature)
                   }
-                  className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center text-sm"
+                  className="mt-3 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition flex items-center text-sm font-medium shadow-md hover:shadow-lg"
                 >
                   <i className="fas fa-plus-circle mr-2"></i> Add Feature
                 </button>
@@ -636,9 +671,9 @@ else{
                     <input
                       type="text"
                       name="additionalInfo"
-                      className={inputClasses}
-                       value={listInformation.addInfo}
-                     onChange={(e) =>
+                      className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition"
+                      value={listInformation.addInfo}
+                      onChange={(e) =>
                         setListInformation({
                           ...listInformation,
                           addInfo: e.target.value.trim(),
@@ -648,33 +683,36 @@ else{
                     />
                   </div>
                   {productData?.additionalInfo &&
-                      productData.additionalInfo.length > 0 &&
-                      productData?.additionalInfo.map((addinfo, index) => (
-                        <div className="flex bg-gray-300 relative">
-                          <p className="w-[90%] truncate p-3 ">
-                            {addinfo}
-                          </p>
-                          <span className="absolute p-3 w-full z-[100] text-amber-800 flex justify-end">
-                            <button
-                              onClick={(e) =>
-                                removeListDataMethod(e,"additionalInfo", index)
-                              }
-                            >
-                              <CloseBtn/>
-                            </button>
-                          </span>
-                        </div>
-                      ))}
+                    productData.additionalInfo.length > 0 &&
+                    productData?.additionalInfo.map((addinfo, index) => (
+                      <div
+                        key={`addinfo-${index}`}
+                        className="flex bg-gray-200 relative p-3 rounded-lg border border-gray-300"
+                      >
+                        <p className="w-[90%] truncate text-gray-700">
+                          {addinfo}
+                        </p>
+                        <span className="absolute top-1 right-1 z-[100] text-red-500 flex justify-end">
+                          <button
+                            type="button"
+                            className="p-1 rounded-full hover:bg-red-100 transition"
+                            onClick={(e) =>
+                              removeListDataMethod(e, "additionalInfo", index)
+                            }
+                          >
+                            <CloseBtn />
+                          </button>
+                        </span>
+                      </div>
+                    ))}
                 </div>
                 <button
                   type="button"
                   id="addAdditionalInfo"
-                   onClick={() =>
-                    addlistDataMethod("additionalInfo", listInformation.addInfo
-
-                    )
+                  onClick={() =>
+                    addlistDataMethod("additionalInfo", listInformation.addInfo)
                   }
-                  className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center text-sm"
+                  className="mt-3 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition flex items-center text-sm font-medium shadow-md hover:shadow-lg"
                 >
                   <i className="fas fa-plus-circle mr-2"></i> Add Additional
                   Information
@@ -684,8 +722,8 @@ else{
 
             {/* Images Section */}
             <div className="mb-10">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6 pb-4 border-b border-gray-200 flex items-center">
-                <i className="fas fa-images text-yellow-600 mr-3"></i>
+              <h2 className="text-xl font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200 flex items-center">
+                <i className="fas fa-images text-blue-500 mr-3"></i>
                 Product Images
                 <span className="text-sm font-normal text-gray-500 ml-2">
                   (Max 4 images)
@@ -693,32 +731,41 @@ else{
               </h2>
 
               <ImageField handleImageChange={handleImageChange} />
-              {
-                progressbar.is_show && 
+              {progressbar.is_show && (
                 <div>
-                  <p className="text-end text-base font-medium text-gray-600">{progressbar.text}</p>
+                  <p className="text-end text-base font-medium text-gray-600">
+                    {progressbar.text}
+                  </p>
                   <Progress width={progressbar.percentage} />
                 </div>
-               
-              }
-              
+              )}
+
               <div className="grid mt-3 grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 ">
-                   {productData?.images &&
-                      productData.images.length > 0 &&
-                      productData?.images.map((image, index) => (
-                        <div className="flex bg-gray-300 relative">
-                          <img src={image} alt="" />
-                          <span className="absolute p-3 w-full z-[100] text-white flex justify-end">
-                            <button
-                              onClick={(e) =>
-                                removeListDataMethod(e,"images", index)
-                              }
-                            >
-                              <CloseBtn/>
-                            </button>
-                          </span>
-                        </div>
-                      ))}
+                {productData?.images &&
+                  productData.images.length > 0 &&
+                  productData?.images.map((image, index) => (
+                    <div
+                      key={`img-${index}`}
+                      className="flex relative rounded-xl overflow-hidden shadow-lg border-2 border-gray-200"
+                    >
+                      <img
+                        src={image}
+                        alt={`Product ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute top-1 right-1 z-[100] text-white flex">
+                        <button
+                          type="button"
+                          className="p-1 bg-red-600 rounded-full hover:bg-red-700 transition"
+                          onClick={(e) =>
+                            removeListDataMethod(e, "images", index)
+                          }
+                        >
+                          <CloseBtn />
+                        </button>
+                      </span>
+                    </div>
+                  ))}
               </div>
               {fieldErrors.images.isRequired && (
                 <p className="mt-2 text-xs font-medium text-red-700">
@@ -729,39 +776,53 @@ else{
 
             {/* Variations Section */}
             <div className="mb-10">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6 pb-4 border-b border-gray-200 flex items-center">
-                <i className="fas fa-layer-group text-indigo-600 mr-3"></i>
+              <h2 className="text-xl font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200 flex items-center">
+                <i className="fas fa-layer-group text-pink-600 mr-3"></i>
                 Product Variations
               </h2>
               <button
                 onClick={openVariationFormMethod}
                 type="button"
-                className="mt-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition flex items-center"
+                className="mt-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition flex items-center border border-gray-300 font-medium"
               >
-                <i className="fas fa-plus-circle mr-2"></i> Add Variation
+                <i className="fas fa-plus-circle mr-2 text-pink-600"></i> Add
+                Variation
               </button>
-              {productData?.variations && productData.variations.length > 0 ? (
-  productData.variations.map((variation, index) => (
-    <div key={index} className="flex mt-3 bg-gray-300 relative">
-      <div className="p-3 ">
-        <p>{variation.type}:{variation.value}</p>
-      </div>
+              {productData?.variations && productData.variations.length > 0
+                ? productData.variations.map((variation, index) => (
+                    <div
+                      key={`var-${index}`}
+                      className="flex mt-3 bg-gray-200 relative rounded-lg border border-gray-300"
+                    >
+                      <div className="p-3 text-gray-700">
+                        <p>
+                          <span className="font-semibold text-pink-600">
+                            {variation.type}
+                          </span>
+                          : {variation.value}
+                        </p>
+                      </div>
 
-      <span className="absolute p-3 w-full z-[100] text-red-600 flex justify-end">
-        <button
-          type="button"
-          onClick={(e) => removeListDataMethod(e, "variations", index)}
-        >
-          <CloseBtn />
-        </button>
-      </span>
-    </div>
-  ))
-) : ""}
+                      <span className="absolute top-1 right-1 z-[100] text-red-500 flex justify-end">
+                        <button
+                          type="button"
+                          className="p-1 rounded-full hover:bg-red-100 transition"
+                          onClick={(e) =>
+                            removeListDataMethod(e, "variations", index)
+                          }
+                        >
+                          <CloseBtn />
+                        </button>
+                      </span>
+                    </div>
+                  ))
+                : ""}
 
               {openVariationForm && (
                 <div className="mt-6">
                   <ProductVariationForm
+                    isUpload={isUpload}
+                    setUpload={setUpload}
                     variationData={variationData}
                     setVariationData={setVariationData}
                     closevariationForm={closevariationForm}
@@ -773,7 +834,7 @@ else{
 
             {/* Options Section */}
             <div className="mb-10">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6 pb-4 border-b border-gray-200 flex items-center">
+              <h2 className="text-xl font-semibold text-gray-800 mb-6 pb-4 border-b border-gray-200 flex items-center">
                 <i className="fas fa-cog text-gray-600 mr-3"></i>
                 Product Options
               </h2>
@@ -789,7 +850,7 @@ else{
                       isTrending: e.target.checked,
                     })
                   }
-                  className="h-5 w-5 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                  className="h-5 w-5 text-teal-600 bg-white border-gray-300 rounded focus:ring-teal-500 focus:ring-2"
                 />
                 <label
                   htmlFor="isTrending"
@@ -805,30 +866,32 @@ else{
               <button
                 onClick={closeProductForm}
                 type="button"
-                className="order-2 sm:order-1 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
+                className="order-2 sm:order-1 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition font-medium shadow-sm"
               >
                 <i className="fas fa-times mr-2"></i> Cancel
               </button>
               <button
                 type="button"
                 onClick={handleCreateProduct}
-                className="order-1 btn-hero disabled:cursor-progress"
+                // Updated primary button style
+                className="order-1 px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition shadow-lg shadow-orange-500/50 disabled:cursor-progress disabled:bg-orange-400"
                 disabled={isUpload}
-              >{
-                isUpload ?<Loader/>:
-              <div>
-
-                <i className="fas fa-save mr-2"></i> Save Product
-              </div>
-              }
+              >
+                {isUpload ? (
+                  <Loader />
+                ) : (
+                  <div>
+                    <i className="fas fa-save mr-2"></i> Save Product
+                  </div>
+                )}
               </button>
             </div>
           </form>
         </div>
       </div>
     </div>
-    }
-    </>
+  )}
+</>
   );
 };
 

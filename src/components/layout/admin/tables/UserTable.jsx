@@ -30,55 +30,70 @@ const UserTable = ({users}) => {
   }
   return (
     <div>
-      <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+      {/* Updated Table Container Styling */}
+      <div className="bg-white shadow-xl rounded-xl overflow-hidden border border-gray-100">
             {/* <!-- Responsive Table Wrapper --> */}
-            <div class="overflow-x-auto">
+            <div className="overflow-x-auto">
               {
                 users && (users.length > 0?
-                <table class="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-gray-200">
                     {/* <!-- Table Header --> */}
-                    <thead class="bg-gray-50">
+                    <thead className="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">#</th>
+                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
+                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Email</th>
+                            <th scope="col" className="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Current Role</th>
+                            <th scope="col" className="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Update Role</th>
                         </tr>
                     </thead>
                     
                     {/* <!-- Table Body --> */}
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody className="bg-white divide-y divide-gray-100">
                        
                         
                     {
                         users.map(user=>(
 
-                        <tr class="hover:bg-gray-50 transition-colors duration-150">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{serialNumber.next().value}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
+                        <tr key={user._id} className="hover:bg-indigo-50/20 transition-colors duration-150">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">{serialNumber.next().value}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
                                     
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">{user.firstName}</div>
-                                        {/* <div class="text-sm text-gray-500">ID: CAT002</div> */}
+                                    <div className="ml-0">
+                                        <div className="text-sm font-medium text-gray-900">{user.firstName}</div>
+                                        {/* <div className="text-sm text-gray-500">ID: CAT002</div> */}
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td className="px-6 py-4 whitespace-nowrap">
                                 
-                                <div class="text-sm text-gray-500">{user.email}</div>
+                                <div className="text-sm text-gray-700">{user.email}</div>
                             </td>
-                                <td class="px-6 py-4 text-center whitespace-nowrap">
-                           
-                                <div class="text-sm text-gray-500">{user.role}</div>
+                            {/* Current Role Display */}
+                            <td className="px-6 py-4 text-center whitespace-nowrap">
+                                <span className={`px-3 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    ${user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'}`}>
+                                    {user.role}
+                                </span>
                             </td>
-                             <td class="px-6 py-4 text-center whitespace-nowrap">
+                            {/* Role Update Select Box */}
+                             <td className="px-6 py-4 text-center whitespace-nowrap">
                                 
-                               <select onChange={(e)=>handlechangeRole(e,user._id,user.role)} className='border-accent border ms-2 p-2 outline-none' name="" id="">
-                                <option className='border-accent border ' value="">Select Role</option>
-                                <option className='border-accent border ' value="user">user</option>
-                                <option className='border-accent border ' value="admin">admin</option>
+                               <select 
+                                   onChange={(e)=>handlechangeRole(e,user._id,user.role)} 
+                                   className='
+                                       border border-gray-300 rounded-lg shadow-sm 
+                                       focus:ring-indigo-500 focus:border-indigo-500 
+                                       p-2 text-sm text-gray-700 bg-white
+                                       transition-colors duration-150
+                                   ' 
+                                   name="role-select" 
+                                   defaultValue={user.role} // Set the default value to the current user role
+                               >
+                                <option value="" disabled>Select Role</option>
+                                <option value="user">user</option>
+                                <option value="admin">admin</option>
                                </select>
                                
                             </td>

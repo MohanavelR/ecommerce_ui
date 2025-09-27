@@ -33,7 +33,7 @@ const AdminProducts = () => {
 
   
   return (
-    <div>
+    <>
 
       {
         openAddProductForm &&
@@ -57,17 +57,30 @@ const AdminProducts = () => {
         </div>
     </div>
       {
-        productList && (productList.length > 0 ? productList.map(product=>(
-          <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3'>
-          <ProductCard openProductForm={openProductForm} id={id} setId={setId} isEditMode={isEditMode} setIsEditMode={setIsEditMode} product={product} />
-        </div>
-        ))
-        
-        :<NotAvailable/>)
-      }
+  productList && (
+    productList.length > 0 ? (
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+        {productList.map((product) => (
+          <ProductCard
+            key={product._id || product.id}   // ✅ key is required
+            openProductForm={openProductForm}
+            id={id}
+            setId={setId}
+            isEditMode={isEditMode}
+            setIsEditMode={setIsEditMode}
+            product={product}
+          />
+        ))}
+      </div>
+    ) : (
+      <NotAvailable />
+    )
+  )
+}
 
 
-    </div>
+
+    </>
   )
 }
 
