@@ -1,18 +1,18 @@
 import React from 'react'
 import ShopCarousel from '../../layouts/shop/ShopCarousel'
-import ShopCard from '../../components/layout/shop/ShopCard'
-import ProductDetailView from '../../components/layout/shop/ProductDetailView'
-import ProductDetailLoader from '../../components/common/ProductDetailLoader'
-import LoadingCircle from '../../components/common/LoadingCircle'
-import ProductCarouselStrip from '../../components/layout/shop/AutoScrollingOfferStrip'
-import ProductFilterSidebar from '../../components/layout/shop/ProductFilterSidebar'
-
-
-
+import ShopBannerCarousel from '../../components/layout/shop/ShopBannerCarousel'
+import { useSelector } from 'react-redux'
+import HomeCategory from '../../components/layout/shop/home/HomeCategory'
+import FeatureProducts from '../../components/layout/shop/home/FeatureProducts'
 const Home = () => {
+  const {categoryList}=useSelector(state=>state.category)
+
   return (
     <div >
-   {/* <ShopCarousel/> */}
+   <ShopCarousel  />
+   <ShopBannerCarousel/>
+   <HomeCategory categories={categoryList}/>
+   <FeatureProducts />
 {/* <ShopCard/>  */}
 {/* <LoadingCircle/> */}
 {/* <ProductDetailLoader/> */}

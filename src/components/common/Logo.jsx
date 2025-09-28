@@ -8,8 +8,8 @@ const Logo = () => {
                         <span class="text-white font-bold text-lg">E</span>
                     </div>
                     <div class=" sm:block">
-                        <h1 class="text-xl font-bold text-primary">EcoShop</h1>
-                        <p class="text-xs text-muted-foreground">Green Shopping Experience</p>
+                        <h1 class="text-sm md:text-xl font-bold text-primary">EcoShop</h1>
+                        <p class="text-[10px] md:text-xs  text-muted-foreground">Green Shopping Experience</p>
                     </div>
                 </a>
     </>

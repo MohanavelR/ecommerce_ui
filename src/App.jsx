@@ -32,6 +32,9 @@ import ChangeNewPassword from "./components/layout/auth/ChangeNewPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import VerifyAccount from "./pages/shop/VerifyAccount";
 import SubLayout from "./layouts/shop/SubLayout";
+import ProductList from "./pages/shop/ProductList";
+import SingleProduct from "./pages/shop/SingleProduct";
+import CategoryList from "./pages/shop/CategoryList";
 
 const App = () => {
   const {logoutContextState,setLogoutContextState}=useContext(LogoutContext)
@@ -65,9 +68,12 @@ const App = () => {
         </ShopLayout>
       </MainLayout>}>
       <Route element={<SubLayout/>}>
-
       <Route path="home" element={<Home/>} />
       <Route path="verify-account" element={<VerifyAccount/>} />
+      <Route path="products" element={<ProductList/>} />
+      <Route path="products/:sku" element={<SingleProduct/>} />
+      <Route path=":categoryName" element={<CategoryList/>} />
+      <Route path=":categoryName/:subCategory" element={<CategoryList/>} />
       </Route>
       </Route>
       

@@ -62,7 +62,7 @@ async function handleImageChange(e){
   setprogressbar({...progressbar,is_show:true,text:"Uploading...",percentage:0})
   const file = e.target.files[0];
   const uploadedUrl = await uploadImageToCloudinary(file, (percent) => {
-      console.log(percent)
+
       setprogressbar({...progressbar,is_show:true,percentage:(percent-1),text:"Uploading..."});
     });
   setprogressbar({...progressbar,is_show:true,percentage:100,text:"Uploaded!"})  
@@ -95,7 +95,7 @@ async function handleImageChange(e){
 
 async function handleCreateProduct(e){
   e.preventDefault()
-  console.log(productData)
+
   let hasError = false;
 const localError = deepcopyObj(productError); // clone the error object
 
@@ -136,10 +136,7 @@ if (productData.brand?.trim()==="") {
   localError.brand.isRequired = true;
 }
 
-if (productData.offer && productData.offer<=0) { // example format check
-  hasError = true;
-  localError.offer.invalidFormat = true;
-}
+
 
 if (!productData.description?.length >0) {
   hasError = true;
@@ -161,11 +158,7 @@ if (!productData.images || productData.images.length === 0) {
   localError.images.isRequired = true;
 }
 
-// Example for trending check
-if (productData.isTrending !== true && productData.isTrending !== false) {
-  hasError = true;
-  localError.isTrending.invalidValue = true;
-}
+
 
 // Update state with errors
 setFieldErrors(deepcopyObj(localError));

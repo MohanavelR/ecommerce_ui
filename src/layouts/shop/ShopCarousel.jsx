@@ -1,160 +1,205 @@
-import React, { useState, useEffect } from 'react';
-
-const SLIDER_DATA = [
-  {
-    title: "Eco-Friendly Tech: 50% Off",
-    subtitle: "New Arrivals for a Greener Home",
-    description: "Upgrade your gadgets responsibly. Shop our limited-time sale on refurbished and sustainable electronics.",
-    image: "https://images.unsplash.com/photo-1549488344-f8b1b9e11898?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    link: "/shop/electronics",
-    isActive: true,
-  },
-  {
-    title: "Summer Fashion Clearance",
-    subtitle: "Up to 70% Off All Apparel",
-    description: "Don't miss out on the season's hottest styles. Final reduction on dresses, swimwear, and accessories.",
-    image: "https://images.unsplash.com/photo-1594953934509-32247b9b1e93?q=80&w=2938&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%P",
-    link: "/shop/apparel",
-    isActive: true,
-  },
-  {
-    title: "Garden & Patio Essentials",
-    subtitle: "Bring the Outdoors In",
-    description: "Explore durable, weather-resistant furniture and outdoor lighting. Free shipping on orders over $150.",
-    image: "https://images.unsplash.com/photo-1598160010998-349f7b49463c?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    link: "/shop/garden",
-    isActive: true,
-  },
-   {
-    title: "Garden & Patio Essentials",
-    subtitle: "Bring the Outdoors In",
-    description: "Explore durable, weather-resistant furniture and outdoor lighting. Free shipping on orders over $150.",
-    image: "https://images.unsplash.com/photo-1598160010998-349f7b49463c?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    link: "/shop/garden",
-    isActive: true,
-  },
-   {
-    title: "Garden & Patio Essentials",
-    subtitle: "Bring the Outdoors In",
-    description: "Explore durable, weather-resistant furniture and outdoor lighting. Free shipping on orders over $150.",
-    image: "https://images.unsplash.com/photo-1598160010998-349f7b49463c?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    link: "/shop/garden",
-    isActive: true,
-  },
-];
-// -----------------------------------------------------------------
-
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 
 const ShopCarousel = () => {
+  const {
+ sliders
+} = useSelector(state => state.slider)
+  // Filter to use only active banners for the carousel
+  const activeSliders = sliders.filter(b => b.isActive);
+  
+  // --- 2. STATE AND LOGIC ---
   const [currentIndex, setCurrentIndex] = useState(0);
+  const totalSlides = activeSliders.length;
   
+  // Guard clause for no slides
+  if (totalSlides === 0) {
+    // If no active slides, you might want to return a fallback banner instead of null
+    return (
+      <div  className='w-full'>
 
-  const slides = SLIDER_DATA.filter(slide => slide.isActive !== false); 
+<div className="relative w-full h-96 md:h-[500px] overflow-hidden bg-gray-900/40 flex items-center justify-center">
 
-  if (slides.length === 0) {
-    return null; 
+
+{/* Background Image */}
+
+<img
+
+src="https://picsum.photos/200"
+
+alt="https://picsum.photos/200"
+
+className="absolute inset-0 w-full h-full object-cover"
+
+/>
+
+
+{/* Overlay for Contrast */}
+
+<div className="absolute inset-0 bg-black opacity-50"></div>
+
+
+
+{/* Content */}
+
+<div className="relative z-10 container mx-auto flex flex-col justify-center h-full text-white px-4 py-8 sm:px-6">
+
+
+{/* Subtitle */}
+
+<p className="text-sm sm:text-lg font-medium tracking-wide text-green-300 uppercase mb-2">
+
+Bring the Outdoors In
+</p>
+
+
+
+{/* Title */}
+
+<h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight drop-shadow-lg max-w-4xl">
+
+Garden & Patio Essentials
+
+</h1>
+
+
+
+{/* Description */}
+
+<p className="text-base sm:text-xl mt-3 mb-6 max-w-xl hidden md:block">
+
+New range of running shoes, yoga mats, and resistance bands available now.
+
+</p>
+
+
+{/* Action Button */}
+
+
+
+
+</div>
+
+</div>
+
+</div>
+    );
   }
-  
-  const totalSlides = slides.length;
 
-  // --- Navigation Functions ---
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === totalSlides - 1 ? 0 : prevIndex + 1
-    );
-  };
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % totalSlides);
+  }, [totalSlides]);
 
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? totalSlides - 1 : prevIndex - 1
-    );
-  };
+  const prevSlide = useCallback(() => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + totalSlides) % totalSlides);
+  }, [totalSlides]);
 
-  // --- Auto-scroll functionality ---
+  // Auto-Play: Cycle slides automatically every 5 seconds
   useEffect(() => {
-    // 🔑 Changed duration from 7000ms to 10000ms (10 seconds)
-    const interval = setInterval(nextSlide, 7000); 
+    const interval = setInterval(nextSlide, 5000); 
     return () => clearInterval(interval);
-  }, [currentIndex]); 
+  }, [nextSlide]);
+  
+  // The data for the current slide
+  // NO LONGER NEEDED: let currentData = activeSliders[currentIndex]; // The map logic handles this
 
-  const currentSlide = slides[currentIndex];
-
+  // ----------------------------------------------------------------------
+  //                         FIXED RENDER LOGIC
+  // ----------------------------------------------------------------------
+  
   return (
-    // Main Container
-    <div className="relative w-full h-[350px] sm:h-[450px] md:h-[550px] rounded-2xl overflow-hidden group">
+    // Only one container needed for the entire carousel
+    <div className="relative w-full overflow-hidden shadow-2xl">
       
-      {/* --- SLIDE CONTENT --- */}
-      {/* 1. Background Image */}
-      <img 
-        key={currentSlide.image} 
-        src={currentSlide.image} 
-        alt={currentSlide.title} 
-        className="absolute inset-0 w-full h-full object-cover animate-fade-in"
-      />
+      {/* --------------- SLIDE CONTAINER (Controlled by transform) --------------- */}
+      <div className="flex transition-transform duration-700 ease-in-out" 
+           style={{ 
+             // Total width is N * 100%
+             width: `${totalSlides * 100}%`, 
+             // Shift container left by (current index * 1/N) * 100%
+             transform: `translateX(-${currentIndex * (100 / totalSlides)}%)` 
+           }}>
+        
+        {/* Map over slides to create individual slide elements */}
+        {activeSliders.map((data, index) => (
+          // Each slide takes up 1/N of the container's width
+          <div key={index} style={{ width: `${100 / totalSlides}%` }}>
+            <div className="relative w-full h-96 md:h-[500px] overflow-hidden bg-gray-900/40 flex items-center justify-center">
       
-      {/* 2. Overlay for Readability */}
-      <div className="absolute inset-0 bg-black/20 lg:bg-gradient-to-r from-black/20 to-transparent"></div>
+              {/* Background Image */}
+              <img
+                src={data.image}
+                alt={data.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              
+              {/* Overlay for Contrast */}
+              <div className="absolute inset-0 bg-black opacity-50"></div>
 
-      {/* 3. Text Content */}
-      <div className="relative z-10 container mx-auto flex flex-col justify-center h-full text-white px-4 py-8 sm:px-6">
-          
-          {/* Subtitle */}
-          <p className="text-sm sm:text-lg font-medium tracking-wide text-green-300 uppercase mb-2">
-              {currentSlide.subtitle}
-          </p>
+              {/* Content */}
+              <div className="relative z-10 container mx-auto flex flex-col justify-center h-full text-white px-4 py-8 sm:px-6">
+                  
+                  {/* Subtitle */}
+                  <p className="text-sm sm:text-lg font-medium tracking-wide text-green-300 uppercase mb-2">
+                      {data.subtitle}
+                  </p>
 
-          {/* Title */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight drop-shadow-lg max-w-4xl">
-              {currentSlide.title}
-          </h1>
+                  {/* Title */}
+                  <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight drop-shadow-lg max-w-4xl">
+                      {data.title}
+                  </h1>
 
-          {/* Description */}
-          <p className="text-base sm:text-xl mt-3 mb-6 max-w-xl hidden md:block">
-              {currentSlide.description}
-          </p>
-
+                  {/* Description */}
+                  <p className="text-base sm:text-xl mt-3 mb-6 max-w-xl hidden md:block">
+                      {data.description}
+                  </p>
+                  
+                  {/* Action Button */}
+                  <a
+                    href={data.link}
+                    className="inline-block self-start px-6 py-3 text-lg font-semibold text-white bg-red-600 rounded-lg shadow-xl 
+                               hover:bg-red-700 transition duration-300 transform hover:scale-105"
+                  >
+                    Shop Now
+                  </a>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
+      {/* ------------------------------------------------------------- */}
 
-      {/* --- NAVIGATION BUTTONS (Pure SVG) --- */}
-      
-      {/* Previous Button */}
+      {/* -------------------- NAVIGATION ARROWS (Outside the map) -------------------- */}
       <button 
         onClick={prevSlide}
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 p-3 bg-black/30 text-white rounded-full hover:bg-black/60 transition-all duration-300 opacity-0 group-hover:opacity-100 z-20"
-        aria-label="Previous Slide"
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 p-3 bg-black/30 text-white rounded-full 
+                   hover:bg-black/60 transition z-20 focus:outline-none focus:ring-2 focus:ring-white"
+        aria-label="Previous slide"
       >
-        {/* Pure SVG Left Arrow */}
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
 
-      {/* Next Button */}
-      <button 
+      <button
         onClick={nextSlide}
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 p-3 bg-black/30 text-white rounded-full hover:bg-black/60 transition-all duration-300 opacity-0 group-hover:opacity-100 z-20"
-        aria-label="Next Slide"
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 p-3 bg-black/30 text-white rounded-full 
+                   hover:bg-black/60 transition z-20 focus:outline-none focus:ring-2 focus:ring-white"
+        aria-label="Next slide"
       >
-        {/* Pure SVG Right Arrow */}
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
       </button>
-
-      {/* --- DOTS INDICATORS --- */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
-        {slides.map((_, index) => (
+      
+      {/* -------------------- INDICATOR DOTS (Outside the map) -------------------- */}
+      <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2 z-20">
+        {activeSliders.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-              index === currentIndex ? 'bg-white scale-110' : 'bg-white/50 hover:bg-white'
-            }`}
+            className={`h-3 w-3 rounded-full transition-colors duration-300 
+              ${index === currentIndex ? 'bg-white scale-110' : 'bg-gray-400 opacity-70'}`}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
-
     </div>
   );
 };

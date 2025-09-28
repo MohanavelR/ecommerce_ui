@@ -54,7 +54,7 @@ const ShopHeader = () => {
 
   return (
     // Updated header styling for a cleaner look and stronger shadow
-    <header className="sticky top-0 left-0 w-full z-[999] bg-white shadow-lg backdrop-blur-sm transition-all duration-300 border-b border-gray-100">
+    <header className="sticky top-0 left-0 w-screen z-[999] bg-white shadow-lg backdrop-blur-sm transition-all duration-300 border-b border-gray-100">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo Section */}
@@ -99,7 +99,7 @@ const ShopHeader = () => {
                 {/* User Dropdown Trigger (Avatar/Initial) */}
                 <button 
                   onClick={toggleUserDropdown} 
-                  className={`flex items-center justify-center w-9 h-9 text-white bg-indigo-600 rounded-full font-bold text-sm ring-2 ring-transparent transition-all duration-200 ${isDropdownOpen ? 'ring-indigo-300 shadow-md' : 'hover:ring-indigo-300'}`}
+                  className={`flex items-center justify-center w-5 h-5 md:w-8 md:h-8 text-white bg-indigo-600 rounded-full font-bold text-sm ring-2 ring-transparent transition-all duration-200 ${isDropdownOpen ? 'ring-indigo-300 shadow-md' : 'hover:ring-indigo-300'}`}
                   aria-label="User menu"
                   aria-expanded={isDropdownOpen}
                 >
@@ -116,7 +116,7 @@ const ShopHeader = () => {
                   // Position and transition controlled by isDropdownOpen state
                   <div className="absolute right-0 mt-3 w-56 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden animate-fade-in-down origin-top-right">
                     <div className="p-4 border-b border-gray-100">
-                        <p className="text-sm font-semibold text-gray-900 truncate">{user?.username || 'User'}</p>
+                        <p className="text-sm font-semibold text-gray-900 truncate">{user?.firstName + user?.lastName || 'User'}</p>
                         <p className="text-xs text-gray-500 truncate">{user?.email}</p>
                     </div>
                     <div className="py-1">
@@ -148,7 +148,7 @@ const ShopHeader = () => {
               // Login Button for unauthenticated users
               <button 
                 onClick={() => navigate("/auth/login")}  
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition duration-200 shadow-md hidden sm:block">
+                className="btn-hero">
                   Login
               </button>
             )}

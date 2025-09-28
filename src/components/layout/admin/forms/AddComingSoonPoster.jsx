@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CloseBtn from "../../../common/CloseBtn";
 import Progress from "../../../common/Progress";
 import { uploadImageToCloudinary } from "../../../../utils/imageUploader";
+import Loader from "../../../common/Loader";
 
 const AddComingSoonPoster = ({
   isEditMode,

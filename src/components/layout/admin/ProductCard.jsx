@@ -164,7 +164,7 @@ const ProductCard = ({product,isEditMode,openProductForm,setIsEditMode,id,setId}
                 <div className='mb-1'>
                     <p className="text-xs font-bold text-indigo-500 uppercase tracking-widest ">{product?.brand}</p>
                     
-                    <h3 className="text-2xl font-extrabold text-gray-900 transition-colors duration-300 ">
+                    <h3 className="text-xl font-medium text-gray-900 transition-colors duration-300 ">
                         {product?.productName}
                     </h3>
                 </div>
@@ -190,7 +190,7 @@ const ProductCard = ({product,isEditMode,openProductForm,setIsEditMode,id,setId}
                 <div className="flex items-center justify-between">
                     <div className="flex items-baseline space-x-2">
                         {/* Current Price (Larger, boldest) */}
-                        <span className="text-3xl font-black text-slate-900">
+                        <span className="text-xl font-medium text-slate-900">
                             {product?.price?.currency}{product?.price?.current}
                         </span>
                         

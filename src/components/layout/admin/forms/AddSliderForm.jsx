@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Progress from "../../../common/Progress";
 import { uploadImageToCloudinary } from "../../../../utils/imageUploader";
+import Loader from "../../../common/Loader";
 
 const AddSliderForm = ({
   isEditMode,

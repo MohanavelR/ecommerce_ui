@@ -140,7 +140,6 @@ const AddCategory = ({formData,setFormData,handleCategoryMethod,fielderrors,clos
                     >
                         <i class="fas fa-save mr-2"></i>
                          {
-                isUpload ?<Loader/>:
                 isEditMode ? "Update Category" : "Save Category" 
                } 
                     </button>
