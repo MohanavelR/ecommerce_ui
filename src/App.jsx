@@ -35,11 +35,18 @@ import SubLayout from "./layouts/shop/SubLayout";
 import ProductList from "./pages/shop/ProductList";
 import SingleProduct from "./pages/shop/SingleProduct";
 import CategoryList from "./pages/shop/CategoryList";
+import About from "./pages/shop/About";
+
+import Search from "./pages/shop/Search";
+import SubCategoryList from "./pages/shop/SubCategoryList";
+import Profile from "./pages/shop/Profile";
 
 const App = () => {
+
   const {logoutContextState,setLogoutContextState}=useContext(LogoutContext)
   const { isAuthenticated, user,isLoading } = useSelector((state) => state.auth);
   const dispatch= useDispatch()
+
   useEffect(()=>{
     dispatch(useAuth())
   },[dispatch])
@@ -67,13 +74,16 @@ const App = () => {
         <ShopLayout>
         </ShopLayout>
       </MainLayout>}>
-      <Route element={<SubLayout/>}>
+      <Route  element={<SubLayout/>}>
       <Route path="home" element={<Home/>} />
       <Route path="verify-account" element={<VerifyAccount/>} />
       <Route path="products" element={<ProductList/>} />
+      <Route path="about-us" element={<About/>} />
+      <Route path="search" element={<Search/>} />
+      <Route path="profile" element={<Profile/>} />
       <Route path="products/:sku" element={<SingleProduct/>} />
-      <Route path=":categoryName" element={<CategoryList/>} />
-      <Route path=":categoryName/:subCategory" element={<CategoryList/>} />
+      <Route path="category/:categoryName" element={<CategoryList/>} />
+      <Route path="sub-category/:categoryName/:subCategoryName" element={<SubCategoryList/>} />
       </Route>
       </Route>
       

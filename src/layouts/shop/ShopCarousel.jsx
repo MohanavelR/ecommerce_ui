@@ -5,23 +5,21 @@ const ShopCarousel = () => {
   const {
  sliders
 } = useSelector(state => state.slider)
-  // Filter to use only active banners for the carousel
   const activeSliders = sliders.filter(b => b.isActive);
   
-  // --- 2. STATE AND LOGIC ---
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const totalSlides = activeSliders.length;
   
-  // Guard clause for no slides
+
   if (totalSlides === 0) {
-    // If no active slides, you might want to return a fallback banner instead of null
+  
     return (
       <div  className='w-full'>
 
 <div className="relative w-full h-96 md:h-[500px] overflow-hidden bg-gray-900/40 flex items-center justify-center">
 
 
-{/* Background Image */}
 
 <img
 
@@ -99,14 +97,6 @@ New range of running shoes, yoga mats, and resistance bands available now.
     const interval = setInterval(nextSlide, 5000); 
     return () => clearInterval(interval);
   }, [nextSlide]);
-  
-  // The data for the current slide
-  // NO LONGER NEEDED: let currentData = activeSliders[currentIndex]; // The map logic handles this
-
-  // ----------------------------------------------------------------------
-  //                         FIXED RENDER LOGIC
-  // ----------------------------------------------------------------------
-  
   return (
     // Only one container needed for the entire carousel
     <div className="relative w-full overflow-hidden shadow-2xl">

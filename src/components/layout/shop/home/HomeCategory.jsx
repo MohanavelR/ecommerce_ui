@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import HeadingHome from './HeadingHome';
 
 
 
@@ -9,12 +10,10 @@ const HomeCategory = ({categories}) => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <h2 className="text-3xl font-bold border-accent text-gray-900 text-center mb-10 border-b pb-4">
-             Shop By Category
-        </h2>
+        <HeadingHome heading={"By Category"} primaryText='Shop' />
 
         {/* Categories Grid - Focus on clean lines and visibility */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div className="grid mt-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           { categories&& categories.length > 0 && categories.map((category) => (
             <Link 
               key={category.categoryName} 

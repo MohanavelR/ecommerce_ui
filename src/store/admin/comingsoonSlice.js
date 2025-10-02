@@ -68,7 +68,7 @@ export const useDeleteComingSoon = createAsyncThunk(
 
 
 const initialState = {
-  comingsoon: [],
+  posters: [],
   currentProduct: null,
   count: 0,
   isLoading: false,
@@ -102,7 +102,7 @@ const comingSoonSlice = createSlice({
       .addCase(useGetAllComingSoon.fulfilled, (state, action) => {
         state.isLoading = false;
         if (action.payload?.success) {
-          state.comingsoon = action.payload.data;
+          state.posters = action.payload.data;
           state.count = action.payload.count;
         }
       })

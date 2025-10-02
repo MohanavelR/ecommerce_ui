@@ -6,12 +6,12 @@ import { useGetAllCategory } from "../../store/categorySlice";
 import { useGetAllBanners } from "../../store/admin/adbanner";
 import { useGetAllComingSoon } from "../../store/admin/comingsoonSlice";
 import { useGetAllProducts } from "../../store/productSlice";
+import { useGetFilterProducts } from "../../store/shop";
 
 
 const ShopLayout = () => {
   //  const {sliders}=useSelector()
   const dispatch=useDispatch()
-  
   // This hook runs once to fetch initial data for the entire shop section
   useEffect(()=>{
     dispatch(useGetAllSliders())
@@ -19,12 +19,10 @@ const ShopLayout = () => {
     dispatch(useGetAllBanners())
     dispatch(useGetAllComingSoon())
     dispatch(useGetAllProducts())
+    dispatch(useGetFilterProducts({}))
   },[dispatch])
   
   return (
-    // ShopLayout acts as the container/wrapper. 
-    // The <Outlet/> renders the next nested component, which is SubLayout, 
-    // as defined in the router structure in src/App.jsx.
     <>
         <Outlet/>
     </>

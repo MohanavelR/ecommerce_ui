@@ -6,19 +6,15 @@ import { Link } from 'react-router-dom';
 const MobileCategoryBlock = ({ category }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
-    // Placeholder class mapping (adjust these to your actual Tailwind configuration)
-    const primaryTextColor = "text-primary";
-    const subTextColor = "text-gray-600";
-    const subTextHoverColor = "hover:text-primary";
 
     return (
         <div className="border-b border-gray-100 last:border-b-0">
             {/* Category Header (Clickable Toggle) */}
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className={`w-full flex justify-between text-primary hover:text-green-900 items-center py-3 px-1 font-medium transition-all duration-500`}
+                className={`w-full flex justify-between  hover:text-primary items-center py-3 px-1 font-medium transition-all duration-500`}
             >
-                <Link to={`/shop/${category.categoryName}`} className='text-primary hover:text-green-900'>{category.categoryName}</Link>
+                <Link to={`/shop/category/${category.categoryName}`} className=' hover:text-primary'>{category.categoryName}</Link>
                 <svg 
                     className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`} 
                     fill="none" 
@@ -63,10 +59,10 @@ const MobileViewHeader = ({isOpen}) => {
         
         {/* Static Links - Converted to Link components */}
 
-            <Link to="/" className="block py-2 text-primary hover:text-green-900 font-medium transition-all duration-500">
+            <Link to="/" className="block py-2  hover:text-primary font-medium transition-all duration-500">
                 Home
             </Link>
-            <Link to="/about" className="block py-2 text-primary hover:text-green-900 font-medium transition-all duration-500">
+            <Link to="/about" className="block py-2 hover:text-primary font-medium transition-all duration-500">
                 Shop
             </Link>
        
@@ -78,7 +74,7 @@ const MobileViewHeader = ({isOpen}) => {
             {
                 (categoryList && categoryList.length > 0) ?
                 categoryList.map((category, index) => (
-                    // 3. USE ACCORDION COMPONENT
+                   
                     <MobileCategoryBlock key={index} category={category} />
                 ))
                 : <p className='py-3 px-1 text-sm text-gray-400'>No Categories Found.</p>
@@ -87,13 +83,13 @@ const MobileViewHeader = ({isOpen}) => {
         
      
                  
-                <Link to="/contact" className="block py-2 text-primary hover:text-green-900 font-medium transition-all duration-500">
+                <Link to="/contact" className="block py-2  hover:text-primary font-medium transition-all duration-500">
                     About Us
                 </Link>
-                <Link to="/faq" className="block py-2 text-primary hover:text-green-900 font-medium transition-all duration-500">
+                <Link to="/faq" className="block py-2  hover:text-primary font-medium transition-all duration-500">
                     Contact Us
                 </Link>
-                <Link to="/orders" className="block py-2 text-primary hover:text-green-900 font-medium transition-all duration-500">
+                <Link to="/orders" className="block py-2  hover:text-primary font-medium transition-all duration-500">
                     Track Order
                 </Link>
          

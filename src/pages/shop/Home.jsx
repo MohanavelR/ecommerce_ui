@@ -1,30 +1,29 @@
 import React from 'react'
 import ShopCarousel from '../../layouts/shop/ShopCarousel'
-import ShopBannerCarousel from '../../components/layout/shop/ShopBannerCarousel'
 import { useSelector } from 'react-redux'
 import HomeCategory from '../../components/layout/shop/home/HomeCategory'
 import FeatureProducts from '../../components/layout/shop/home/FeatureProducts'
+import OfferProducts from '../../components/layout/shop/home/OfferProducts'
+import TrendingProducts from '../../components/layout/shop/home/TrendingProducts'
+import ServicePromiseBar from '../../components/layout/shop/home/ServicePromiseBar'
+import TrustBadgesSection from '../../components/layout/shop/home/TrustBadgeSection'
+import TestimonialsCarousel from '../../components/layout/shop/home/TestimonialsCarousel'
+import HeadingHome from '../../components/layout/shop/home/HeadingHome'
 const Home = () => {
-  const {categoryList}=useSelector(state=>state.category)
-
+  const {categoryList,isLoading}=useSelector(state=>state.category)
+   const {productList,isLoading:productLoading}=useSelector(state=>state.adminProducts)
+  const {searchProductList,count}=useSelector(state=>state.searchProducts)
+  console.log(searchProductList,count)
   return (
     <div >
-   <ShopCarousel  />
-   <ShopBannerCarousel/>
+   <ShopCarousel/>
+   <ServicePromiseBar/>
    <HomeCategory categories={categoryList}/>
-   <FeatureProducts />
-{/* <ShopCard/>  */}
-{/* <LoadingCircle/> */}
-{/* <ProductDetailLoader/> */}
-{/* <ProductDetailView/> */}
-{/* <ProductCarouselStrip/>
-<ProductCarouselStrip/>
-<ProductCarouselStrip/> */}
-{/* <div className="flex">
-
-<ProductFilterSidebar/>
-
-</div> */}
+   <OfferProducts productList={productList} isLoading={productLoading}  />
+   <TrendingProducts productList={productList} isLoading={productLoading}  />
+   <FeatureProducts productList={productList} isLoading={productLoading}  />
+   <TrustBadgesSection/>
+   <TestimonialsCarousel/>
     </div>
   )
 }

@@ -10,7 +10,7 @@ import { useCreateComingSoon, useDeleteComingSoon, useGetAllComingSoon, useUpdat
 import ComingSoonPosterTable from '../../components/layout/admin/tables/ComingSoonPosterTable'
 
 const AdminComingSoon = () => {
-const {comingsoon,isLoading}=useSelector(state=>state.comingsoon)
+const {posters,isLoading}=useSelector(state=>state.comingsoon)
   const [formData,setFormData]=useState(deepcopyObj(comingSoonFormData))
   const [openForm,setOpenForm]=useState(false)
   const [isEditMode,setIsEditMode]=useState(false)
@@ -103,7 +103,7 @@ if(res.payload?.success){
             </button>
         </div>
     </div>
-<ComingSoonPosterTable comingsoon={comingsoon} handleDeletePoster={handleDeletePoster} setIsEditModeMethod={setIsEditModeMethod} />
+<ComingSoonPosterTable comingsoon={posters} handleDeletePoster={handleDeletePoster} setIsEditModeMethod={setIsEditModeMethod} />
         </div>
       }
     </div>

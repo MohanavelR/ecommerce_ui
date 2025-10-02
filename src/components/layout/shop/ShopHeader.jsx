@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MediumDeviceHeader from "./header/MediumDeviceHeader";
 import MobileViewHeader from "./header/MobileViewHeader";
 import { LogoutContext, MessageContext } from "../../../context/context";
@@ -54,8 +54,8 @@ const ShopHeader = () => {
 
   return (
     // Updated header styling for a cleaner look and stronger shadow
-    <header className="sticky top-0 left-0 w-screen z-[999] bg-white shadow-lg backdrop-blur-sm transition-all duration-300 border-b border-gray-100">
-      <div className="container mx-auto px-4 sm:px-6">
+    <header className="sticky top-0 left-0 z-[999] bg-white shadow-lg backdrop-blur-sm transition-all duration-300 border-b border-gray-100">
+      <div className="container min-w-screen px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo Section */}
           <div className="flex items-center space-x-2">
@@ -66,14 +66,14 @@ const ShopHeader = () => {
           <MediumDeviceHeader />
 
           {/* Right-side Icons & Menu */}
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex  items-center space-x-2 sm:space-x-4">
             
             {/* Search Icon */}
-            <button className="p-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200" aria-label="Search">
+            <Link to="/shop/search" className="p-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200" aria-label="Search">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-            </button>
+            </Link>
 
             {/* Wishlist Icon with count */}
             {/* <a href="/wishlist" className="p-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200 relative" aria-label="Wishlist">
@@ -120,7 +120,7 @@ const ShopHeader = () => {
                         <p className="text-xs text-gray-500 truncate">{user?.email}</p>
                     </div>
                     <div className="py-1">
-                      <button onClick={() => handleNavigation("/profile")} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors duration-200">
+                      <button onClick={() => handleNavigation("/shop/profile")} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors duration-200">
                           <i className="fas fa-user-circle w-4 mr-2"></i> Profile
                       </button>
                       <button onClick={() => handleNavigation("/orders")} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors duration-200">

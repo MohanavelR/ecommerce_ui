@@ -7,50 +7,77 @@ import { variationFormData } from '../../../../utils/formDataObj'
 import { uploadImageToCloudinary } from '../../../../utils/imageUploader'
 import Progress from '../../../common/Progress'
 import Loader from '../../../common/Loader'
+import generateVariationKey from '../../../../utils/generateVariationkey'
 
-const ProductVariationForm = ({variationData,isUpload,setUpload,save,setVariationData, closevariationForm}) => {
+const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,productData,editIndex,isUpload,setUpload,save,setVariationData, closevariationForm}) => {
   const [fieldErrors,setFieldErrors]=useState(deepcopyObj(variationError))
   const [progressbar,setprogressbar]=useState({
       is_show:false,
       percentage:0,
       text:""
     })
-  // const [isUpload,setUpload]=useState(false)  
   
+  
+  const handleTopLevelChange = (e) => {
+    const { name, value } = e.target;
+
+    const newValue = (name === 'stock' || name === 'offer') ? (value === '' ? '' : parseFloat(value)) : value.toLowerCase();
+    
+    setVariationData(prev => ({
+        ...prev,
+        [name]: newValue
+    }));
+  }
+
+  // Helper to handle nested price changes
+  const handlePriceChange = (e) => {
+    const { name, value } = e.target;
+    const numericValue = parseFloat(value);
+    setVariationData(prev => ({
+        ...prev,
+        price: {
+            ...prev.price,
+            // Store original value for display, let validation handle parsing
+            [name]: value 
+        }
+    }));
+  }
+
   const handleImageChangeVariation = async(files) => {
     setUpload(true)
     setprogressbar({...progressbar,is_show:true,text:"Uploading...",percentage:0})
-    const file =files[0];
+    const file =files[0];    
+    if (!file) {
+        setUpload(false);
+        setprogressbar({ is_show: false });
+        return;
+    }
+
     const uploadedUrl = await uploadImageToCloudinary(file, (percent) => {
-        console.log(percent)
-        setprogressbar({...progressbar,is_show:true,percentage:(percent-1),text:"Uploading..."});
+        setprogressbar(prev => ({
+          ...prev,
+          is_show: true,
+          percentage: percent < 100 ? percent : 99,
+          text: "Uploading..."
+        }));
       });
+
     setprogressbar({...progressbar,is_show:true,percentage:100,text:"Uploaded!"})  
 
     setVariationData((prev) => ({
       ...prev,
-      image: uploadedUrl   // store as an array with only 1 file
+      image: uploadedUrl
     }));
     setUpload(false)
       setTimeout(()=>{
       setprogressbar({is_show:false})
-    },8000)
+    },3000)
   };
 
-  
-  function removeListDataMethod(e,key, index) {
-    e.preventDefault()
-    setVariationData({
-      ...variationData,
-      [key]: variationData[key].filter((_, i) => i !== index),
-    });
-  }
   
   function handleVariation() {
   const localError = deepcopyObj(variationError);
   let hasError = false;
-  
-  // Validation checks
   if (!variationData.type || variationData.type.trim() === "") {
     hasError = true;
     localError.type.isRequired = true;
@@ -60,19 +87,41 @@ const ProductVariationForm = ({variationData,isUpload,setUpload,save,setVariatio
     localError.value.isRequired = true;
   }
   
-  // Price validation
-  const price = parseFloat(variationData.price);
-  if (isNaN(price)) {
+  const currentPriceInput = variationData.price.current;
+  const originalPriceInput = variationData.price.original;
+  const currentPrice = parseFloat(currentPriceInput);
+  const originalPrice = parseFloat(originalPriceInput);
+  
+
+  if (currentPriceInput === '' || isNaN(currentPrice)) {
     hasError = true;
-    localError.price.isRequired = true;
-  } else if (price <= 0) {
+    localError.price.current.isRequired = true; 
+  } else if (currentPrice <= 0) {
     hasError = true;
-    localError.price.mustBePositive = true;
+    localError.price.current.mustBePositive = true;
+  }
+
+
+  if (originalPriceInput !== '' && !isNaN(originalPrice) && originalPrice < 0) {
+    hasError = true;
+    localError.price.original.mustBePositive = true;
   }
   
-  // Stock validation
-  const stock = parseInt(variationData.stock);
-  if (isNaN(stock) || variationData.stock === "") {
+
+  const offerInput = variationData.offer;
+  const offer = parseFloat(offerInput);
+  
+  // The offer field is generally optional, treating empty as 0.
+  if (offerInput !== '' && (isNaN(offer) || offer < 0 || offer > 100)) {
+    hasError = true;
+    localError.offer.mustBePositive = true; // Reusing mustBePositive for range check
+  }
+
+  // --- 4. Stock Validation ---
+  const stockInput = variationData.stock;
+  const stock = parseInt(stockInput);
+  
+  if (stockInput === '' || isNaN(stock)) {
     hasError = true;
     localError.stock.isRequired = true;
   } else if (stock < 0) {
@@ -80,16 +129,22 @@ const ProductVariationForm = ({variationData,isUpload,setUpload,save,setVariatio
     localError.stock.mustBePositive = true;
   }
 
+  // --- 5. Image Validation ---
   if (!variationData.image) {
     hasError = true;
     localError.image.isRequired = true;
   }
-
   setFieldErrors(localError);
-  
   if(!hasError){
-    save("variations",variationData)
-    setVariationData(deepcopyObj(variationFormData))
+    if(isVariationEditMode){
+      const updateVariations=[...productData.variations]
+      updateVariations[editIndex]=deepcopyObj(variationData)
+      setProductData({...productData,variations:[...updateVariations]})
+      closevariationForm()
+    }
+    else{
+      save("variations",deepcopyObj({...variationData,key:generateVariationKey(productData.productName)}))
+    }
   }
 }
 
@@ -100,10 +155,14 @@ const ProductVariationForm = ({variationData,isUpload,setUpload,save,setVariatio
           {/* Main Card Container */}
           <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-xl">
             <div className="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
-              <h3 className="text-2xl font-extrabold text-gray-900">Add Product Variation</h3>
+              <h3 className="text-2xl font-extrabold text-gray-900">{isVariationEditMode?"Edit":"Add"} Product Variation</h3>
+              <button onClick={closevariationForm} className='text-gray-500 hover:text-gray-700 transition'>
+                <CloseBtn />
+              </button>
             </div>
 
             <form className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={(e) => e.preventDefault()}>
+              
               {/* Type */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -111,12 +170,13 @@ const ProductVariationForm = ({variationData,isUpload,setUpload,save,setVariatio
                 </label>
                 <input 
                   type="text" 
+                  name="type"
                   value={variationData.type} 
-                  onChange={e=>setVariationData({...variationData,type:e.target.value.toLowerCase()})} 
+                  onChange={handleTopLevelChange} 
                   placeholder='e.g., Color, Size, Material' 
                   className='w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900 placeholder-gray-400' 
                 />
-                {fieldErrors.type.isRequired && (
+                {fieldErrors.type?.isRequired && (
                   <p className="text-xs font-medium text-red-700 mt-1">
                     Variation type (e.g., 'Color') is required
                   </p>
@@ -130,46 +190,100 @@ const ProductVariationForm = ({variationData,isUpload,setUpload,save,setVariatio
                 </label>
                 <input
                   type="text"
+                  name="value"
                   value={variationData.value}
-                  name="variationValue"
-                  onChange={e=>setVariationData({...variationData,value:e.target.value.toLowerCase()})}
+                  onChange={handleTopLevelChange}
                   placeholder='e.g., Red, Large'
                   className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900 placeholder-gray-400"
                 />
-                {fieldErrors.value.isRequired && (
+                {fieldErrors.value?.isRequired && (
                   <p className="text-xs font-medium text-red-700 mt-1">
                     Variation value (e.g., 'Red') is required
                   </p>
                 )}
               </div>
 
-              {/* Price */}
+              {/* Current Price (from nested price.current) */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">
-                  Price Adjustment <span className="text-red-500">*</span>
+                  Current Price <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span className="text-gray-500 font-medium">₹</span>
+                    <span className="text-gray-500 font-medium">{variationData.price.currency}</span>
                   </div>
                   <input
                     type="number"
-                    name="variationPrice"
-                    value={variationData.price}
-                    onChange={e=>setVariationData({...variationData,price:e.target.value})}
+                    name="current" // Matches the key in price object
+                    value={variationData.price.current}
+                    onChange={handlePriceChange}
                     className="w-full pl-8 pr-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900"
                     min="0.01"
                     step="0.01"
                   />
                 </div>
-                {fieldErrors.price.isRequired && (
+                {fieldErrors.price.current?.isRequired && (
                   <p className="text-xs font-medium text-red-700 mt-1">
-                    Price is required
+                    Current Price is required.
                   </p>
                 )}
-                {fieldErrors.price.mustBePositive && (
+                {fieldErrors.price.current?.mustBePositive && (
                   <p className="text-xs font-medium text-red-700 mt-1">
-                    Price must be greater than 0
+                    Current Price must be greater than 0.
+                  </p>
+                )}
+              </div>
+
+              {/* Original Price (from nested price.original) */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                  Original Price
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span className="text-gray-500 font-medium">{variationData.price.currency}</span>
+                  </div>
+                  <input
+                    type="number"
+                    name="original" // Matches the key in price object
+                    value={variationData.price.original}
+                    onChange={handlePriceChange}
+                    className="w-full pl-8 pr-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900"
+                    min="0"
+                    step="0.01"
+                    placeholder='0.00'
+                  />
+                </div>
+                 {fieldErrors.price.original?.mustBePositive && (
+                  <p className="text-xs font-medium text-red-700 mt-1">
+                    Original Price cannot be negative.
+                  </p>
+                )}
+              </div>
+              
+              {/* Offer */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                  Offer (%)
+                </label>
+                <div className="relative">
+                    <input
+                      type="number"
+                      name="offer"
+                      min="0"
+                      max="100"
+                      value={variationData.offer}
+                      onChange={handleTopLevelChange}
+                      className="w-full pr-8 pl-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900"
+                      placeholder="0"
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <span className="text-gray-500 font-medium">%</span>
+                    </div>
+                </div>
+                {fieldErrors.offer?.mustBePositive && (
+                  <p className="text-xs font-medium text-red-700 mt-1">
+                    Offer must be between 0 and 100.
                   </p>
                 )}
               </div>
@@ -181,20 +295,20 @@ const ProductVariationForm = ({variationData,isUpload,setUpload,save,setVariatio
                 </label>
                 <input
                   type="number"
-                  name="variationStock"
+                  name="stock"
                   min="0"
                   value={variationData.stock}
-                  onChange={e=>setVariationData({...variationData,stock:e.target.value})}
+                  onChange={handleTopLevelChange}
                   className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900"
                 />
-                {fieldErrors.stock.isRequired && (
+                {fieldErrors.stock?.isRequired && (
                   <p className="text-xs font-medium text-red-700 mt-1">
-                    Stock quantity is required
+                    Stock quantity is required.
                   </p>
                 )}
-                {fieldErrors.stock.mustBePositive && (
+                {fieldErrors.stock?.mustBePositive && (
                   <p className="text-xs font-medium text-red-700 mt-1">
-                    Stock must be 0 or greater
+                    Stock must be 0 or greater.
                   </p>
                 )}
               </div>
@@ -206,13 +320,13 @@ const ProductVariationForm = ({variationData,isUpload,setUpload,save,setVariatio
                 Variation Image <span className="text-red-500">*</span>
               </label>
               
-              {/* Upload Area */}
+              {/* Upload Area and Preview (kept the same as previous) */}
               <div className="mb-4">
                 <div id="imagesContainer" className="space-y-3">
                   <div className="relative">
                     <input 
                       type="file" 
-                      id="image" 
+                      id="variation-image" 
                       className="hidden" 
                       accept="image/*"
                       onChange={(e)=>handleImageChangeVariation(e.target.files)}
@@ -220,7 +334,7 @@ const ProductVariationForm = ({variationData,isUpload,setUpload,save,setVariatio
                     />
                     
                     <label 
-                      htmlFor="image" 
+                      htmlFor="variation-image" 
                       className={`flex flex-col items-center justify-center w-full h-36 border-2 border-dashed rounded-lg cursor-pointer transition-colors p-4 
                       ${isUpload ? "bg-gray-100 border-gray-400" : "bg-gray-50 border-gray-300 hover:bg-gray-100"}`}
                     >
@@ -235,7 +349,7 @@ const ProductVariationForm = ({variationData,isUpload,setUpload,save,setVariatio
                       </svg>
                       
                       <p className="mb-1 text-sm text-gray-500">
-                        <span className="font-semibold">Click to upload</span> or drag and drop
+                        <span className="font-semibold">Click to upload</span> {variationData.image ? "new image" : "image"}
                       </p>
                       <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
                     </label>
@@ -269,7 +383,7 @@ const ProductVariationForm = ({variationData,isUpload,setUpload,save,setVariatio
                 }
               </div>
 
-              {fieldErrors.image.isRequired && (
+              {fieldErrors.image?.isRequired && (
                 <p className="text-xs font-medium text-red-700 mt-1">
                   Image is required
                 </p>
@@ -285,7 +399,7 @@ const ProductVariationForm = ({variationData,isUpload,setUpload,save,setVariatio
                 className={`flex items-center justify-center px-8 py-3 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md shadow-indigo-500/50 text-base
                 ${isUpload ? 'bg-indigo-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'}`}
               >
-                {isUpload ? <Loader /> : "Add Variation"}
+                {isUpload ? <Loader /> : `${isVariationEditMode?"Update":"Add"} Variation`}
               </button>
               <button
                 onClick={closevariationForm}

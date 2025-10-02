@@ -6,6 +6,9 @@ import bannerSlice from './admin/adbanner'
 import comingSoonSlice from './admin/comingsoonSlice'
 import sliderSlice from './admin/sliderSlice'
 import userSlice from './admin/userSlice'
+import shopProductSlice from './shop/index'
+import searchProductSlice from './search/index'
+import addressSlice from './address/index'
 const store = configureStore({
     reducer:{
        auth:authSlice,
@@ -14,9 +17,10 @@ const store = configureStore({
        banner:bannerSlice,
        comingsoon:comingSoonSlice,
        slider:sliderSlice,
-       users:userSlice
-
-       
+       users:userSlice,
+       filterProducts:shopProductSlice,
+       searchProducts:searchProductSlice,
+       address:addressSlice
     }
 })
 export default store
