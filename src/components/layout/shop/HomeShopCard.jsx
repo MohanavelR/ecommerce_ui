@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { useAddToCart, useGetCart } from "../../../store/cart";
+import { MessageContext } from "../../../context/context";
+import { useDispatch, useSelector } from "react-redux";
 
 const HomeShopCard = ({ product }) => {
-
+  const {messageContextState,setMessageContextState}=useContext(MessageContext)
+  const {user}=useSelector(state=>state.auth)
+  console.log(user)
+  const dispatch=useDispatch()
   // Use the first variation for initial display information
   const variation = product.variations ? product.variations[0] : null; 
-  
+async function handleAddToCart() {
+    console.log(user.id,product._id,variation)
+     dispatch(useAddToCart({userId:user.id,productId:product._id,variation,quantity:1})).then(res=>{
+      if(res.payload?.success){
+         setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
+         dispatch(useGetCart(user.id))
+        }
+      else{
+  setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:false})
+      }
+     })
+  }  
   // Determine main image preference
   const mainImage = product.images?.[0] || variation?.image; 
 
@@ -26,16 +43,6 @@ const HomeShopCard = ({ product }) => {
     ? product.variations.some((v) => v.offer > 0)
     : false;
 
-  // Add to Cart Handler (kept for completeness, though button logic is in the JSX)
-  const handleAddToCart = () => {
-    // This handler will only be used if you decide to implement the cart logic here
-    // For single variation products, we should check variation.stock
-    if (variation && variation.stock > 0) {
-      alert(`Added ${product.productName} to cart!`);
-    } else if (product.stock > 0 && !product.variations) {
-       alert(`Added ${product.productName} to cart!`);
-    }
-  };
 
 
   return (

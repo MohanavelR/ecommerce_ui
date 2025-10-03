@@ -19,6 +19,7 @@ const ShopHeader = () => {
   
   const navigate = useNavigate();
   const { setLogoutContextState } = useContext(LogoutContext);
+  const {count}=useSelector(state=>state.cart)
   const { messageContextState, setMessageContextState } = useContext(MessageContext);
   const dispatch = useDispatch();
 
@@ -85,13 +86,13 @@ const ShopHeader = () => {
             </a> */}
 
             {/* Cart Icon with count */}
-            <a href="/cart" className="p-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200 relative" aria-label="Cart">
+            <Link to="/shop/cart" className="p-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200 relative" aria-label="Cart">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5H21M7 13-1.6 8M14 21a1 1 0 100-2 1 1 0 000 2zM17 21a1 1 0 100-2 1 1 0 000 2z" />
               </svg>
               {/* Refined badge styling */}
-              <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center leading-none transform translate-x-1/4 -translate-y-1/4">2</span>
-            </a>
+              <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center leading-none transform translate-x-1/4 -translate-y-1/4">{count}</span>
+            </Link>
             
             {/* --- User/Auth Section --- */}
             {isAuthenticated ? (

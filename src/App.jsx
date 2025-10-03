@@ -40,6 +40,7 @@ import About from "./pages/shop/About";
 import Search from "./pages/shop/Search";
 import SubCategoryList from "./pages/shop/SubCategoryList";
 import Profile from "./pages/shop/Profile";
+import Cart from "./pages/shop/Cart";
 
 const App = () => {
 
@@ -68,7 +69,6 @@ const App = () => {
           </MainLayout>
         }
       >
-        
       </Route>
       <Route path="/shop" element={<MainLayout isAuthenticated={isAuthenticated} user={user} >
         <ShopLayout>
@@ -81,6 +81,7 @@ const App = () => {
       <Route path="about-us" element={<About/>} />
       <Route path="search" element={<Search/>} />
       <Route path="profile" element={<Profile/>} />
+      <Route path="cart" element={<Cart/>} />
       <Route path="products/:sku" element={<SingleProduct/>} />
       <Route path="category/:categoryName" element={<CategoryList/>} />
       <Route path="sub-category/:categoryName/:subCategoryName" element={<SubCategoryList/>} />

@@ -9,6 +9,7 @@ import userSlice from './admin/userSlice'
 import shopProductSlice from './shop/index'
 import searchProductSlice from './search/index'
 import addressSlice from './address/index'
+import cartSlice from './cart/index'
 const store = configureStore({
     reducer:{
        auth:authSlice,
@@ -20,7 +21,8 @@ const store = configureStore({
        users:userSlice,
        filterProducts:shopProductSlice,
        searchProducts:searchProductSlice,
-       address:addressSlice
+       address:addressSlice,
+       cart:cartSlice,
     }
 })
 export default store
