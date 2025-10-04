@@ -14,6 +14,7 @@ import { useGetAllSliders } from '../../store/admin/sliderSlice'
 import { useGetAllComingSoon } from '../../store/admin/comingsoonSlice'
 import Loader from '../../components/common/Loader'
 import PageLoader from '../../components/common/PageLoader'
+import { useGetAllOrders } from '../../store/order'
 
 
  const AdminLayout = () => {
@@ -27,6 +28,7 @@ import PageLoader from '../../components/common/PageLoader'
     dispatch(useGetAllUsers())
     dispatch(useGetAllSliders())
     dispatch(useGetAllComingSoon())
+    dispatch(useGetAllOrders())
    },[])
 
 

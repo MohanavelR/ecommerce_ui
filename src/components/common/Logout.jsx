@@ -2,27 +2,32 @@ import React, { useContext } from 'react'
 import { useDispatch } from 'react-redux'
 import { LogoutContext, MessageContext } from '../../context/context'
 import { useLogout } from '../../store/authSlice'
+import { useNavigate } from 'react-router-dom'
 
 const Logout = () => {
     // Note: useContext(MessageContext) is called twice in the original, I removed the redundant one.
     const { messageContextState, setMessageContextState } = useContext(MessageContext);
     const { logoutContextState, setLogoutContextState } = useContext(LogoutContext);
     const dispatch = useDispatch();
+    const nav=useNavigate()
     const [isLoggingOut, setIsLoggingOut] = React.useState(false); // State for loading
 
     async function handleLogout() {
         setIsLoggingOut(true); // Start loading
         dispatch(useLogout()).then(res => {
-            const success = res.payload?.success;
-            const message = res.payload?.message || (success ? "Logout successful." : "Logout failed.");
+            if(res.payload?.success){
+ setMessageContextState({ ...messageContextState, is_show: true, text:res.payload?.message, success: res.payload?.success});
+setLogoutContextState(false);  
+nav("/auth/login")          
+}
+            else{
+setMessageContextState({ ...messageContextState, is_show: true, text:res.payload?.message, success: res.payload?.success});
+setLogoutContextState(false);
+            }
+          
             
-            // Set message context
-            setMessageContextState({ ...messageContextState, is_show: true, text: message, success: success });
             
-            // Close the modal
-            setLogoutContextState(false);
             
-            setIsLoggingOut(false); // Stop loading
         }).catch(() => {
             // Handle network or other unexpected errors
             setMessageContextState({ ...messageContextState, is_show: true, text: "A network error occurred.", success: false });

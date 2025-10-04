@@ -47,7 +47,7 @@ async function handleAddToCart() {
 
   return (
     // Reduced size: w-72 h-[25rem] -> w-64 h-[22rem]
-    <div className="w-64 h-[22rem] bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-[1.03] hover:shadow-xl flex flex-col">
+    <div className="w-69 h-[22rem] bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-[1.03] hover:shadow-xl flex flex-col">
       <Link to={`/shop/products/${product?.sku}`} className="relative h-44">
         {/* Reduced image height: h-52 -> h-44 */}
         <img

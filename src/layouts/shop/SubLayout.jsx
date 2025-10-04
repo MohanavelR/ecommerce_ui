@@ -1,17 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import ShopComingSoonPoster from './ShopComingSoonPoster'
 import ShopHeader from '../../components/layout/shop/ShopHeader'
 import ShopFooter from '../../components/layout/shop/ShopFooter'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../components/common/Loader'
 import ShopPageLayoutLoader from '../../components/common/Loaders/ ShopPageLayoutLoader'
 import ShopBannerCarousel from '../../components/layout/shop/ShopBannerCarousel'
 import store from "../../store/store"
+import { useGetCart } from '../../store/cart'
 const SubLayout = () => {
  // SubLayout.jsx
-console.log("sublayout",store.getState().searchProducts.searchProducts)
+
 // 1. Select the specific slice of state directly.
+const dispatch=useDispatch()
 const category = useSelector(state => state.category);
 const auth = useSelector(state => state.auth);
 const adminProducts = useSelector(state => state.adminProducts);

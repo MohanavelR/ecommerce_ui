@@ -5,13 +5,14 @@ import CartItemCard from '../../components/layout/shop/cart/CartCard';
 import OrderSummary from '../../components/layout/shop/cart/orderSummary';
 import { useDeleteCartItem, useGetCart, useUpdateCart } from '../../store/cart';
 import { MessageContext } from '../../context/context';
+import CartItemsContainer from '../../components/layout/shop/cart/CartItemsContainer';
+import { useNavigate } from 'react-router-dom';
 
 // Utility function to calculate totals (as provided)
 const calculateTotals = (items) => {
   if (!items || items.length === 0) {
      return { subtotal: 0, discount: 0, totalItems: 0 };
   }
-
   const subtotal = 
   items.reduce((acc, item) => acc + (item.price.current * item.quantity),
    0
@@ -23,19 +24,17 @@ const calculateTotals = (items) => {
 };
 
 const Cart = () => {
-  
-  // Assuming Redux state includes 'error' for robust handling
   const { cartItems, isLoading } = useSelector(state => state.cart);
   const {messageContextState,setMessageContextState}=useContext(MessageContext)
   const {user}=useSelector(state=>state.auth)
   const cartItemsList = cartItems?.items || [];
   const dispatch=useDispatch()
-  
+   const nav=useNavigate()
 
 
   
   // --- EMPTY CART CHECK ---
-  if (cartItemsList.length === 0) {
+  if (!cartItemsList || cartItemsList.length === 0) {
     return (
       <div className="max-w-7xl mx-auto p-4 md:p-8 text-center min-h-[50vh]">
         <h1 className="text-3xl font-extrabold text-gray-900 mb-4">Your Cart is Empty 🛒</h1>
@@ -47,34 +46,11 @@ const Cart = () => {
 
   // Calculations
   const { subtotal, discount, totalItems } = calculateTotals(cartItemsList);
-  
-  // Handler functions
-  const handleUpdateQuantity = (productId, variationKey,quantity,action) => {
-    dispatch(useUpdateCart({productId,variationKey,quantity,action,userId:user.id})).then(res=>{
-      console.log(res.payload)
-      if(res.payload?.success){
-        dispatch(useGetCart(user.id))
-      }
-    })
-  };
+  const shippingCost=0
+  const total = subtotal + shippingCost;
 
-  const handleDeleteItem = (productId, variationKey) => {
-    if(confirm("Are Sure Delete This item?")){
-      dispatch(useDeleteCartItem({userId:user.id,variationKey,clearAll:false})).then(res=>{
-       if(res.payload?.success){
-                setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
-                dispatch(useGetCart(user.id))
-               }
-             else{
-         setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:false})
-       }
-      })
-    }
-  };
   
-  const handleProceedToCheckout = () => {
-    console.log('Proceeding to Checkout...');
-  };
+
   
   const handleClearAllItems=()=>{
     if(confirm("Are Sure To Clear Items with out Checkout ?")){
@@ -93,13 +69,6 @@ const Cart = () => {
     // NEW WRAPPER: Centers the content in a max-width container with clean background
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto p-4 md:p-8 bg-white rounded-lg">
-        
-        {/*
-          --- UPDATED HEADING ---
-          - Changed to text-4xl for prominence
-          - Added tracking-tight for a modern look
-          - Removed the border-b and pb-4 for cleaner spacing
-        */}
         <h1 className="text-4xl font-extrabold text-gray-900 mb-2 tracking-tight">
             Your Bag is Ready <span className="text-indigo-600">({totalItems} Items)</span>
         </h1>
@@ -111,19 +80,7 @@ const Cart = () => {
         <div className="space-y-6">
           
           {/* 1. CART ITEMS LIST */}
-          <div className="space-y-4">
-            {cartItemsList.map((item) => (
-              <CartItemCard 
-                // Ensure the key is fully unique
-                key={item.productId + '-' + item.variationKey}
-                item={item} 
-                onUpdateQuantity={handleUpdateQuantity}
-                onDelete={handleDeleteItem}
-                // Using optional chaining more safely
-                productName={item?.productId?.productName || 'Product Name Missing'} 
-              />
-            ))}
-          </div>
+          <CartItemsContainer cartItems={cartItems} />          
 
           {/* 2. OPTIONAL: Divider before Summary */}
 
@@ -132,10 +89,25 @@ const Cart = () => {
             <OrderSummary 
               subtotal={subtotal}
               discount={discount}
-              totalItems={totalItems}
-              onCheckout={handleProceedToCheckout}
-              onClearCart={handleClearAllItems}
+              totalItems={totalItems} 
+              total={total}
             />
+              <button 
+            onClick={()=>nav("/shop/checkout")}
+            className="w-full mt-6 py-3 bg-indigo-600 text-white font-bold text-lg rounded-lg hover:bg-indigo-700 transition shadow-lg focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 disabled:opacity-50"
+            disabled={total <= 0} // Disable if cart total is zero
+        >
+            Proceed to Checkout
+        </button>
+
+        {/* --- NEW: Clear Cart Button (Secondary Action) --- */}
+        <button
+            onClick={handleClearAllItems}
+            className="w-full mt-3 py-3 text-red-600 font-semibold text-lg border border-red-300 rounded-lg hover:bg-red-50 transition focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+            disabled={totalItems === 0}
+        >
+            Clear All Items
+        </button>
           </div>
           
         </div>

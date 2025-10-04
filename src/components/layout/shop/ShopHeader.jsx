@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import MediumDeviceHeader from "./header/MediumDeviceHeader";
@@ -6,6 +6,8 @@ import MobileViewHeader from "./header/MobileViewHeader";
 import { LogoutContext, MessageContext } from "../../../context/context";
 import Logo from "../../common/Logo";
 import { useSendverifyOTP } from "../../../store/authSlice";
+import Loader from "../../common/Loader"
+import { useGetCart } from "../../../store/cart";
 
 const ShopHeader = () => {
   // Destructure state values
@@ -19,7 +21,7 @@ const ShopHeader = () => {
   
   const navigate = useNavigate();
   const { setLogoutContextState } = useContext(LogoutContext);
-  const {count}=useSelector(state=>state.cart)
+  const {count,isLoading}=useSelector(state=>state.cart)
   const { messageContextState, setMessageContextState } = useContext(MessageContext);
   const dispatch = useDispatch();
 
@@ -27,7 +29,11 @@ const ShopHeader = () => {
   const toggleUserDropdown = () => {
     setIsDropdownOpen(prev => !prev);
   };
-  
+  useEffect(()=>{
+  if(isAuthenticated){
+  dispatch(useGetCart(user.id))
+  }
+  },[isAuthenticated])
   // Close menu and dropdown when navigating
   const handleNavigation = (path) => {
     navigate(path);
@@ -91,7 +97,7 @@ const ShopHeader = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5H21M7 13-1.6 8M14 21a1 1 0 100-2 1 1 0 000 2zM17 21a1 1 0 100-2 1 1 0 000 2z" />
               </svg>
               {/* Refined badge styling */}
-              <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center leading-none transform translate-x-1/4 -translate-y-1/4">{count}</span>
+              <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center leading-none transform translate-x-1/4 -translate-y-1/4">{isLoading?<Loader/> :count }</span>
             </Link>
             
             {/* --- User/Auth Section --- */}
@@ -120,11 +126,12 @@ const ShopHeader = () => {
                         <p className="text-sm font-semibold text-gray-900 truncate">{user?.firstName + user?.lastName || 'User'}</p>
                         <p className="text-xs text-gray-500 truncate">{user?.email}</p>
                     </div>
+                    
                     <div className="py-1">
                       <button onClick={() => handleNavigation("/shop/profile")} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors duration-200">
                           <i className="fas fa-user-circle w-4 mr-2"></i> Profile
                       </button>
-                      <button onClick={() => handleNavigation("/orders")} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors duration-200">
+                      <button onClick={() => handleNavigation("/shop/orders")} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors duration-200">
                           <i className="fas fa-box w-4 mr-2"></i> My Orders
                       </button>
                       

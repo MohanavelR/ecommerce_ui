@@ -12,10 +12,9 @@ const AdminDashboard = () => {
     const { isLoading: comingSoonLoader, count: comingSoonCount } = useSelector((state) => state.comingsoon);
     const { isLoading: sliderLoader, count: sliderCount } = useSelector((state) => state.slider);
     const { isLoading: usersLoader, count: usersCount } = useSelector((state) => state.users);
+     const { isLoading: ordersLoader, count: ordersCount } = useSelector((state) => state.order);
 
-    // Assuming you have an orders state (or mock it if missing for completeness)
-    const ordersCount = 120; // Example count for demonstration
-    const ordersLoader = false; // Example loader for demonstration
+
 
     const loaders = [
         categoryLoader,
@@ -128,7 +127,7 @@ const AdminDashboard = () => {
 
             {/* Quick Actions */}
             <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-6 border-b pb-3">Quick Actions</h2>
+                <h2 className="text-2xl font-semibold text-gray-900 mb-6 border-accent border-b pb-3">Quick Actions</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4"> {/* Changed to 6 columns for dense layout */}
                     {quickActionLinks.map((action, index) => (
                         <button 

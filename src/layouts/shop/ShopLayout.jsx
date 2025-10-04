@@ -7,11 +7,11 @@ import { useGetAllBanners } from "../../store/admin/adbanner";
 import { useGetAllComingSoon } from "../../store/admin/comingsoonSlice";
 import { useGetAllProducts } from "../../store/productSlice";
 import { useGetFilterProducts } from "../../store/shop";
-import { useGetCart } from "../../store/cart";
+// import { useGetCart } from "../../store/cart";
 
 
 const ShopLayout = () => {
-   const {user,isAuthenticated}=useSelector(state=>state.auth)
+
   const dispatch=useDispatch()
   // This hook runs once to fetch initial data for the entire shop section
   useEffect(()=>{
@@ -21,9 +21,6 @@ const ShopLayout = () => {
     dispatch(useGetAllComingSoon())
     dispatch(useGetAllProducts())
     dispatch(useGetFilterProducts({}))
-  if(isAuthenticated){
-    dispatch(useGetCart(user?.id))
-  }
   },[dispatch])
   
   return (

@@ -41,6 +41,8 @@ import Search from "./pages/shop/Search";
 import SubCategoryList from "./pages/shop/SubCategoryList";
 import Profile from "./pages/shop/Profile";
 import Cart from "./pages/shop/Cart";
+import ShopOrder from "./pages/shop/ShopOrder";
+import CheckOut from "./pages/shop/CheckOut";
 
 const App = () => {
 
@@ -83,6 +85,8 @@ const App = () => {
       <Route path="profile" element={<Profile/>} />
       <Route path="cart" element={<Cart/>} />
       <Route path="products/:sku" element={<SingleProduct/>} />
+      <Route path="orders" element={<ShopOrder/>} />
+      <Route path="checkout" element={<CheckOut/>} />
       <Route path="category/:categoryName" element={<CategoryList/>} />
       <Route path="sub-category/:categoryName/:subCategoryName" element={<SubCategoryList/>} />
       </Route>

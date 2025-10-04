@@ -15,7 +15,8 @@ import { useDeleteAddress, useGetAddressesByUser } from '../../../../store/addre
 const AddressCard = ({ 
   address, 
   onEdit, 
-  isselectedMode = null
+  isselectedMode = null,
+  setIdOfAddress=null
 }) => {
    const {messageContextState,setMessageContextState} = useContext(MessageContext)
    const dispatch = useDispatch()
@@ -54,8 +55,7 @@ const AddressCard = ({
         </h3>
 
         {/* Action Button Group or Selection Radio Button */}
-        {
-          !isselectedMode ?
+        
         <div className="flex space-x-1 text-sm items-center">
           <button 
             onClick={() => onEdit(address, address._id)} 
@@ -76,16 +76,20 @@ const AddressCard = ({
             Delete
           </button>
         </div>
-        : 
+        {
+          isselectedMode && 
         <div className="flex items-center">
           {/* Radio Button for single-select mode */}
           <input 
-            type="radio" 
+            type="radio"
+            onChange={()=>setIdOfAddress(address._id)} 
             name="selected_address" // Crucial for grouping radio buttons
             className="w-5 h-5 text-indigo-600 border-gray-300 focus:ring-indigo-500" 
           />
         </div>
-        }
+        } 
+        
+
       </div>
 
       {/* Address Details */}

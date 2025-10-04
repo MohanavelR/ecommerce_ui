@@ -12,77 +12,19 @@ import { MessageContext } from '../../context/context';
 const MAX_ADDRESS = 3; 
 const UserProfileTabs = () => {
   const [activeTab, setActiveTab] = useState('addresses'); 
-  const {messageContextState,setMessageContextState}=useContext(MessageContext)
+ 
   // State to manage the view toggle for addresses
-  const [openAddressForm,setOpenAddressForm]=useState(false)
+  
   const {user}=useSelector(state=>state.auth)
-  const [formData,setFormData]=useState(deepcopyObj(addressFormData))
-  const [fieldErrors,setFieldErrors]=useState(deepcopyObj(addressError))
-  const [isEditMode,setIsEditMode]=useState(false)
-  const [addressId,setAddressId]=useState(null)
+
   const dispatch=useDispatch()
   useEffect(()=>{
     dispatch(useGetAddressesByUser(user.id))
   },[])
-  function openAddressFormMethod(){
-    setOpenAddressForm(true)
-  }
-  function closeAddressFormMethod(){
-    setOpenAddressForm(false)
-    setFormData(deepcopyObj(addressFormData))
-    setAddressId(null)    
-    setIsEditMode(false)
-  }
-
-
-  function setEditModeMethod(data,id){
-    setFormData(data)
-    openAddressFormMethod()
-    setAddressId(data._id)    
-    setIsEditMode(true)
-  }
-
-async function handleAddressSubmit(){
-    let newErrors =deepcopyObj(addressError); // Deep clone
-    let hasError = false;
-    const requiredFields = ['title', 'address', 'city', 'pincode', 'phone'];
-    requiredFields.forEach(field => {
-      if (formData[field].trim() === '') {
-        newErrors[field].isRequired = true;
-      hasError = true;
-      }
-    });
-    const pincodeRegex = /^\d{6}$/;
-    if (formData.pincode.trim() !== '' && !pincodeRegex.test(formData.pincode)) {
-        newErrors.pincode.invalidFormat = true;
-       hasError = false;
-    }
-    const phoneRegex = /^\d{10}$/;
-    if (formData.phone.trim() !== '' && !phoneRegex.test(formData.phone)) {
-        newErrors.phone.invalidFormat = true;
-       hasError = false;
-    }
-    setFieldErrors(deepcopyObj(newErrors));
-    if(!hasError){
-      dispatch(isEditMode?useUpdateAddress({id:addressId,data:formData}):useCreateAddress({...formData,userId:user.id})).then(res=>{
-        if(res.payload?.success){
-          setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
-          closeAddressFormMethod()
-          dispatch(useGetAddressesByUser(user.id))
-        }
-        else{
-          setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:false})
-        }
-      })
-    }
-}
 
   return (
     <>
-    {
-          openAddressForm &&
-       <AddressForm formData={formData} handleAddressSubmit={handleAddressSubmit} fieldErrors={fieldErrors} setFieldErrors={setFieldErrors} setFormData={setFormData} closeAddressFormMethod={closeAddressFormMethod} />
-        }
+  
     <div className="bg-gray-50 min-h-screen py-5">
       <div className="mx-auto px-3 sm:px-4 lg:px-5">
         
@@ -118,7 +60,7 @@ async function handleAddressSubmit(){
         {/* Tab Content */}
         <div>
           {activeTab === 'details' && <UserConatiner />}
-          {activeTab === 'addresses' && <AddressContainer setAddressId={setAddressId} setEditModeMethod={setEditModeMethod} openAddressFormMethod={openAddressFormMethod}/>}
+          {activeTab === 'addresses' && <AddressContainer/>}
         </div>
       </div>
     </div>
