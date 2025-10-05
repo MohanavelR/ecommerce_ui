@@ -1,54 +1,55 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-// Note: Removed 'children' from props, added 'Outlet'
+import { Navigate, useLocation } from "react-router-dom";
 
-const MainLayout = ({ isAuthenticated, user ,children}) => {
+const MainLayout = ({ isAuthenticated, user, children }) => {
   const location = useLocation();
   const path = location.pathname;
 
-  // --- 🔑 Authentication/Redirection Logic ---
-
-  // Handle root "/"
+  // --- Root "/" ---
   if (path === "/") {
     if (!isAuthenticated) return <Navigate to="/auth/login" />;
     if (user?.role === "admin") return <Navigate to="/admin/dashboard" />;
     if (user?.role === "user") return <Navigate to="/shop/home" />;
-    // If authenticated and no role defined, allow it to continue to root component (if one exists)
   }
 
-  // Protect admin routes
+  // --- Admin Routes ---
   if (path.includes("/admin")) {
     if (!isAuthenticated) return <Navigate to="/auth/login" />;
-    if (user?.role === "user") return <Navigate to="/shop/home" />;
-    // Allow admin access to continue
+    if (user?.role !== "admin") return <Navigate to="/shop/home" />;
+    // Admin can continue
   }
 
-  // Protect shop routes (Allow access if NOT admin)
+  // --- Shop Routes ---
   if (path.includes("/shop")) {
+    // Redirect admins to dashboard
     if (user?.role === "admin") return <Navigate to="/admin/dashboard" />;
-    // Allow users and unauthenticated users to see shop if policies permit.
-    // If shop requires auth, you would add: if (!isAuthenticated) return <Navigate to="/auth/login" />;
+
+    // Protected shop pages for authenticated users only
+    const protectedShopRoutes = [
+      "/shop/checkout",
+      "/shop/profile",
+      "/shop/orders",
+      "/shop/cart"
+    ];
+    if (!isAuthenticated && protectedShopRoutes.includes(path)) {
+      return <Navigate to="/auth/login" />;
+    }
+
+    // Redirect /shop to /shop/home
+    if (path === "/shop") return <Navigate to="/shop/home" />;
+
+    // All other shop pages (like /shop/home, /shop/products) render children
   }
 
-  // Protect auth routes (only allow when not authenticated)
+  // --- Auth Routes ---
   if (path.includes("/auth")) {
-    if (isAuthenticated && user?.role === "admin") {
-      return <Navigate to="/admin/dashboard" />;
-    }
-    if (isAuthenticated && user?.role === "user") {
-      return <Navigate to="/shop/home" />;
-    }
-    // Allow unauthenticated access to auth pages to continue
+    if (isAuthenticated && user?.role === "admin") return <Navigate to="/admin/dashboard" />;
+    if (isAuthenticated && user?.role === "user") return <Navigate to="/shop/home" />;
+     if (!isAuthenticated && path==="/auth") return <Navigate to="/auth/login" />;
+   
   }
 
-  // --- 🔑 Render Child Routes ---
-  // If no redirection occurred, render the child route content via Outlet.
-  // This is where the next element in the route hierarchy (e.g., ShopLayout) will be rendered.
-  return (
-    <div className="main-layout-wrapper"> 
-        {/* You can add global headers/footers here if needed */}
-        {children}
-    </div>
-  );
+  // --- Render child routes if no redirect triggered ---
+  return <div className="main-layout-wrapper">{children}</div>;
 };
 
 export default MainLayout;

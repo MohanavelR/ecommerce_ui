@@ -14,7 +14,7 @@ const MobileCategoryBlock = ({ category }) => {
                 onClick={() => setIsExpanded(!isExpanded)}
                 className={`w-full flex justify-between  hover:text-primary items-center py-3 px-1 font-medium transition-all duration-500`}
             >
-                <Link to={`/shop/category/${category.categoryName}`} className=' hover:text-primary'>{category.categoryName}</Link>
+                <Link  to={`/shop/category/${category.categorySKU}`}  className=' hover:text-primary'>{category.categoryName}</Link>
                 <svg 
                     className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`} 
                     fill="none" 
@@ -34,7 +34,7 @@ const MobileCategoryBlock = ({ category }) => {
                     {category.subcategories && category.subcategories.map((subcategory, index) => (
                         <Link 
                             key={index} 
-                            to={`/shop/${category.categoryName}/${subcategory}`} 
+                           to={`/shop/sub-category/${category.categorySKU}/${subcategory.name}`}
                             className={`block text-sm text-gray-600 hover:text-primary transition-all duration-500`}
                         >
                             {subcategory}

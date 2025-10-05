@@ -1,16 +1,25 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Loader from "../../common/Loader";
 import formatVariationKey from "../../../utils/formetVariationKey";
-
+import Review from "./productDetail/Review";
+import { useGetProductReviews } from "../../../store/review";
+import {useDispatch, useSelector} from "react-redux"
 const ProductDetailView = ({ product, isLoading,handleAddToCart }) => {
+    if (isLoading) {
+    return <Loader />;
+  }
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [currentVariation, setCurrentVariation] = useState(null);
   const [isSeleted, setSelected] = useState({ type: null, value: null });
   const [currentImage, setCurrentImage] = useState(null);
   const [variation, setVariation] = useState(null);
-  const [currentSavedAmount, setCurrentSavedAmount] = useState(0);
+  // const [currentSavedAmount, setCurrentSavedAmount] = useState(0);
   const isOutOfStock = currentVariation?.stock <= 0;
-  
+  const currentSavedAmount = currentVariation?.price?.original > 0 && currentVariation?.price?.current > 0
+  ? parseFloat((currentVariation.price.original - currentVariation.price.current).toFixed(1))
+  : 0;
+ 
+  const dispatch=useDispatch()
   const variationList = groupedVariations(
     Array.isArray(product?.variations) && product?.variations.length > 0
       ? product.variations
@@ -22,21 +31,29 @@ const ProductDetailView = ({ product, isLoading,handleAddToCart }) => {
       const first = product.variations[0];
       setCurrentVariation(first);
       setCurrentImage(first.image || product.images?.[0] || null);
-      setCurrentSavedAmount(
-        (first?.price?.original > 0 && first?.price?.current > 0
-          ? first.price.original - first.price.current
-          : 0
-        ).toFixed(1)
-      );
+      // setCurrentSavedAmount(
+      //   (first?.price?.original > 0 && first?.price?.current > 0
+      //     ? first.price.original - first.price.current
+      //     : 0
+      //   ).toFixed(1)
+      // );
       setSelected({ type: first?.type, value: first?.value });
     } else {
       // reset if product has no variations
       setCurrentVariation(null);
       setCurrentImage(product?.images?.[0] || null);
-      setCurrentSavedAmount(0);
+      // setCurrentSavedAmount(0);
     }
   }, [product]);
+ const {reviews,isLoading:reviewLoading}=useSelector(state=>state.review)
+useEffect(() => {
+  if (product && product._id) {
+    dispatch(useGetProductReviews(product._id));
+  }
+}, [product, product?._id, dispatch]);
+  
 
+  
   function groupedVariations(variations = []) {
     if (variations.length === 0) {
       return {};
@@ -60,14 +77,12 @@ const ProductDetailView = ({ product, isLoading,handleAddToCart }) => {
   }
   function changeImage(index = 0, image) {
     setSelectedImageIndex(index);
-    setSelected({ type: null, value: null });
+    setSelected({ type: product.variations[0].type, value:product.variations[0].value });
     setCurrentVariation(product.variations[0]);
     setCurrentImage(image);
     setVariation(null);
   }
-  if (isLoading) {
-    return <Loader />;
-  }
+
   if (!product) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-red-600 border border-red-300 bg-red-50 rounded-lg p-6">
@@ -228,7 +243,7 @@ const ProductDetailView = ({ product, isLoading,handleAddToCart }) => {
                 )}
               {currentSavedAmount > 0 && (
                 <span className="ml-2 text-sm font-medium text-green-600">
-                  Save {product?.price?.currency}
+                  Save {currentVariation?.price?.currency}
                   {currentSavedAmount}
                 </span>
               )}
@@ -371,7 +386,7 @@ const ProductDetailView = ({ product, isLoading,handleAddToCart }) => {
                   Features
                 </button>
               )}
-              {product.fadditionalInfo && product.additionalInfo.length > 0 && (
+              {product.additionalInfo && product.additionalInfo.length > 0 && (
                 <button
                   onClick={() => setActiveTab("Additional Information")}
                   className={`text-sm font-medium pb-2 transition ${
@@ -389,6 +404,9 @@ const ProductDetailView = ({ product, isLoading,handleAddToCart }) => {
           </div>
         </div>
       </div>
+        <div className="mt-4">
+         <Review reviews={reviews} isLoading={reviewLoading} productId={product?._id} />
+        </div>
     </div>
   );
 };

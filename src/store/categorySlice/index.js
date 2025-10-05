@@ -36,10 +36,10 @@ export const useGetAllCategory = createAsyncThunk(
 // Get Subcategories by Category
 export const useGetSubCategory = createAsyncThunk(
   "/category/getSubCategory",
-  async (categoryName, thunkAPI) => {
+  async (categorySKU, thunkAPI) => {
     try {
       
-      return await apiOfGetsubCategoryByCategory(categoryName);
+      return await apiOfGetsubCategoryByCategory(categorySKU);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

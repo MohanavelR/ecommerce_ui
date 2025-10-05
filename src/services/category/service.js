@@ -21,10 +21,10 @@ export const apiOfGetAllCategory = async()=>{
          return error
     }
 }
-export const apiOfGetsubCategoryByCategory = async(categoryName)=>{
+export const apiOfGetsubCategoryByCategory = async(categorySku)=>{
     try {
-        console.log(categoryName)
-        const response=await api.get(`get_subcategory/${categoryName}`)
+
+        const response=await api.get(`get_subcategory/${categorySku}`)
          return  response.data
     } catch (error) {
          return error

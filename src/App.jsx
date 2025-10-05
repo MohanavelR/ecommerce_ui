@@ -54,7 +54,7 @@ const App = () => {
     dispatch(useAuth())
   },[dispatch])
   if(isLoading){
-    return <p><PageLoader/></p>
+    return <PageLoader/>
   }
   return (
     <>
@@ -87,7 +87,7 @@ const App = () => {
       <Route path="products/:sku" element={<SingleProduct/>} />
       <Route path="orders" element={<ShopOrder/>} />
       <Route path="checkout" element={<CheckOut/>} />
-      <Route path="category/:categoryName" element={<CategoryList/>} />
+      <Route path="category/:categorySKU" element={<CategoryList/>} />
       <Route path="sub-category/:categoryName/:subCategoryName" element={<SubCategoryList/>} />
       </Route>
       </Route>

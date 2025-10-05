@@ -7,6 +7,8 @@ import CartItemsContainer from '../../components/layout/shop/cart/CartItemsConta
 import OrderSummary from '../../components/layout/shop/cart/orderSummary';
 import { useCreateOrder } from '../../store/order';
 import { MessageContext } from '../../context/context';
+import { useNavigate } from 'react-router-dom';
+import { useGetCart } from '../../store/cart';
 
 // --- Structural Component ---
 const Checkout = () => {
@@ -29,6 +31,7 @@ const Checkout = () => {
     const {user}=useSelector(state=>state.auth)
     const {cartItems}=useSelector(state=>state.cart)
     const [addressId,setAddressId]=useState(null)
+    const nav=useNavigate()
     const cartItemsList=cartItems?.items || []
     const { subtotal, discount, totalItems } = calculateTotals(cartItemsList);
     const shippingCost=0
@@ -48,6 +51,7 @@ function handleCheckOut(){
             if(res.payload?.success){
                             setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
                             dispatch(useGetCart(user.id))
+                            nav("/shop/orders")
                            }
                          else{
                      setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:false})

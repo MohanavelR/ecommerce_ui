@@ -14,15 +14,22 @@ const SingleProduct = () => {
   const {sku} =useParams()
   const dispatch=useDispatch()
   async function handleAddToCart(productId,variation,quantity=1) {
-     dispatch(useAddToCart({userId:user.id,productId,variation,quantity})).then(res=>{
-      if(res.payload?.success){
-         setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
-         dispatch(useGetCart(user.id))
-        }
-      else{
-  setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:false})
-      }
-     })
+    if(user.isVerified){
+      dispatch(useAddToCart({userId:user.id,productId,variation,quantity})).then(res=>{
+       if(res.payload?.success){
+          setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
+          dispatch(useGetCart(user.id))
+         }
+       else{
+   setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:false})
+       }
+      })
+    }
+    else{
+        setMessageContextState({...messageContextState,is_show:true,text:"Please Verify Your Account",success:false
+        
+        })
+    }
   }
   useEffect(()=>{
     dispatch(useGetProductDetails(sku))

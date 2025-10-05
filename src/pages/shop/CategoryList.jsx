@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom'; 
 
 
-import ShopCard from '../../components/layout/shop/products/ShopCard';
+
 import { useGetCategoryProducts } from '../../store/shop';
 import BreadcrumbBanner from '../../components/layout/shop/common/BreadcrumbBanner';
 import HomeShopCard from '../../components/layout/shop/HomeShopCard';
@@ -19,28 +19,28 @@ const GridLoader = () => (
 
 const CategoryList = () => {
  
-  const { categoryName } = useParams();
+  const { categorySKU } = useParams();
   const dispatch = useDispatch();
 
-  
+
   const {isLoading,categoryByProducts} = useSelector(state => state.filterProducts);
-  const category = categoryName.replace(/-/g," ")
+
 
   // Calculate the product count for display
   const productCount = categoryByProducts ? categoryByProducts.length : 0;
- 
+ const category=categorySKU.replaceAll("-"," ")
   useEffect(() => {
-    if (categoryName) {
-      dispatch(useGetCategoryProducts(category));
+    if (categorySKU) {
+      dispatch(useGetCategoryProducts(categorySKU));
     }
-  }, [dispatch, categoryName]);
+  }, [dispatch, categorySKU]);
 
   // --- Rendering Logic ---
 
   if (isLoading) {
     return (
       <div className="py-8">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">{category}</h1>
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">Loading..</h1>
         <GridLoader />
       </div>
     );
@@ -60,7 +60,7 @@ const CategoryList = () => {
 (!categoryByProducts|| categoryByProducts.length === 0) ?
    
  <div className="text-center py-20">
-      <h1 className="text-3xl font-bold mb-4 text-gray-800">
+      <h1 className="text-3xl capitalize font-bold mb-4 text-gray-800">
           No products found in "{category}"
        </h1>
        <p className="text-gray-500">Please check back later or try a different category.</p>
@@ -70,8 +70,8 @@ const CategoryList = () => {
        <div className="py-5">
       <div>
       {/* Updated Category Heading with Product Count */}
-      <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl mb-8 border-b border-accent  pb-2">
-        {category } <span className="text-xl font-medium text-gray-600">Products ({productCount})</span>
+      <h1 className="text-3xl font-extrabold capitalize tracking-tight text-gray-900 sm:text-4xl mb-8 border-b border-accent  pb-2">
+        {category} <span className="text-xl font-medium text-gray-600">Products ({productCount})</span>
       </h1>
 
       </div>

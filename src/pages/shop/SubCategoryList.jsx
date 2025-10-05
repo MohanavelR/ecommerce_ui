@@ -19,29 +19,30 @@ const GridLoader = () => (
 const SubCategoryList = () => {
   const { categoryName, subCategoryName } = useParams();
   const dispatch = useDispatch();
+  const category=categoryName.replaceAll("-"," ")
+  const subCategory=categoryName.replaceAll("-"," ")
 
   const { isLoading, subcategoryByProducts } = useSelector(state => state.filterProducts);
 
-  const category = categoryName.replace(/-/g, " ");
-  const subCategory = subCategoryName.replace(/-/g, " ");
+  
 
   // Calculate the product count for display
   const productCount = subcategoryByProducts ? subcategoryByProducts.length : 0;
   
   // Create the main heading title
-  const pageTitle = subCategory ? `${category} → ${subCategory}` : category;
+  const pageTitle = subCategoryName ? `${category} → ${subCategory}` : category;
 
   useEffect(() => {
-    if (subCategory) {
-      dispatch(useGetCategorySubProducts({ category, subCategory }));
+    if (subCategoryName) {
+      dispatch(useGetCategorySubProducts({ categoryName, subCategoryName }));
     } 
-  }, [dispatch, category, subCategory]); // Added 'category' to dependency array
+  }, [dispatch, categoryName, subCategoryName]); // Added 'category' to dependency array
 
   // Loader
   if (isLoading) {
     return (
       <div className="py-8">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">
+        <h1 className="text-3xl capitalize font-bold mb-6 text-gray-800">
           {pageTitle}
         </h1>
         <GridLoader />
@@ -58,15 +59,15 @@ const SubCategoryList = () => {
       {
         (!subcategoryByProducts || subcategoryByProducts.length === 0) ? (
           <div className="text-center py-20">
-            <h1 className="text-3xl font-bold mb-4 text-gray-800">
-              No products found in "{subCategory || category}"
+            <h1 className="text-3xl  font-bold mb-4 text-gray-800">
+              No products found in "{subCategory }"
             </h1>
             <p className="text-gray-500">Please check back later or try a different {subCategory ? "subcategory" : "category"}.</p>
           </div>
         ) : (
           <div className="py-5">
             {/* Updated Heading with Product Count */}
-            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl mb-8 border-b border-accent pb-2">
+            <h1 className="text-3xl capitalize font-extrabold tracking-tight text-gray-900 sm:text-4xl mb-8 border-b border-accent pb-2">
               {pageTitle} 
               <span className="text-xl font-medium text-gray-600"> Products ({productCount})</span>
             </h1>

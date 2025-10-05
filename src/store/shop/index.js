@@ -48,9 +48,9 @@ export const useGetCategoryProducts = createAsyncThunk(
 
 export const useGetCategorySubProducts = createAsyncThunk(
   'products/getCategorySubProducts',
-  async ({ category, subCategory }, thunkAPI) => {
+  async ({ categoryName, subCategoryName }, thunkAPI) => {
     try {
-      return await getProductsByCategoryAndSubcategory(category, subCategory);
+      return await getProductsByCategoryAndSubcategory(categoryName, subCategoryName);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

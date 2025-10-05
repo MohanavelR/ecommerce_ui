@@ -223,7 +223,7 @@ const AddProductForm = ({
                         <option value="">Select a category</option>
                         {categoryList && categoryList.length > 0 ? (
                           categoryList.map((category, index) => (
-                            <option key={index} value={category.categoryName}>
+                            <option key={index} value={category.categorySKU}>
                               {category.categoryName}
                             </option>
                           ))
@@ -261,8 +261,8 @@ const AddProductForm = ({
                         <option value="">Select a subcategory</option>
                         {subcategories && subcategories.length > 0 ? (
                           subcategories.map((subcategory, index) => (
-                            <option value={subcategory} key={index}>
-                              {subcategory}
+                            <option value={subcategory.sku} key={index}>
+                              {subcategory.name}
                             </option>
                           ))
                         ) : (

@@ -6,7 +6,7 @@ import OrderSummary from '../../components/layout/shop/cart/orderSummary';
 import { useDeleteCartItem, useGetCart, useUpdateCart } from '../../store/cart';
 import { MessageContext } from '../../context/context';
 import CartItemsContainer from '../../components/layout/shop/cart/CartItemsContainer';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 // Utility function to calculate totals (as provided)
 const calculateTotals = (items) => {
@@ -26,7 +26,7 @@ const calculateTotals = (items) => {
 const Cart = () => {
   const { cartItems, isLoading } = useSelector(state => state.cart);
   const {messageContextState,setMessageContextState}=useContext(MessageContext)
-  const {user}=useSelector(state=>state.auth)
+  const {user,isAuthenticated}=useSelector(state=>state.auth)
   const cartItemsList = cartItems?.items || [];
   const dispatch=useDispatch()
    const nav=useNavigate()
@@ -65,6 +65,8 @@ const Cart = () => {
       })
     }
   } 
+console.log(isAuthenticated)
+  
   return (
     // NEW WRAPPER: Centers the content in a max-width container with clean background
     <div className="min-h-screen bg-gray-50 py-8">

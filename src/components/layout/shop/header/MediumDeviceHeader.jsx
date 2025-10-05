@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const MediumDeviceHeader = () => {
     const {categoryList,isLoading,count} = useSelector(state => state.category);
-
+  console.log(categoryList)
     
   return (
     <>
@@ -45,7 +45,7 @@ const MediumDeviceHeader = () => {
                                     
                                     {/* Column Header (Main Category Link) - STYLING CHANGE: text-primary */}
                                     <Link 
-                                        to={`/shop/category/${category.categoryName.replace(/\s+/g, "-")}`} 
+                                        to={`/shop/category/${category.categorySKU}`} 
 
                                         className="block text-[11px]  uppercase tracking-wider text-primary hover:text-primary mb-1  border-b border-gray-100"
                                     >
@@ -59,11 +59,12 @@ const MediumDeviceHeader = () => {
                                         {category.subcategories.map((subcategory, index) => (
                                             <Link 
                                                 key={index} 
-                                                to={`/shop/sub-category/${category.categoryName.replace(/\s+/g, "-")}/${subcategory.replace(/\s+/g, "-")}`} 
+
+                                                to={`/shop/sub-category/${category.categorySKU}/${subcategory.sku}`} 
                                                 // STYLING CHANGE: text-gray-600 with hover:text-primary 
                                                 className="block text-xs text-gray-600 hover:text-primary transition-all duration-200 border-l-0 hover:border-l-2 border-transparent hover:border-primary pl-2 -ml-2"
                                             >
-                                                {subcategory}
+                                                {subcategory.name}
                                             </Link>
                                         ))}
                                     </div>

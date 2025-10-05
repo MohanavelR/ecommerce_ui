@@ -4,14 +4,25 @@ import Loader from '../../../common/Loader'
 
 const AddCategory = ({formData,setFormData,handleCategoryMethod,fielderrors,closeCategoryFormMethod,isEditMode,setIsEditMode}) => {
   const [subCategory,setSubCategory]=useState("")
-  function addSubCategoryinList(e){
-
-    e.preventDefault()
-    if(subCategory!==""){
-        setFormData({...formData,subcategories:[...formData.subcategories,subCategory]})
-         setSubCategory("")
-    }
+  function addSubCategoryinList(e) {
+  e.preventDefault();
+  
+  if (subCategory.trim() !== "") {
+    setFormData({
+      ...formData,
+      subcategories: [
+        ...formData.subcategories,
+        {
+          name: subCategory.trim(),
+          createdAt: new Date().toISOString() // Use ISO string for consistency
+        }
+      ]
+    });
+    
+    setSubCategory(""); // Clear input
   }
+}
+
    function removeInList(index){
     setFormData({...formData,subcategories:formData.subcategories.filter((v,i)=>i!=index)})
    }
@@ -106,7 +117,7 @@ const AddCategory = ({formData,setFormData,handleCategoryMethod,fielderrors,clos
                                 className="flex items-center justify-between bg-gray-100 rounded-lg p-3 border border-gray-200 shadow-sm"
                             >
                                 <p className="font-medium text-gray-700 truncate pr-4">
-                                    {sub}
+                                    {sub.name}
                                 </p>
                                 <button
                                     type="button"

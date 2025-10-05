@@ -30,7 +30,7 @@ const BreadcrumbBanner = ({ pageTitle = "About Us", currentPage = "About Us" }) 
         <div className="max-w-4xl mx-auto px-6 text-center">
           
           {/* Hero Headline - Page Title (e.g., About Us) */}
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-none">
+          <h1 className="text-4xl sm:text-5xl capitalize font-extrabold tracking-tight leading-none">
             {pageTitle}
           </h1>
 
@@ -51,13 +51,13 @@ const BreadcrumbBanner = ({ pageTitle = "About Us", currentPage = "About Us" }) 
               {/* 2. Separator */}
               <li aria-hidden="true" className="flex items-center">
                 {/* Note: Ensure you have FontAwesome (fa-solid) installed or use a plain text '>' */}
-                <i className={`fa-solid fa-angle-right mx-3 text-base ${PRIMARY_LIGHT_ACCENT}`}></i>
+                <i className={`fa-solid fa-angle-right mx-3  capitalize text-base ${PRIMARY_LIGHT_ACCENT}`}></i>
               </li>
 
               {/* 3. Active Page (Current Page) */}
               <li>
                 <span 
-                  className="font-medium text-white"
+                  className="font-medium capitalize text-white"
                   aria-current="page"
                 >
                   {currentPage}

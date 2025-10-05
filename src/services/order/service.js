@@ -5,8 +5,6 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// ----------------- Order APIs -----------------
-
 // 1️⃣ Create Order
 export const apiCreateOrder = async (data) => {
   try {

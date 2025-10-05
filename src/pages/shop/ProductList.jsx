@@ -100,7 +100,7 @@ const dispatch=useDispatch()
         <div className="grid grid-cols-1 sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8">
           {/* Using optional chaining `?.` is a good practice here too */}
           {filterProducts.map((product) => (
-            <HomeShopCard key={product.sku} product={product} />
+            <HomeShopCard width={"w-61"} key={product.sku} product={product} />
           ))}
         </div>
       </div>

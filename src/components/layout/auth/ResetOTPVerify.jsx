@@ -1,115 +1,55 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import OTPbox from "../../common/OTPbox";
+import { useSendResetOTP } from "../../../store/authSlice";
+import { MessageContext } from "../../../context/context";
+import { useDispatch } from "react-redux";
 
 const ResetOTPVerify = ({ setOTP }) => {
-  const inputRef = useRef([]);
-  const navigate = useNavigate();
-  const [load, setLoad] = useState(false);
-  const [isResending, setIsResending] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(60);
-  const [error, setError] = useState(""); // State to handle errors
 
-  // Countdown timer for resend
-  useEffect(() => {
-    if (timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [timeLeft]);
+  const [error, setError] = useState(false); 
+  const dispatch=useDispatch()
+  const { messageContextState, setMessageContextState } = useContext(MessageContext);
 
-  /* Collect OTP and submit */
-  const setOTPMethod = (e) => {
+  const setOTPMethod = (e,otp) => {
     e.preventDefault();
-    setLoad(true);
-    setError(""); // Clear any previous errors
-
-    const arrayOtp = inputRef.current.map((el) => el?.value).filter(Boolean); // Use optional chaining and filter out null/undefined values
-    const otpValue = arrayOtp.join("");
-
-    if (otpValue.length !== 6) {
-      setLoad(false);
-      setError("Please enter a 6-digit OTP.");
+    if (otp.length !== 6) { 
+      setError(false);
       return;
     }
-    
-    // In a real app, you'd send this OTP to a backend API for verification
-    console.log("OTP entered:", otpValue);
-    setOTP(otpValue);
-    setLoad(false); // Make sure to set loading state to false after the process
+    setOTP(otp);
+    setLoad(false); 
   };
 
-  /* Auto-focus next input */
-  const handleInput = (e, index) => {
-    // Trim the input value to handle any leading/trailing spaces
-    const value = e.target.value.trim();
-    if (value.length > 0 && index < inputRef.current.length - 1) {
-      inputRef.current[index + 1]?.focus();
-    }
-  };
+  function resendOtp(e){
+    e.preventDefault()
 
-  /* Backspace focus previous input */
-  const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace" && e.target.value === "" && index > 0) {
-      inputRef.current[index - 1]?.focus();
-    }
-  };
-
-  /* Resend OTP */
-  const handleResendOtp = () => {
-    setIsResending(true);
-    setError("");
-    console.log("Resending OTP...");
-
-    // Simulate API call for resending OTP
-    setTimeout(() => {
-      setIsResending(false);
-      setTimeLeft(60);
-      inputRef.current.forEach((el) => {
-        if (el) el.value = "";
-      }); // clear inputs
-      inputRef.current[0]?.focus(); // focus first box
-    }, 1000);
-  };
+    const email= sessionStorage.getItem('resetEmail')
+    if (email === '') {
+          
+        } else {
+      
+          dispatch(useSendResetOTP({ email }))
+            .then((res) => {
+              console.log(res);
+              if (res.payload?.success) {
+                setMessageContextState({ ...messageContextState, is_show: true, text: res.payload?.message, success: true });
+                sessionStorage.setItem('resetEmail', email);
+                
+              } else {
+                setMessageContextState({ ...messageContextState, is_show: true, text: res.payload?.message, success: false });
+              }
+            })
+            .catch((err) => {
+              setMessageContextState({ ...messageContextState, is_show: true, text: err?.message, success: false });
+            });
+        }
+  }
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
-      <form className="space-y-6" onSubmit={setOTPMethod}>
-        {/* OTP Input Fields */}
-        <div>
-          <label className="form-label text-center block mb-4 text-gray-700 font-medium">
-            Enter Verification Code
-          </label>
-          <div className="flex justify-center space-x-2">
-            {Array(6)
-              .fill(0)
-              .map((_, index) => (
-                <input
-                  key={index}
-                  type="text"
-                  maxLength="1"
-                  ref={(el) => (inputRef.current[index] = el)}
-                  onInput={(e) => handleInput(e, index)}
-                  onKeyDown={(e) => handleKeyDown(e, index)}
-                  className="w-12 h-12 text-center py-3 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent bg-background text-foreground placeholder-muted-foreground"
-                  autoComplete="off" // Disable autocomplete
-                />
-              ))}
-          </div>
-          {error && <p className="text-xs font-medium text-red-700 text-center mt-3">{error}</p>}
-        </div>
-
-        
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={load}
-          className="w-full btn-hero transition-transform transform hover:scale-105 disabled:bg-blue-400 disabled:cursor-not-allowed"
-        >
-          {load ? "Verifying..." : "Set OTP"}
-        </button>
-      </form>
-    </div>
+    <OTPbox error={error} resendOtp={resendOtp} onSubmit={setOTPMethod} />
+       </div>
   );
 };
 

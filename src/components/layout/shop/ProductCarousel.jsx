@@ -76,7 +76,7 @@ const ProductCarousel = ({ products, interval = 7000 }) => {
               key={`${product.id || index}-${index}`}
               style={{ flex: `0 0 ${itemWidth}%` }}
             >
-              <HomeShopCard product={product} />
+              <HomeShopCard width={"w-69"} product={product} />
             </div>
           ))}
         </div>
