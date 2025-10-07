@@ -31,7 +31,7 @@ export const getProductDetail = async (sku) => {
 
 // 1️⃣ Fetch products by category
 export const getProductsByCategory = async (category) => {
-  console.log(category)
+
   try {
     const response = await api.get(`/products/category/${category}`);
     return response.data; // { success, message, data }

@@ -14,7 +14,7 @@ import { useCreateBanner, useDeleteBanner, useGetAllBanners, useUpdateBanner } f
 
 const AdminAd_Banner = () => {
 const {banners,isLoading}=useSelector(state=>state.banner)
-console.log(banners)
+
   const [formData,setFormData]=useState(deepcopyObj(bannerFormData))
   const [openForm,setOpenForm]=useState(false)
   const [isEditMode,setIsEditMode]=useState(false)
@@ -52,7 +52,7 @@ console.log(banners)
     setFieldErrors(deepcopyObj(localError))
     if(!hasError){
       dispatch(isEditMode?useUpdateBanner({id:formData._id,formData}):useCreateBanner(formData)).then(res=>{
-         console.log(res.payload)
+         
         if(res.payload?.success){
        
         closeFormMethod()
@@ -95,14 +95,14 @@ console.log(banners)
       {
         isLoading ?<Loader/>:
         <div>
-          <div class="max-w-7xl mx-auto ">
+          <div className="max-w-7xl mx-auto ">
         {/* <!-- Header Section --> */}
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-            <h1 class="text-3xl font-bold text-gray-900">Manage Banners</h1>
+        <div className="admin-header-box">
+            <h1 className="admin-heading">Manage Banners</h1>
             
             {/* <!-- Add Category Button --> */}
-            <button onClick={openFormMethod} class="admin-add-btn">
-                <i class="fas fa-plus mr-2"></i>
+            <button onClick={openFormMethod} className="admin-add-btn">
+                <i className="fas fa-plus mr-2"></i>
                 Add Poster
             </button>
         </div>

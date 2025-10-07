@@ -5,7 +5,7 @@ import HeadingHome from './HeadingHome';
 
 const FeatureProducts = ({productList,isLoading}) => {
    const feature_products = (productList && productList.length > 0) ? productList.filter(product=> !product.isTrending && product.variations.every(v=>v.offer < 0)):[];
-  console.log(productList)
+  
   return (
     <div>
       {

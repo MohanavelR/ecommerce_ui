@@ -51,7 +51,7 @@ const Register = () => {
     if(!hasError){
      dispatch(useCreateUser(formData)).then(res=>{
       if(res.payload?.success){
-        console.log(res.payload)
+   
         setIsLoading(false)
         setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
          nav("/auth/login")
@@ -59,7 +59,7 @@ const Register = () => {
       else{
         setIsLoading(false)
         setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:false})
-        console.log(res.payload)
+        
       }
      })
     }
@@ -92,7 +92,7 @@ const Register = () => {
             <div className="flex-1">
               <label
                 htmlFor="firstname"
-                className="block text-sm font-semibold text-gray-700 mb-1"
+                className="auth-form-label"
               >
                 First Name<span className="text-red-500 ">*</span>
               </label>
@@ -106,7 +106,7 @@ const Register = () => {
                   onChange={(e)=>setFormData({...formData,firstName:e.target.value})}
                   autoComplete="given-name"
                   // IMPRESSIVE INPUTS: Clean design, strong primary focus ring/shadow, large padding
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-white text-gray-800 placeholder-gray-400 transition-all duration-300"
+                  className="auth-form-input-with-icon"
                   placeholder="John"
                 />
               </div>
@@ -119,7 +119,7 @@ const Register = () => {
             <div className="flex-1">
               <label
                 htmlFor="lastname"
-                className="block text-sm font-semibold text-gray-700 mb-1"
+                className="auth-form-label"
               >
                 Last Name
               </label>
@@ -133,7 +133,7 @@ const Register = () => {
                   onChange={(e)=>setFormData({...formData,lastName:e.target.value})}
                   autoComplete="family-name"
                   // IMPRESSIVE INPUTS: Clean design, strong primary focus ring/shadow, large padding
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-white text-gray-800 placeholder-gray-400 transition-all duration-300"
+                  className="auth-form-input-with-icon"
                   placeholder="Doe"
                 />
               </div>
@@ -144,7 +144,7 @@ const Register = () => {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-semibold text-gray-700 mb-1"
+              className="auth-form-label"
             >
               Email address<span className="text-red-500 text-lg">*</span>
             </label>
@@ -158,7 +158,7 @@ const Register = () => {
                 onChange={(e)=>setFormData({...formData,email:e.target.value})}
                 autoComplete="email"
                 // IMPRESSIVE INPUTS
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-white text-gray-800 placeholder-gray-400 transition-all duration-300"
+                className="auth-form-input-with-icon"
                 placeholder="you@example.com"
               />
               {
@@ -172,7 +172,7 @@ const Register = () => {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-semibold text-gray-700 mb-1"
+              className="auth-form-label"
             >
               Password<span className="text-red-500 text-lg">*</span>
             </label>
@@ -186,7 +186,7 @@ const Register = () => {
                 onChange={(e)=>setFormData({...formData,password:e.target.value})}
                 autoComplete="new-password"
                 // IMPRESSIVE INPUTS
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-white text-gray-800 placeholder-gray-400 transition-all duration-300"
+                className="auth-form-input-with-icon"
                 placeholder="••••••••"
               />
               {
@@ -204,7 +204,7 @@ const Register = () => {
           <div>
             <label
               htmlFor="confirm-password"
-              className="block text-sm font-semibold text-gray-700 mb-1"
+              className="auth-form-label"
             >
               Confirm Password<span className="text-red-500 text-lg">*</span>
             </label>
@@ -218,7 +218,7 @@ const Register = () => {
                 onChange={(e)=>setconfirm_password(e.target.value)}
                 autoComplete="new-password"
                 // IMPRESSIVE INPUTS
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-white text-gray-800 placeholder-gray-400 transition-all duration-300"
+                className="auth-form-input-with-icon"
                 placeholder="••••••••"
               />
               {

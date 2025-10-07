@@ -142,12 +142,7 @@
   .btn-outline {
     @apply border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-2 rounded-lg transition-all duration-300;
   }
-  .admin-add-btn{
-    @apply px-5 py-3 rounded-full bg-cyan-700 text-white font-medium hover:scale-102 duration-500 hover:bg-cyan-800 
-  }
-  .admin-form-btn{
-    @apply px-5 py-3 rounded mt-4 bg-blue-700 text-white font-medium hover:scale-102 duration-500 hover:bg-blue-800 
-  }
+  
   .btn-accent-gold {
     @apply bg-accent-gold hover:bg-accent-gold/90 text-white px-6 py-2 rounded-lg transition-all duration-300;
   }
@@ -236,6 +231,63 @@
   .hero-indicator.active {
     @apply bg-white;
   }
+/* Common */
+.fielderror{
+  @apply text-xs font-medium text-red-700 mt-1
+}
+/* ------ */
+  /* Admin */
+  .admin-form-input{
+    @apply block w-full pl-4 pr-3 py-3 border outline-none focus:border-1 focus:border-primary border-gray-300 rounded-lg  transition-all duration-200 shadow-sm
+  }
+  .admin-form-label{
+    @apply block text-sm font-medium text-gray-700 mb-1
+  }
+  .admin-form-input-with-icon{
+    @apply block w-full pl-10 pr-3 py-3 border outline-none focus:border-1 focus:border-primary border-gray-300 rounded-lg  transition-all duration-200 shadow-sm
+  }
+  .admin-form-header{
+    @apply bg-accent-foreground p-6 text-white
+  }
+  .admin-form-box{
+    @apply fixed inset-0 bg-black/60  z-[900] overflow-y-auto p-4
+  }
+  .admin-table-th{
+    @apply px-3 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider
+  }
+  .admin-table-tr{
+    @apply hover:bg-indigo-50/20 transition-colors duration-150
+  }
+  .admin-table-td{
+    @apply px-6 py-4 text-center whitespace-nowrap text-sm font-medium text-gray-700
+  }
+  .admin-table-img{
+    @apply w-24 h-16 object-cover overflow-hidden rounded-lg border border-gray-200
+  }
+  .admin-add-btn{
+    @apply px-5 py-3 rounded-full bg-cyan-700 text-white font-medium hover:scale-102 duration-500 hover:bg-cyan-800 
+  }
+  .admin-form-btn{
+    @apply px-5 py-3 rounded mt-4 bg-blue-700 text-white font-medium hover:scale-102 duration-500 hover:bg-blue-800 
+  }
+  .admin-header-box{
+    @apply flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4
+  }
+  .admin-heading{
+    @apply text-3xl font-bold text-gray-900
+  }
+  .admin-save-btn{
+    @apply px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors duration-200 flex items-center font-medium shadow-md shadow-indigo-500/50 disabled:opacity-70 disabled:cursor-not-allowed
+  }
+  /* ---- */
+  /* Auth */
+  .auth-form-input-with-icon{
+    @apply block w-full pl-10 pr-3 py-3 border outline-none focus:border-2 focus:border-primary border-gray-300 rounded-lg  transition-all duration-200 shadow-sm
+  }
+  .auth-form-label{
+    @apply block text-sm font-medium text-gray-700 mb-1
+  }
+  /* ---- */
 }
 @keyframes fadeIn {
   from { opacity: 0; }

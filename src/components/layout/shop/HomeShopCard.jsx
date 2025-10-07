@@ -4,10 +4,10 @@ import { useAddToCart, useGetCart } from "../../../store/cart";
 import { MessageContext } from "../../../context/context";
 import { useDispatch, useSelector } from "react-redux";
 
-const HomeShopCard = ({ product ,width="w-69" }) => {
+const HomeShopCard = ({ product ,width="w-65" }) => {
   const {messageContextState,setMessageContextState}=useContext(MessageContext)
   const {user}=useSelector(state=>state.auth)
-  // console.log(user)
+  
   const dispatch=useDispatch()
   // Use the first variation for initial display information
   const variation = product.variations ? product.variations[0] : null; 
@@ -51,7 +51,7 @@ async function handleAddToCart() {
 
   return (
     // Reduced size: w-72 h-[25rem] -> w-64 h-[22rem]
-    <div className={`w-${width} h-[22rem] bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-[1.03] hover:shadow-xl flex flex-col`}>
+    <div className={`${width} h-[22rem] bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-[1.03] hover:shadow-xl flex flex-col`}>
       <Link to={`/shop/products/${product?.sku}`} className="relative h-44">
         {/* Reduced image height: h-52 -> h-44 */}
         <img

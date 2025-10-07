@@ -72,9 +72,14 @@ const SubCategoryList = () => {
               <span className="text-xl font-medium text-gray-600"> Products ({productCount})</span>
             </h1>
 
-            <div className="grid grid-cols-2 gap-x-1 gap-y-4 sm:grid-cols-3 sm:gap-x-2 lg:gap-x-4 md:grid-cols-4 lg: 2xl:grid-cols-5">
+<div className="grid grid-cols-1 gap-x-1 gap-y-4 
+                sm:grid-cols-2 sm:gap-x-2 
+                md:grid-cols-3 
+                lg:grid-cols-4 
+                2xl:grid-cols-5 
+                justify-items-center">
               {subcategoryByProducts.map(product => (
-                <HomeShopCard key={product._id} product={product} />
+                <HomeShopCard width='w-[80%] md:w-64' key={product._id} product={product} />
               ))}
             </div>
           </div>

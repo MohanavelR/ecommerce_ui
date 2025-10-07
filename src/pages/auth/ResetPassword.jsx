@@ -21,7 +21,7 @@ const ResetPassword = () => {
       setError(false);
       dispatch(useSendResetOTP({ email }))
         .then((res) => {
-          console.log(res);
+          
           if (res.payload?.success) {
             setMessageContextState({ ...messageContextState, is_show: true, text: res.payload?.message, success: true });
             sessionStorage.setItem('resetEmail', email);
@@ -42,7 +42,7 @@ const ResetPassword = () => {
       {/* Main Card Container */}
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-2xl border border-gray-100">
         
-        <h2 className="text-3xl font-bold text-gray-900 text-center mb-6">
+        <h2 className="admin-heading text-center mb-6">
           Reset Password
         </h2>
 

@@ -1,4 +1,4 @@
-  // Card component to display a single metric
+
   const StateCard = ({ title, count, colorClass, iconClass }) => {
     return (
       <div className={`flex items-center p-5 rounded-xl shadow-lg transition duration-300 ease-in-out hover:shadow-xl border-l-4 ${colorClass.border} ${colorClass.bg}`}>

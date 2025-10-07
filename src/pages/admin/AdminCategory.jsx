@@ -46,7 +46,7 @@ const {messageContextState,setMessageContextState}=useContext(MessageContext)
     }
     setFieldErrors(deepcopyObj(localError))
     if(!hasError){
-      console.log(formData)
+      
       dispatch(isEditMode?useUpdateCategory({id:formData._id,formData}):useCreateCategory(formData)).then(res=>{
 if(res.payload?.success){
         closeCategoryFormMethod()
@@ -88,14 +88,14 @@ if(res.payload?.success){
     <AddCategory handleCategoryMethod={handleCategoryMethod} fielderrors={fielderrors}  closeCategoryFormMethod={closeCategoryFormMethod} formData={formData} setFormData={setFormData} isEditMode={isEditMode} setIsEditMode={setIsEditMode} />
   }
 
-    <div class="max-w-7xl mx-auto ">
+    <div className="max-w-7xl mx-auto ">
         {/* <!-- Header Section --> */}
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-            <h1 class="text-3xl font-bold text-gray-900">Manage Category</h1>
+        <div className="admin-header-box">
+            <h1 className="admin-heading">Manage Category</h1>
             
             {/* <!-- Add Category Button --> */}
-            <button onClick={openCategoryFormMethod}  class="admin-add-btn">
-                <i class="fas fa-plus mr-2"></i>
+            <button onClick={openCategoryFormMethod}  className="admin-add-btn">
+                <i className="fas fa-plus mr-2"></i>
                 Add Category
             </button>
         </div>

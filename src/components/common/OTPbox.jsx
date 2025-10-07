@@ -73,7 +73,7 @@ const OTPbox = ({onSubmit,error,resendOtp,isLoading=false}) => {
           <button 
   onClick={resendOtp} 
   disabled={!isResendOn} 
-  class="w-full text-center  font-medium transition-colors duration-200 
+  className="w-full text-center  font-medium transition-colors duration-200 
          text-blue-600 hover:text-blue-800 cursor-pointer 
          disabled:text-gray-400 disabled:cursor-default 
          disabled:hover:text-gray-400"

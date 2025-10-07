@@ -18,12 +18,12 @@ const SliderTable = ({sliders, setIsEditModeMethod, handleDeleteSlider}) => {
                     {/* Table Header: Updated padding and text style (matching ComingSoonPosterTable) */}
                     <thead className="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th scope="col" className="w-16 px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">#</th>
-                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Heading & Subtitle</th>
-                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Content</th>
-                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Image</th>
-                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
-                            <th scope="col" className="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                            <th scope="col" className="admin-table-th">#</th>
+                            <th scope="col" className="admin-table-th">Heading & Subtitle</th>
+                            <th scope="col" className="admin-table-th">Content</th>
+                            <th scope="col" className="admin-table-th">Image</th>
+                            <th scope="col" className="admin-table-th">Status</th>
+                            <th scope="col" className="admin-table-th">Actions</th>
                         </tr>
                     </thead>
                     
@@ -31,12 +31,12 @@ const SliderTable = ({sliders, setIsEditModeMethod, handleDeleteSlider}) => {
                     <tbody className="bg-white divide-y divide-gray-100">
                         {
                             sliders.map((slider, index) => ( 
-                        <tr key={slider._id} className="hover:bg-indigo-50/20 transition-colors duration-150">
+                        <tr key={slider._id} className="admin-table-tr">
                             {/* Row Number: Matching ComingSoonPosterTable style */}
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">{index + 1}</td>
+                            <td className="admin-table-td">{index + 1}</td>
                             
                             {/* Heading & Subtitle: Clear hierarchy */}
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="admin-table-td">
                                 <div className="text-base font-medium text-gray-900 leading-snug">{slider?.title}</div>
                                 <div className="text-sm text-indigo-600 mt-0.5 font-light">{slider?.subtitle}</div>
                             </td>
@@ -50,7 +50,7 @@ const SliderTable = ({sliders, setIsEditModeMethod, handleDeleteSlider}) => {
                             
                             {/* Image: Sleek, high-quality display. Updated size to match ComingSoonPosterTable's W-24 H-16 ratio */}
                             <td className="px-6 py-4">
-                                <div className='w-24 h-16 object-cover overflow-hidden rounded-lg border border-gray-200'>
+                                <div className='admin-table-img'>
                                     <img 
                                         className="w-full h-full object-cover" 
                                         src={slider?.image} 
@@ -61,7 +61,7 @@ const SliderTable = ({sliders, setIsEditModeMethod, handleDeleteSlider}) => {
                             </td>
                             
                             {/* Status: Professional, high-contrast badges (Matching ComingSoonPosterTable style) */}
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="admin-table-td">
                                 <span className={`px-3 inline-flex text-xs leading-5 font-semibold rounded-full 
                                     ${slider?.isActive 
                                         ? "bg-green-100 text-green-800" 
@@ -74,7 +74,7 @@ const SliderTable = ({sliders, setIsEditModeMethod, handleDeleteSlider}) => {
                             </td>
 
                             {/* Actions: Clean, button-based links (Matching ComingSoonPosterTable style) */}
-                            <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-3">
+                            <td className="admin-table-td text-center text-sm font-medium space-x-3">
                                 <button 
                                     onClick={()=>setIsEditModeMethod(slider)} 
                                     className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"

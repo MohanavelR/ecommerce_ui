@@ -18,17 +18,7 @@ const AddressForm = ({ closeAddressFormMethod,fieldErrors,setFieldErrors,formDat
   };
 
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevents default form submission
-    if (validateForm()) {
-      console.log('Address Form Data Submitted:', formData);
-      // In a real app, you'd make an API call here.
-      alert("Form submitted successfully! Check console for data.");
-      // closeAddressFormMethod(); // Close the modal upon successful submission
-    } else {
-      console.error('Form validation failed.');
-    }
-  };
+
 
 
   const getInputClasses = (fieldName) => {
@@ -54,7 +44,7 @@ const AddressForm = ({ closeAddressFormMethod,fieldErrors,setFieldErrors,formDat
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* 1. Title Field */}
               <div className="md:col-span-2">
-                <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-1">
+                <label htmlFor="title" className="admin-form-label">
                   Address Title <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -67,7 +57,7 @@ const AddressForm = ({ closeAddressFormMethod,fieldErrors,setFieldErrors,formDat
                   className={getInputClasses('title')}
                 />
                 {fieldErrors.title?.isRequired && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     An identifying title for the address is required.
                   </p>
                 )}
@@ -75,7 +65,7 @@ const AddressForm = ({ closeAddressFormMethod,fieldErrors,setFieldErrors,formDat
 
               {/* 2. Address Field (Full Width) */}
               <div className="md:col-span-2">
-                <label htmlFor="address" className="block text-sm font-semibold text-gray-700 mb-1">
+                <label htmlFor="address" className="admin-form-label">
                   Street Address <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -88,7 +78,7 @@ const AddressForm = ({ closeAddressFormMethod,fieldErrors,setFieldErrors,formDat
                   className={getInputClasses('address')}
                 />
                 {fieldErrors.address?.isRequired && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     Street address is required for delivery.
                   </p>
                 )}
@@ -96,7 +86,7 @@ const AddressForm = ({ closeAddressFormMethod,fieldErrors,setFieldErrors,formDat
 
               {/* 3. City Field */}
               <div>
-                <label htmlFor="city" className="block text-sm font-semibold text-gray-700 mb-1">
+                <label htmlFor="city" className="admin-form-label">
                   City <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -109,7 +99,7 @@ const AddressForm = ({ closeAddressFormMethod,fieldErrors,setFieldErrors,formDat
                   className={getInputClasses('city')}
                 />
                 {fieldErrors.city?.isRequired && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     City is required.
                   </p>
                 )}
@@ -117,7 +107,7 @@ const AddressForm = ({ closeAddressFormMethod,fieldErrors,setFieldErrors,formDat
 
               {/* 4. Pincode Field */}
               <div>
-                <label htmlFor="pincode" className="block text-sm font-semibold text-gray-700 mb-1">
+                <label htmlFor="pincode" className="admin-form-label">
                   Pincode <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -130,12 +120,12 @@ const AddressForm = ({ closeAddressFormMethod,fieldErrors,setFieldErrors,formDat
                   className={getInputClasses('pincode')}
                 />
                 {fieldErrors.pincode?.isRequired && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     Pincode is required.
                   </p>
                 )}
                 {fieldErrors.pincode?.invalidFormat && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     Please enter a valid **6-digit Pincode**.
                   </p>
                 )}
@@ -143,7 +133,7 @@ const AddressForm = ({ closeAddressFormMethod,fieldErrors,setFieldErrors,formDat
               
               {/* 5. Phone Field (Full Width) */}
               <div className="md:col-span-2">
-                <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-1">
+                <label htmlFor="phone" className="admin-form-label">
                   Phone Number <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -156,12 +146,12 @@ const AddressForm = ({ closeAddressFormMethod,fieldErrors,setFieldErrors,formDat
                   className={getInputClasses('phone')}
                 />
                 {fieldErrors.phone?.isRequired && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     Phone number is required.
                   </p>
                 )}
                 {fieldErrors.phone?.invalidFormat && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     Please enter a valid **10-digit phone number**.
                   </p>
                 )}

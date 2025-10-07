@@ -165,7 +165,7 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
               
               {/* Type */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                <label className="admin-form-label">
                   Type <span className="text-red-500">*</span>
                 </label>
                 <input 
@@ -174,10 +174,10 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
                   value={variationData.type} 
                   onChange={handleTopLevelChange} 
                   placeholder='e.g., Color, Size, Material' 
-                  className='w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900 placeholder-gray-400' 
+                  className='admin-form-input' 
                 />
                 {fieldErrors.type?.isRequired && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     Variation type (e.g., 'Color') is required
                   </p>
                 )}
@@ -185,7 +185,7 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
 
               {/* Value */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                <label className="admin-form-label">
                   Value <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -194,10 +194,10 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
                   value={variationData.value}
                   onChange={handleTopLevelChange}
                   placeholder='e.g., Red, Large'
-                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900 placeholder-gray-400"
+                  className="admin-form-input"
                 />
                 {fieldErrors.value?.isRequired && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     Variation value (e.g., 'Red') is required
                   </p>
                 )}
@@ -205,7 +205,7 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
 
               {/* Current Price (from nested price.current) */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                <label className="admin-form-label">
                   Current Price <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
@@ -217,18 +217,18 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
                     name="current" // Matches the key in price object
                     value={variationData.price.current}
                     onChange={handlePriceChange}
-                    className="w-full pl-8 pr-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900"
+                    className="admin-form-input-with-icon"
                     min="0.01"
                     step="0.01"
                   />
                 </div>
                 {fieldErrors.price.current?.isRequired && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     Current Price is required.
                   </p>
                 )}
                 {fieldErrors.price.current?.mustBePositive && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     Current Price must be greater than 0.
                   </p>
                 )}
@@ -236,7 +236,7 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
 
               {/* Original Price (from nested price.original) */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                <label className="admin-form-label">
                   Original Price
                 </label>
                 <div className="relative">
@@ -248,14 +248,14 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
                     name="original" // Matches the key in price object
                     value={variationData.price.original}
                     onChange={handlePriceChange}
-                    className="w-full pl-8 pr-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900"
+                    className="admin-form-input-with-icon"
                     min="0"
                     step="0.01"
                     placeholder='0.00'
                   />
                 </div>
                  {fieldErrors.price.original?.mustBePositive && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     Original Price cannot be negative.
                   </p>
                 )}
@@ -263,7 +263,7 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
               
               {/* Offer */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                <label className="admin-form-label">
                   Offer (%)
                 </label>
                 <div className="relative">
@@ -274,7 +274,7 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
                       max="100"
                       value={variationData.offer}
                       onChange={handleTopLevelChange}
-                      className="w-full pr-8 pl-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900"
+                      className="admin-form-input"
                       placeholder="0"
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
@@ -282,7 +282,7 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
                     </div>
                 </div>
                 {fieldErrors.offer?.mustBePositive && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     Offer must be between 0 and 100.
                   </p>
                 )}
@@ -290,7 +290,7 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
 
               {/* Stock */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">
+                <label className="admin-form-label">
                   Stock <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -299,15 +299,15 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
                   min="0"
                   value={variationData.stock}
                   onChange={handleTopLevelChange}
-                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-gray-900"
+                  className="admin-form-input"
                 />
                 {fieldErrors.stock?.isRequired && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     Stock quantity is required.
                   </p>
                 )}
                 {fieldErrors.stock?.mustBePositive && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     Stock must be 0 or greater.
                   </p>
                 )}
@@ -384,7 +384,7 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
               </div>
 
               {fieldErrors.image?.isRequired && (
-                <p className="text-xs font-medium text-red-700 mt-1">
+                <p className="fielderror">
                   Image is required
                 </p>
               )}
@@ -396,8 +396,7 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
                 type="button"
                 onClick={handleVariation}
                 disabled={isUpload}
-                className={`flex items-center justify-center px-8 py-3 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md shadow-indigo-500/50 text-base
-                ${isUpload ? 'bg-indigo-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'}`}
+                className="admin-save-btn"
               >
                 {isUpload ? <Loader /> : `${isVariationEditMode?"Update":"Add"} Variation`}
               </button>

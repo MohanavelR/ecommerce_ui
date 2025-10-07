@@ -37,7 +37,7 @@ const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const handleAddToCart = (e) => {
         e.preventDefault(); 
         if (isStock) {
-             console.log(`Adding ${product?.productName} to cart.`);
+             
         }
     };
 

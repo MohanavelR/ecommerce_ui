@@ -40,11 +40,11 @@ const UserTable = ({users}) => {
                     {/* <!-- Table Header --> */}
                     <thead className="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">#</th>
-                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
-                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Email</th>
-                            <th scope="col" className="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Current Role</th>
-                            <th scope="col" className="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Update Role</th>
+                            <th scope="col" className="admin-table-th">#</th>
+                            <th scope="col" className="admin-table-th">Name</th>
+                            <th scope="col" className="admin-table-th">Email</th>
+                            <th scope="col" className="admin-table-th">Current Role</th>
+                            <th scope="col" className="admin-table-th">Update Role</th>
                         </tr>
                     </thead>
                     
@@ -55,18 +55,18 @@ const UserTable = ({users}) => {
                     {
                         users.map(user=>(
 
-                        <tr key={user._id} className="hover:bg-indigo-50/20 transition-colors duration-150">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">{serialNumber.next().value}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                        <tr key={user._id} className="admin-table-tr">
+                            <td className="admin-table-td">{serialNumber.next().value}</td>
+                            <td className="admin-table-td">
                                 <div className="flex items-center">
                                     
                                     <div className="ml-0">
                                         <div className="text-sm font-medium text-gray-900">{user.firstName}</div>
-                                        {/* <div className="text-sm text-gray-500">ID: CAT002</div> */}
+                                      
                                     </div>
                                 </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="admin-table-td">
                                 
                                 <div className="text-sm text-gray-700">{user.email}</div>
                             </td>

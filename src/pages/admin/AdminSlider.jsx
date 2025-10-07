@@ -11,7 +11,7 @@ import { useCreateSlider, useDeleteSlider, useGetAllSliders, useUpdateSlider } f
 
 const AdminSlider = () => {
   const {sliders,isLoading}=useSelector(state=>state.slider)
-  console.log(sliders)
+
   const [openForm,setOpenForm]=useState(false)
   const [formData,setFormData]=useState(deepcopyObj(SliderData))
   const [fielderrors,setFieldErrors]=useState(deepcopyObj(deepcopyObj(SliderErrors)))
@@ -52,9 +52,9 @@ const AdminSlider = () => {
     }
     setFieldErrors(deepcopyObj(localError))
         if(!hasError){
-          console.log(formData)
+          
           dispatch(isEditMode?useUpdateSlider({id:formData._id,formData}):useCreateSlider(formData)).then(res=>{
-            console.log(res.payload)
+         
     if(res.payload?.success){
             closeFormMethod()
             dispatch(useGetAllSliders())
@@ -89,14 +89,14 @@ const AdminSlider = () => {
       {
         isLoading ?<Loader/>:
         <div>
-          <div class="max-w-7xl mx-auto ">
+          <div className="max-w-7xl mx-auto ">
         {/* <!-- Header Section --> */}
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-            <h1 class="text-3xl font-bold text-gray-900">Manage Sliders</h1>
+        <div className="admin-header-box">
+            <h1 className="admin-heading">Manage Sliders</h1>
             
             {/* <!-- Add Category Button --> */}
-            <button onClick={openFormMethod} class="admin-add-btn">
-                <i class="fas fa-plus mr-2"></i>
+            <button onClick={openFormMethod} className="admin-add-btn">
+                <i className="fas fa-plus mr-2"></i>
                 Add Slider
             </button>
         </div>

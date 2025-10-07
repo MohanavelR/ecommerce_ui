@@ -18,7 +18,6 @@ export const uploadImageToCloudinary = async (file, onProgress) => {
       },
     }
   );
-//    console.log(res)
-//     console.log(res.data.data.url)
+
   return res.data.data.url; // backend should return { url: "..." }
 };

@@ -1,156 +1,139 @@
 import React, { useState, useEffect } from 'react';
-import HeadingHome from './HeadingHome';
 
-// Sample Testimonial Data (kept the same)
-const testimonials = [
+const ALL_TESTIMONIALS = [
   {
     id: 1,
-    name: "Aisha Sharma",
-    review: "Absolutely love the quality and design of the products! Shipping was incredibly fast, and customer service was top-notch. Highly recommend this store to everyone.",
     rating: 5,
+    quote: "“But don't just take our word for it – hear what our best satisfied customers have to say! From homeowners to businesses, our clients have experienced the difference our services make in their daily lives. Discover how we've helped businesses thrive client.”",
+    name: "Shakib Mahmud",
+    title: "Happy Client",
+    imgSrc: "assets/img/all-images/testimonial-img2.png"
   },
   {
     id: 2,
-    name: "Ben Carter",
-    review: "I was skeptical at first, but the 'Premium Wireless Headphones' exceeded my expectations. Fantastic sound and comfortable for long use. Will definitely be a returning customer.",
     rating: 4,
+    quote: "“The service quality exceeded all my expectations. The team was professional, prompt, and resolved our complex electrical issues quickly and efficiently. Highly recommend their expertise for any scale of work!”",
+    name: "Olivia Chen",
+    title: "Business Owner",
+    imgSrc: "assets/img/all-images/testimonial-img1.png" // Placeholder
   },
   {
     id: 3,
-    name: "Chloe Lee",
-    review: "My go-to store for electronics. The 'Smart Home Hub' I purchased works flawlessly. The prices are competitive, and the product descriptions are very accurate.",
     rating: 5,
-  },
-  {
-    id: 4,
-    name: "David Chen",
-    review: "Great selection and easy checkout process. Had a small issue with my order, but their support team resolved it quickly and efficiently. Impressed!",
-    rating: 4,
-  },
-  {
-    id: 5,
-    name: "Eva Martinez",
-    review: "The 'Vintage Camera' arrived beautifully packaged and works perfectly. It feels nostalgic and robust. A true gem! Thanks for such a unique find.",
-    rating: 5,
+    quote: "“Exceptional customer support! They walked me through the process of upgrading my smart home system, and everything works flawlessly now. A truly reliable and trustworthy company in the energy sector.”",
+    name: "James Rodriguez",
+    title: "Homeowner",
+    imgSrc: "assets/img/all-images/testimonial-img3.png" // Placeholder
   },
 ];
 
-const TestimonialsCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const carouselInterval = 7000;
-  
-  // Placeholder for your bg-primary and text-primary colors
-  const PRIMARY_BG = 'bg-indigo-600';
-  const PRIMARY_TEXT = 'text-indigo-700';
+const TestimonialsSection = () => {
+  // 1. STATE: Track which testimonial is currently active
+  const [activeIndex, setActiveIndex] = useState(0);
+  const currentTestimonial = ALL_TESTIMONIALS[activeIndex];
 
+  // 2. EFFECT: Implement the automatic right-to-left transition every 5 seconds
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => 
-        (prevIndex + 1) % testimonials.length
+    const interval = setInterval(() => {
+      // Logic for right-to-left (next slide) effect
+      setActiveIndex((prevIndex) => 
+        (prevIndex + 1) % ALL_TESTIMONIALS.length
       );
-    }, carouselInterval);
+    }, 5000); // 5000 milliseconds = 5 seconds
 
-    return () => clearInterval(timer);
-  }, [testimonials.length, carouselInterval]);
+    // Cleanup function to stop the timer when the component unmounts
+    return () => clearInterval(interval);
+  }, []); // Empty dependency array ensures this runs only once on mount
 
-  const currentTestimonial = testimonials[currentIndex];
-
-  // Helper to generate star rating icons
-  const renderStars = (rating) => {
-    const stars = [];
-    for (let i = 0; i < 5; i++) {
-      stars.push(
-        <i 
-          key={i} 
-          className={`fas fa-star ${i < rating ? 'text-yellow-500' : 'text-gray-300'}`} 
-        ></i>
-      );
-    }
-    return <div className="flex text-sm mb-2">{stars}</div>; 
-  };
-
-  // Helper to generate a random background color for the initial avatar
-  const getRandomBackgroundColor = (name) => {
-    const colors = [
-      'bg-blue-100', 'bg-green-100', 'bg-purple-100', 'bg-pink-100', 'bg-red-100'
-    ];
-    const charCode = name.charCodeAt(0);
-    return colors[charCode % colors.length];
-  };
+  // 3. TRANSITION CLASS: We use a key change on the card to force a re-render 
+  // with a CSS transition class for the "slide" look.
 
   return (
-    <section className="py-16 md:py-20"> 
-      <div className=" mx-auto px-4 sm:px-6 lg:px-8">
-         <div className="text-center mb-12">
-            <HeadingHome heading="Happy Customers Say" primaryText="What" />
-            <p className="mt-2 text-xl text-gray-600 max-w-3xl mx-auto">
-              Hear what our valued clients have to say about their experience
-            </p>
-        </div>
-
-        {/* Testimonial Card Container */}
-        {/* We use the white background for the whole card now */}
-        <div className="rounded-2xl shadow-xl bg-white p-8 md:p-10 relative"> 
+    <div className="py-20 lg:py-32 bg-gray-100">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-wrap -mx-4">
           
-          {/* Testimonial Content: Avatar (Left) and Text (Right) */}
-          <div 
-            key={currentTestimonial.id}
-            className="flex items-start transition-opacity duration-700 ease-in-out"
-          >
-            
-            {/* 1. Reviewer Initial "Avatar" - Enhanced as the primary visual marker */}
-            <div className={`flex-shrink-0 w-50 h-50 rounded  flex items-center justify-center mr-6 
-               bg-primary text-accent font-bold text-9xl shadow-lg`}>
-                {currentTestimonial.name.charAt(0).toUpperCase()}
+          {/* Left Column (Testimonial Header) */}
+          <div className="w-full lg:w-4/12 px-4 mb- lg:mb-0">
+            <div className="sticky top-10">
+              <h5 className="inline-block bg-primary/20 text-primary text-sm font-semibold px-4 py-1 rounded-full uppercase tracking-wide mb-1">Testimonials</h5>
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 leading-tight mb-6">
+                Powerful Praise Hear from Our Customers
+              </h2>
+              <p className="text-gray-600 mb-8">
+                We take pride in providing top-notch electricity services that exceed our customers' expectations.
+              </p>
+              {/* Button Area */}
+              {/* <div className="mt-8">
+                <a 
+                  href="testimonials.html" 
+                  className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transition duration-300"
+                >
+                  View all reviews <i className="fa-solid fa-arrow-right ml-2 text-sm"></i>
+                </a>
+              </div> */}
             </div>
+          </div>
 
-            {/* 2. Content Block (Name, Rating, Review) - Right Side */}
-            <div className="flex-grow pt-2">
+          {/* Right Column (Testimonial Slides) */}
+          <div className="w-full lg:w-8/12 px-4">
+            <div className="max-w-3xl relative h-auto min-h-[350px]">
+              
+              {/* Testimonial Card with Transition */}
+              {/* The 'key' forces a re-render, enabling the transition class below. */}
+              <div 
+                key={currentTestimonial.id}
+                className="
+                  bg-white p-8 rounded-lg shadow-xl border-t-4 border-blue-600 
+                  transition-all duration-700 ease-in-out transform 
+                  animate-slideIn
+                "
+              >
+                <div className="mb-6 relative">
+                  {/* Rating Stars */}
+                  <ul className="flex space-x-1 text-yellow-400 mb-4">
+                    {Array.from({ length: currentTestimonial.rating }).map((_, i) => (
+                      <li key={i}><i className="fa-solid fa-star"></i></li>
+                    ))}
+                  </ul>
+                  
+                  {/* Quote Icon */}
+                  <div className="absolute top-0 right-0 text-gray-200 text-6xl opacity-75">
+                    <i className="fa-solid fa-quote-right"></i>
+                  </div>
+                  
+                  {/* Quote Text */}
+                  <p className="text-lg italic text-gray-700 relative z-10">{currentTestimonial.quote}</p>
+                </div>
                 
-                {/* Quote Icon (Optional but stylish) */}
-                <i className={`fas fa-quote-left text-xl ${PRIMARY_TEXT} opacity-75 mb-2`}></i>
-
-                {/* Review Text (italic) */}
-                <p className="text-base text-gray-700 leading-relaxed italic mb-4">
-                    "{currentTestimonial.review}"
-                </p>
-                
-                {/* Reviewer Name */}
-                <p className="text-lg font-extrabold text-gray-900">
-                    {currentTestimonial.name}
-                </p>
-
-                {/* Star Rating */}
-                {renderStars(currentTestimonial.rating)}
-                
+                {/* Author Info */}
+                <div className="flex items-center mt-6 pt-4 border-t border-gray-200">
+                  <div className="w-16 flex font-bold bg-primary text-accent rounded-full text-3xl justify-center items-center h-16 mr-4">
+                    {currentTestimonial.name[0]}
+                  </div>
+                  <div>
+                    <h1  className="text-xl font-bold text-gray-800 hover:text-blue-600">
+                      {currentTestimonial.name}
+                    </h1>
+                    <p className="text-sm text-gray-500">{currentTestimonial.title}</p>
+                  </div>
+                </div>
+              </div>
+              
+           
             </div>
           </div>
         </div>
-
-        {/* Carousel Dots - primary color for active, gray for inactive */}
-        <div className="flex justify-center mt-8 space-x-2">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentIndex ? "bg-primary": 'bg-gray-300'
-              }`}
-              aria-label={`Go to testimonial ${index + 1}`}
-            ></button>
-          ))}
-        </div>
-
-        {/* Call to Action Button - Primary button style */}
-        {/* <div className="text-center mt-10">
-          <button className={`inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-md text-white ${PRIMARY_BG} hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200`}>
-            Read All Reviews
-            <i className="fas fa-arrow-right ml-2 -mr-1"></i>
-          </button>
-        </div> */}
       </div>
-    </section>
+    </div>
   );
 };
 
-export default TestimonialsCarousel;
+export default TestimonialsSection;
+
+/* NOTE: For the visual "slide-in" effect, you would typically define a 
+  CSS animation (e.g., using @keyframes for 'animate-slideIn' that 
+  translates the element from off-screen to its final position). 
+  Since external CSS/keyframes are not provided, the 'transition-all' 
+  class provides a simple fade/change effect between slides.
+*/

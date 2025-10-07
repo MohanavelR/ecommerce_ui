@@ -28,7 +28,7 @@ const AddBannerForm = ({
     });
     const file = files[0];
     const uploadedUrl = await uploadImageToCloudinary(file, (percent) => {
-      console.log(percent);
+      
       setprogressbar({
         ...progressbar,
         is_show: true,
@@ -54,21 +54,19 @@ const AddBannerForm = ({
   };
 
   return (
-    // Centered the modal vertically and horizontally more reliably
-    <div className="fixed inset-0 bg-black/60  p-3 z-[900] overflow-y-auto">
+
+    <div className="admin-form-box">
       <div className="container mx-auto max-w-2xl">
         {/* */}
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden transition-all duration-300 transform scale-100">
-          {/* !!! PRESERVED ORIGINAL HEADER STYLES !!! */}
-          <div className="bg-accent-foreground p-6 text-white">
+
+          <div className="admin-form-header">
             <div className="flex items-center">
               <div>
                 <h1 className="text-2xl font-bold">
                   {isEditMode ? "Update" : "Add New"} Poster
                 </h1>
-                {/* <p class="text-indigo-100 mt-1">
-                  Create a category with subcategories
-                </p> */}
+         
               </div>
             </div>
           </div>
@@ -79,7 +77,7 @@ const AddBannerForm = ({
             <div>
               <label
                 htmlFor="title"
-                className="block text-sm font-semibold text-gray-700 mb-2"
+                className="admin-form-label"
               >
                 Title <span className="text-red-500">*</span>
               </label>
@@ -96,13 +94,13 @@ const AddBannerForm = ({
                     setFormData({ ...formData, title: e.target.value })
                   }
                   // Updated input style
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 shadow-sm"
+                  className="admin-form-input-with-icon"
                   placeholder="Enter Title"
                 />
               </div>
 
               {fielderrors.title && (
-                <p className="text-xs font-medium text-red-700 mt-1">
+                <p className="fielderror">
                   Title is required
                 </p>
               )}
@@ -112,7 +110,7 @@ const AddBannerForm = ({
             <div>
               <div className="mt-4">
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="admin-form-label">
                     Banner Image
                   </label>
                   <div id="imagesContainer" className="space-y-3">
@@ -184,7 +182,7 @@ const AddBannerForm = ({
                 }
 
                 {fielderrors.image && (
-                  <p className="text-xs font-medium text-red-700 mt-1">
+                  <p className="fielderror">
                     Image is Required
                   </p>
                 )}
@@ -226,7 +224,7 @@ const AddBannerForm = ({
                 onClick={handleFormMethod}
                 type="submit"
                 // Kept original primary button styling
-                className={`px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors duration-200 flex items-center font-medium shadow-md shadow-indigo-500/50 ${isUpload ? 'opacity-70 cursor-not-allowed' : ''}`}
+                className="admin-save-btn"
                 disabled={isUpload}
               >
                 <i className="fas fa-save mr-2"></i>

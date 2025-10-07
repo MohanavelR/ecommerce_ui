@@ -8,7 +8,7 @@ import StateCard from '../../components/layout/admin/tables/StateCard'
 const AdminOrders = () => {
   const {orderList,isLoading}=useSelector(state=>state.order)
 
-  console.log(orderList)
+  
   const [openOrderDetail,setOpenOrderDetail]=useState(false)
   const [orderId,setOrderId]=useState(null)
   const pendingOrders=(orderList && orderList.length > 0)? orderList.filter(order=>order?.orderStatus==="Pending").length:0
@@ -83,15 +83,15 @@ const AdminOrders = () => {
       {
         isLoading ?<Loader/>:
         <div>
-          <div class="max-w-7xl mx-auto ">
+          <div className="max-w-7xl mx-auto ">
         {/* <!-- Header Section --> */}
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-            <h1 class="text-3xl font-bold text-gray-900">Manage Orders</h1>
+        <div className="admin-header-box">
+            <h1 className="admin-heading">Manage Orders</h1>
         </div>
     </div>
     <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4' >
       {
-        statsConfig.map((state)=><StateCard title={state.title} count={state.count} iconClass={state.iconClass} colorClass={state.colorClass}  />)
+        statsConfig.map((state)=><StateCard title={state.title} count={state.count} iconclassName={state.iconClass} colorclassName={state.colorClass}  />)
       }
     </div>
   <AdminOrderTable openOrderDetailMethod={openOrderDetailMethod} orders={orderList} isLoading={isLoading} />

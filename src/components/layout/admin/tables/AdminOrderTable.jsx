@@ -14,7 +14,7 @@ export const OrderStatusBadge = ({ status }) => {
   } else if (status === 'Shipped') {
     colorClasses = 'bg-blue-100 text-blue-800';
     iconColor = 'text-blue-500';
-    iconClass = 'fas fa-truck'; // Changed to truck icon for 'Shipped'
+    iconClass = 'fas fa-truck'; 
   } else if (status === 'Processing' || status === 'Pending') {
     colorClasses = 'bg-yellow-100 text-yellow-800';
     iconColor = 'text-yellow-500';
@@ -44,19 +44,17 @@ const AdminOrderTable = ({ orders,isLoading,openOrderDetailMethod }) => {
   return (
     <div className="mt-6">
       <div className="overflow-x-auto">
-        {/* Use max-w-full to ensure it fills the container up to the max width allowed by its parent */}
         <div className="inline-block min-w-full bg-white shadow-xl rounded-xl border border-gray-200">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                {/* Simplified header titles and focused on padding */}
-                <th className="py-3 pl-6 pr-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Order ID</th>
-                <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
-                <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Email</th>
-                <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>
-                <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total Amount</th>
-                <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
-                <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">Items</th>
+                <th className="admin-table-th">Order ID</th>
+                <th className="admin-table-th">Name</th>
+                <th className="admin-table-th">Email</th>
+                <th className="admin-table-th">Date</th>
+                <th className="admin-table-th">Total Amount</th>
+                <th className="admin-table-th">Status</th>
+                <th className="admin-table-th">Items</th>
                 {/* REMOVED the redundant 'Product' column */}
                 <th className="relative py-3 pr-6 pl-3"><span className="sr-only">Actions</span></th>
               </tr>
@@ -73,7 +71,7 @@ const AdminOrderTable = ({ orders,isLoading,openOrderDetailMethod }) => {
                   : 'bg-gray-50 hover:bg-gray-100 transition duration-150';
 
                 return (
-                  <tr key={order._id} className={rowClasses}>
+                  <tr key={order._id} className="admin-table-tr">
                     
                     {/* Order ID: Bolder and more prominent */}
                     <td className="py-4 pl-6 pr-3 whitespace-nowrap text-sm font-bold text-indigo-700">

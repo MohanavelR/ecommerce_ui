@@ -48,7 +48,7 @@ const {posters,isLoading}=useSelector(state=>state.comingsoon)
     }
     setFieldErrors(deepcopyObj(localError))
     if(!hasError){
-      console.log(formData)
+      
       dispatch(isEditMode?useUpdateComingSoon({id:formData._id,formData}):useCreateComingSoon(formData)).then(res=>{
 if(res.payload?.success){
         closeFormMethod()
@@ -91,14 +91,14 @@ if(res.payload?.success){
       {
         isLoading ?<Loader/>:
         <div>
-          <div class="max-w-7xl mx-auto ">
+          <div className="max-w-7xl mx-auto ">
         {/* <!-- Header Section --> */}
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-            <h1 class="text-3xl font-bold text-gray-900">Manage Coming soon Poster</h1>
+        <div className="admin-header-box">
+            <h1 className="admin-heading">Manage Coming soon Poster</h1>
             
             {/* <!-- Add Category Button --> */}
-            <button onClick={openFormMethod} class="admin-add-btn">
-                <i class="fas fa-plus mr-2"></i>
+            <button onClick={openFormMethod} className="admin-add-btn">
+                <i className="fas fa-plus mr-2"></i>
                 Add Poster
             </button>
         </div>

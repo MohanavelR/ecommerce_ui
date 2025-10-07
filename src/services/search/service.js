@@ -6,7 +6,7 @@ const api = axios.create({
 
 
 export const apiGetSearchProducts = async (keyword) => {
-  console.log("key",keyword)
+
   try {
     const response = await api.get(`/search/${keyword}`);
     return response.data;

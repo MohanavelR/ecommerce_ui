@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Component for a single collapsible category block
-const MobileCategoryBlock = ({ category }) => {
+const MobileCategoryBlock = ({ category,navigatePath }) => {
     const [isExpanded, setIsExpanded] = useState(false);
-
+    
+    
 
     return (
         <div className="border-b border-gray-100 last:border-b-0">
@@ -14,7 +15,7 @@ const MobileCategoryBlock = ({ category }) => {
                 onClick={() => setIsExpanded(!isExpanded)}
                 className={`w-full flex justify-between  hover:text-primary items-center py-3 px-1 font-medium transition-all duration-500`}
             >
-                <Link  to={`/shop/category/${category.categorySKU}`}  className=' hover:text-primary'>{category.categoryName}</Link>
+                <button onClick={()=>navigatePath(`/shop/category/${category.categorySKU}`)}   className=' hover:text-primary'>{category.categoryName}</button>
                 <svg 
                     className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`} 
                     fill="none" 
@@ -32,13 +33,13 @@ const MobileCategoryBlock = ({ category }) => {
             >
                 <div className="pl-5 pb-3 space-y-2 transition-all duration-500">
                     {category.subcategories && category.subcategories.map((subcategory, index) => (
-                        <Link 
+                        <button 
                             key={index} 
-                           to={`/shop/sub-category/${category.categorySKU}/${subcategory.name}`}
+                            onClick={()=>navigatePath(`/shop/sub-category/${category.categorySKU}/${subcategory.sku}`)}
                             className={`block text-sm text-gray-600 hover:text-primary transition-all duration-500`}
                         >
-                            {subcategory}
-                        </Link>
+                            {subcategory.name}
+                        </button>
                     ))}
                 </div>
             </div>
@@ -47,8 +48,13 @@ const MobileCategoryBlock = ({ category }) => {
 };
 
 
-const MobileViewHeader = ({isOpen}) => {
+const MobileViewHeader = ({isOpen,setOpenMenu}) => {
     const {categoryList} = useSelector(state => state.category);
+    const nav=useNavigate()
+    function navigatePath(path){
+       nav(path)
+       setOpenMenu(false)
+    }
   return (
     <>
 {
@@ -75,7 +81,7 @@ const MobileViewHeader = ({isOpen}) => {
                 (categoryList && categoryList.length > 0) ?
                 categoryList.map((category, index) => (
                    
-                    <MobileCategoryBlock key={index} category={category} />
+                    <MobileCategoryBlock navigatePath={navigatePath}  key={index} category={category} />
                 ))
                 : <p className='py-3 px-1 text-sm text-gray-400'>No Categories Found.</p>
             }

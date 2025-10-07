@@ -123,10 +123,10 @@ const OrderDetail = ({closeOrderDetailMethod}) => {
 
   const { subtotal, discount, totalItems } = calculateTotals(cartItems);
   const shippingCost=0
-  console.log(cartItems)
+  
   const total = subtotal + shippingCost;
 function cancelorder(id){
-  console.log(id)
+  
   if(confirm("Are sure to Cancel Order?")){
     dispatch(useCancelOrder({orderId:id})).then(res=>{
       if(res.payload?.success){
@@ -214,7 +214,11 @@ function cancelorder(id){
               total={total}
             />
       </div>
-       <button  className='mt-3 w-full py-3 bg-red-500 text-white hover:bg-red-800 ' onClick={()=>cancelorder(orderDetails._id)}>Cancel order</button>
+      {
+       orderStatus !=="cancelled" &&
+          <button  className='mt-3 w-full py-3 bg-red-500 text-white hover:bg-red-800 ' onClick={()=>cancelorder(orderDetails._id)}>Cancel order</button>
+      }
+    
       <button  className='mt-3 w-full py-3 bg-blue-700 text-white hover:bg-blue-900 ' onClick={closeOrderDetailMethod}>Close</button>
     </div>
   );

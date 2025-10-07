@@ -31,7 +31,7 @@ export const apiOfGetsubCategoryByCategory = async(categorySku)=>{
     }
 }
 export const apiOfUpdateCategory = async(id,data)=>{
-    console.log(data)
+
     try {
         const response=await api.put(`update/${id}`,data)
          return  response.data

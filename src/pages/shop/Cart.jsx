@@ -65,7 +65,7 @@ const Cart = () => {
       })
     }
   } 
-console.log(isAuthenticated)
+
   
   return (
     // NEW WRAPPER: Centers the content in a max-width container with clean background

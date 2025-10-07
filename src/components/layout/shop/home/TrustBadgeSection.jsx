@@ -39,21 +39,21 @@ const TrustBadgesSection = () => {
         
         {/* Badge 1: Quality and Assurance */}
         <TrustBadge
-          iconClass="fas fa-medal" 
+          iconclassName="fas fa-medal" 
           title="Certified Quality"
           description="Every product is rigorously inspected to meet the highest industry standards."
         />
         
         {/* Badge 2: Security and Trust */}
         <TrustBadge
-          iconClass="fas fa-shield-alt"
+          iconclassName="fas fa-shield-alt"
           title="Safe & Secure"
           description="Your payment and personal data are protected by 256-bit encryption."
         />
         
         {/* Badge 3: Customer Service */}
         <TrustBadge
-          iconClass="fas fa-handshake"
+          iconclassName="fas fa-handshake"
           title="Satisfaction Guaranteed"
           description="Dedicated 24/7 support and hassle-free returns within 30 days."
         />

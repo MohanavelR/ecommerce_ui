@@ -11,13 +11,11 @@ const HomeCategory = ({categories}) => {
         
         {/* Header */}
         <HeadingHome heading={"By Category"} primaryText='Shop' />
-
-        {/* Categories Grid - Focus on clean lines and visibility */}
         <div className="grid mt-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           { categories&& categories.length > 0 && categories.map((category) => (
             <Link 
               key={category.categoryName} 
-              to={`/shop/${category.categoryName}`} 
+              to={`/shop/category/${category.categorySKU}`} 
               className="group block p-5 rounded-lg bg-white 
                          shadow-sm hover:shadow-lg transition duration-200 
                          border-l-4 border-transparent hover:border-primary 

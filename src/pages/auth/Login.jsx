@@ -37,7 +37,7 @@ const Login = () => {
     if(!hasError){
      dispatch(useLogin(formData)).then(res=>{
       if(res.payload?.success){
-        console.log(res.payload)
+        
         setIsLoading(false)
         setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
       }
@@ -72,7 +72,7 @@ const Login = () => {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-semibold text-gray-700 mb-1"
+              className="auth-form-label"
             >
               Email address<span className="text-red-500 text-lg">*</span>
             </label>
@@ -84,7 +84,7 @@ const Login = () => {
               type="email"
               required
               // 3. IMPRESSIVE INPUTS: Clean design, strong primary focus ring/shadow, large padding
-              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-white text-gray-800 placeholder-gray-400 transition-all duration-300"
+              className="auth-form-input-with-icon"
               placeholder="you@example.com"
               value={formData.email}
               onChange={(e)=>setFormData({...formData,email:e.target.value})}
@@ -98,7 +98,7 @@ const Login = () => {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-semibold text-gray-700 mb-1"
+              className="auth-form-label"
             >
               Password<span className="text-red-500 text-lg">*</span>
             
@@ -111,7 +111,7 @@ const Login = () => {
               type={showPassword ? "text" : "password"}
               required
               // 3. IMPRESSIVE INPUTS: Clean design, strong primary focus ring/shadow, large padding
-              className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-white text-gray-800 placeholder-gray-400 transition-all duration-300"
+              className="auth-form-input-with-icon"
               placeholder="••••••••"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}

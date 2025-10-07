@@ -17,11 +17,11 @@ const CategoryTable = ({categoryList,handleDeleteCategory,setIsEditModeMethod}) 
                     {/* */}
                     <thead className="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">#</th>
-                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Category Name</th>
-                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Subcategories</th>
+                            <th scope="col" className="admin-table-th">#</th>
+                            <th scope="col" className="admin-table-th">Category Name</th>
+                            <th scope="col" className="admin-table-th">Subcategories</th>
                             {/* <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Created At</th> */}
-                            <th scope="col" className="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                            <th scope="col" className="admin-table-th">Actions</th>
                         </tr>
                     </thead>
                     
@@ -29,24 +29,24 @@ const CategoryTable = ({categoryList,handleDeleteCategory,setIsEditModeMethod}) 
                     <tbody className="bg-white divide-y divide-gray-100">
                         {
                             categoryList && (categoryList.length > 0 ?categoryList.map(category=>(
-                                 <tr key={category._id} className="hover:bg-indigo-50/20 transition-colors duration-150">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">{page.next().value}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex items-center">
+                                 <tr key={category._id} className="admin-table-tr">
+                            <td className="admin-table-td">{page.next().value}</td>
+                            <td className="admin-table-td">
+                                <div className="flex items-center justify-center">
                                     <div className="ml-0">
-                                        <div className="text-sm font-medium text-gray-900 capitalize">{category?.categoryName}</div>
+                                        <div className="text-sm text-center font-medium text-gray-900 capitalize">{category?.categoryName}</div>
                                     </div>
                                 </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="admin-table-td">
                                 <div className="text-sm font-medium text-gray-900">{category?.subcategories.length}</div>
                                 <div className="text-xs text-gray-500">{category?.subcategories.length === 1?"subcategory":"subcategories"}</div>
                             </td>
-                            {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {/* <td className="admin-table-td text-sm text-gray-500">
                                 <div>Jan 15, 2024</div>
                                 <div>10:30 AM</div>
                             </td> */}
-                            <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-3">
+                            <td className="admin-table-td text-center text-sm font-medium space-x-3">
                                 <button 
                                     onClick={()=>setIsEditModeMethod(category)} 
                                     className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"

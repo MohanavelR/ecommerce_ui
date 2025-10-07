@@ -49,7 +49,7 @@ async function handlechangePassword(){
   }
    dispatch(useResetPassword(data)).then(res=>{
         if(res.payload?.success){
-          console.log(res.payload)
+          
           sessionStorage.removeItem("resetEmail")
           navigate("/auth/login")
           setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})

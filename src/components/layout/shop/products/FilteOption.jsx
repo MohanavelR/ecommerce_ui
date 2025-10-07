@@ -14,7 +14,7 @@ const FilteOption = ({catogoryOptions,handleFilter, filters}) => {
                             <input 
                                 type="checkbox" 
                                 name="category"
-                                 checked={ filters?.['category']?.includes(value.categoryName) || false} onChange={() => handleFilter("category", value.categoryName)}
+                                 checked={ filters?.['category']?.includes(value.categorySKU) || false} onChange={() => handleFilter("category", value.categorySKU)}
                                 className="mr-2  text-blue-600 rounded border-gray-300 focus:ring-blue-500 h-4 w-4" 
                             />
                             {value.categoryName}

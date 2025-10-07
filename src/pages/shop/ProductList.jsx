@@ -13,7 +13,7 @@ import HomeShopCard from '../../components/layout/shop/HomeShopCard'
 
 const ProductList = () => {
   const {filterProducts,isLoading,count}=useSelector(state=>state.filterProducts)
-  console.log(filterProducts)
+
 const [filters, setFilters] = useState({})
 const [sort, setSort] = useState(null)
 const location=useLocation()
@@ -52,7 +52,6 @@ const dispatch=useDispatch()
   useEffect(() => {
     if (filters !== null && sort !== null) {
       dispatch(useGetFilterProducts({ filterParams: filters, sortParams: sort }))
-      console.log(filters,sort)
     }
     dispatch(useGetFilterProducts())
   }, [sort, filters])
@@ -97,10 +96,10 @@ const dispatch=useDispatch()
     (filterProducts && filterProducts.length > 0) ? (
 
       <div className='relative'>
-        <div className="grid grid-cols-1 sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8">
+        <div className="grid grid-cols-1 justify-items-center sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8">
           {/* Using optional chaining `?.` is a good practice here too */}
           {filterProducts.map((product) => (
-            <HomeShopCard width={"w-61"} key={product.sku} product={product} />
+            <HomeShopCard width={"w-[80%] md:w-61"} key={product.sku} product={product} />
           ))}
         </div>
       </div>

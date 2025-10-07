@@ -9,11 +9,12 @@ import ServicePromiseBar from '../../components/layout/shop/home/ServicePromiseB
 import TrustBadgesSection from '../../components/layout/shop/home/TrustBadgeSection'
 import TestimonialsCarousel from '../../components/layout/shop/home/TestimonialsCarousel'
 import HeadingHome from '../../components/layout/shop/home/HeadingHome'
+import AboutSection from '../../components/layout/shop/about/AboutSection'
 const Home = () => {
   const {categoryList,isLoading}=useSelector(state=>state.category)
    const {productList,isLoading:productLoading}=useSelector(state=>state.adminProducts)
-  const {searchProductList,count}=useSelector(state=>state.searchProducts)
-  console.log(searchProductList,count)
+
+  
   return (
     <div >
    <ShopCarousel/>
@@ -22,7 +23,9 @@ const Home = () => {
    <OfferProducts productList={productList} isLoading={productLoading}  />
    <TrendingProducts productList={productList} isLoading={productLoading}  />
    <FeatureProducts productList={productList} isLoading={productLoading}  />
-   <TrustBadgesSection/>
+ 
+   <AboutSection/>
+   
    <TestimonialsCarousel/>
     </div>
   )

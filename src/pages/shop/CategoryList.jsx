@@ -78,7 +78,7 @@ const CategoryList = () => {
       {/* Category Heading */}
 
       {/* Product Grid */}
-      <div className="grid grid-cols-2 gap-x-1 gap-y-4 sm:grid-cols-3 sm:gap-x-2 lg:gap-x-4 md:grid-cols-4 lg: 2xl:grid-cols-5">
+      <div className="grid grid-cols-1 gap-x-1 gap-y-4 sm:grid-cols-2 sm:gap-x-2 lg:gap-x-4 md:grid-cols-3 lg: lg:grid-cols-4">
         
         {categoryByProducts.map(product => (
           <HomeShopCard 

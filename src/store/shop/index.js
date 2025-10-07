@@ -61,7 +61,12 @@ export const useGetCategorySubProducts = createAsyncThunk(
 const shopProductSlice = createSlice({
   name: 'shopProducts',
   initialState,
-  reducers: {},
+  reducers: {
+    resetFilterProducts:(state)=>{
+       state.filterProducts=[]
+       state.count=0
+    }
+  },
   extraReducers: (builder) => {
     builder
       // Get All Products
@@ -119,5 +124,5 @@ const shopProductSlice = createSlice({
       });
   }
 });
-
+const {resetFilterProducts}=shopProductSlice.actions
 export default shopProductSlice.reducer;

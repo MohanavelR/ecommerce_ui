@@ -23,7 +23,7 @@ export const apiChangeName = async (formData) => {
 // Request OTP for email change
 // ------------------------
 export const apiSendOtpForEmailChange = async (formData) => {
-    console.log(formData)
+
   try {
     const response = await api.post("/send-otp", formData, {
       withCredentials: true,

@@ -26,7 +26,7 @@ export const useLogin = createAsyncThunk('/auth/login', async (formData, thunkAP
 // Check Auth and Get Data main Method
 export const useAuth = createAsyncThunk('/auth/checkauth', async (_, thunkAPI) => {
   try {
-    console.log("working thunk")
+
     return await apiOfGetCurrentUser();
   } catch (error) {
     return thunkAPI.rejectWithValue(error);

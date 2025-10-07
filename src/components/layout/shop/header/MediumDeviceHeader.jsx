@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const MediumDeviceHeader = () => {
     const {categoryList,isLoading,count} = useSelector(state => state.category);
-  console.log(categoryList)
+  
     
   return (
     <>
@@ -87,7 +87,7 @@ const MediumDeviceHeader = () => {
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out"></span>
             </Link>
 
-               <Link to="/" className="text-gray-700 hover:text-primary transition-colors duration-300 relative group">
+               <Link to="/shop/contact-us" className="text-gray-700 hover:text-primary transition-colors duration-300 relative group">
                 Contact Us
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out"></span>
             </Link>

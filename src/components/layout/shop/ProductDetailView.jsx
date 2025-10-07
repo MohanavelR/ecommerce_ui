@@ -207,7 +207,7 @@ useEffect(() => {
           <div>
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">
+                <h1 className="admin-heading">
                   {product?.productName}
                 </h1>
               </div>
@@ -230,7 +230,7 @@ useEffect(() => {
           {/* Price and Stock */}
           <div className="space-y-2">
             <div className="flex items-baseline">
-              <span className="text-3xl font-bold text-gray-900">
+              <span className="admin-heading">
                 {currentVariation?.price?.currency}
                 {currentVariation?.price?.current}
               </span>

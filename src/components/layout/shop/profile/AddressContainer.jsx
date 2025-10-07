@@ -8,10 +8,11 @@ import { addressFormData } from '../../../../utils/formDataObj'
 import { addressError } from '../../../../utils/errorObj'
 import { MessageContext } from '../../../../context/context'
 import AddressForm from '../forms/AddressForm'
-import { useCreateAddress, useUpdateAddress } from '../../../../store/address'
+import { useCreateAddress, useGetAddressesByUser, useUpdateAddress } from '../../../../store/address'
 const AddressContainer = ({isSeletedMode,setIdOfAddress}) => {
   const dispatch=useDispatch()
   const {addressList,isLoading}=useSelector(state=>state.address)
+  const {user}=useSelector(state=>state.auth)
   const [formData,setFormData]=useState(deepcopyObj(addressFormData))
   const [fieldErrors,setFieldErrors]=useState(deepcopyObj(addressError))
   const [isEditMode,setIsEditMode]=useState(false)
@@ -79,8 +80,8 @@ const AddressContainer = ({isSeletedMode,setIdOfAddress}) => {
           openAddressForm &&
        <AddressForm formData={formData} handleAddressSubmit={handleAddressSubmit} fieldErrors={fieldErrors} setFieldErrors={setFieldErrors} setFormData={setFormData} closeAddressFormMethod={closeAddressFormMethod} />
         } 
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-bold text-gray-900">Delivery Addresses <span className='text-gray-500 text-sm'>(Maximum 3 allowed)</span> </h2>
+                <div className="flex justify-between flex-wrap items-center mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900">Delivery Addresses <span className='text-gray-500 whitespace-nowrap text-sm'>(Maximum 3 allowed)</span> </h2>
                     <button 
                         onClick={openAddressFormMethod}
                         disabled={addressList.length >=3}

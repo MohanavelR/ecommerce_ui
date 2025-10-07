@@ -148,7 +148,7 @@ const AddProductForm = ({
         <div className="bg-white min-h-screen relative py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Header */}
-            <div className="mb-8 text-center "> {/* Added relative for CloseBtn positioning */}
+            <div className="mb-8 text-center "> 
               <h1 className="text-3xl md:text-4xl font-extrabold text-teal-600 mb-2">
                 {isEditMode ? "Update Product" : "Add New Product"}
               </h1>
@@ -175,7 +175,7 @@ const AddProductForm = ({
                     <div>
                       <label
                         htmlFor="productName"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        className="admin-form-label"
                       >
                         Product Name <span className="text-red-500">*</span>
                       </label>
@@ -183,7 +183,7 @@ const AddProductForm = ({
                         type="text"
                         id="productName"
                         name="productName"
-                        className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition"
+                        className="admin-form-input"
                         value={productData.productName}
                         placeholder="e.g., Wireless Headphones"
                         onChange={(e) =>
@@ -194,7 +194,7 @@ const AddProductForm = ({
                         }
                       />
                       {fieldErrors.productName?.isRequired && (
-                        <p className="mt-1 text-xs font-medium text-red-700">
+                        <p className="fielderror">
                           Product Name is required.
                         </p>
                       )}
@@ -204,7 +204,7 @@ const AddProductForm = ({
                     <div>
                       <label
                         htmlFor="category"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        className="admin-form-label"
                       >
                         Category <span className="text-red-500">*</span>
                       </label>
@@ -218,12 +218,12 @@ const AddProductForm = ({
                             category: e.target.value,
                           })
                         }
-                        className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition appearance-none pr-8"
+                        className="admin-form-input"
                       >
-                        <option value="">Select a category</option>
+                        <option className="font-medium" value="">Select a category</option>
                         {categoryList && categoryList.length > 0 ? (
                           categoryList.map((category, index) => (
-                            <option key={index} value={category.categorySKU}>
+                            <option className="font-medium" key={index} value={category.categorySKU}>
                               {category.categoryName}
                             </option>
                           ))
@@ -232,7 +232,7 @@ const AddProductForm = ({
                         )}
                       </select>
                       {fieldErrors.category?.isRequired && (
-                        <p className="mt-1 text-xs font-medium text-red-700">
+                        <p className="fielderror0">
                           Category is required.
                         </p>
                       )}
@@ -242,12 +242,12 @@ const AddProductForm = ({
                     <div>
                       <label
                         htmlFor="subCategory"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        className="admin-form-label"
                       >
                         Subcategory <span className="text-red-500">*</span>
                       </label>
                       <select
-                        className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition appearance-none pr-8"
+                        className="admin-form-input"
                         value={productData.subCategory}
                         onChange={(e) =>
                           setProductData({
@@ -261,7 +261,7 @@ const AddProductForm = ({
                         <option value="">Select a subcategory</option>
                         {subcategories && subcategories.length > 0 ? (
                           subcategories.map((subcategory, index) => (
-                            <option value={subcategory.sku} key={index}>
+                            <option className="font-medium" value={subcategory.sku} key={index}>
                               {subcategory.name}
                             </option>
                           ))
@@ -270,7 +270,7 @@ const AddProductForm = ({
                         )}
                       </select>
                       {fieldErrors.subCategory?.isRequired && (
-                        <p className="mt-1 text-xs font-medium text-red-700">
+                        <p className="fielderror">
                           Subcategory is required.
                         </p>
                       )}
@@ -279,7 +279,7 @@ const AddProductForm = ({
                     <div>
                       <label
                         htmlFor="brand"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        className="admin-form-label"
                       >
                         Brand
                       </label>
@@ -294,11 +294,11 @@ const AddProductForm = ({
                             brand: e.target.value,
                           })
                         }
-                        className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition"
+                        className="admin-form-input"
                         placeholder="e.g., Sony"
                       />
                     {fieldErrors.brand?.isRequired && (
-                        <p className="text-xs font-medium text-red-700 mt-1">
+                        <p className="fielderror">
                          Brand is Required
                         </p>
                       )}
@@ -312,7 +312,7 @@ const AddProductForm = ({
                   </h2>
                   {/* Description */}
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="admin-form-label">
                       Description <span className="text-red-500">*</span>
                     </label>
                     <div id="descriptionContainer" className="space-y-4">
@@ -321,7 +321,7 @@ const AddProductForm = ({
                           name="description"
                           rows="3"
                           value={listInformation.des}
-                          className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition"
+                          className="admin-form-input"
                           placeholder="Enter a detailed product description."
                           onChange={(e) =>
                             setListInformation({
@@ -343,7 +343,7 @@ const AddProductForm = ({
                         <i className="fas fa-plus-circle mr-2"></i> Add Description
                       </button>
                       {fieldErrors.description?.isRequired && (
-                        <p className="text-xs font-medium text-red-700 mt-1">
+                        <p className="fielderror">
                           At least one description item is required.
                         </p>
                       )}
@@ -375,7 +375,7 @@ const AddProductForm = ({
                   </div>
                   {/* Features */}
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="admin-form-label">
                       Features
                     </label>
                     <div id="featuresContainer" className="space-y-4">
@@ -383,7 +383,7 @@ const AddProductForm = ({
                         <input
                           type="text"
                           name="features"
-                          className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition"
+                          className="admin-form-input"
                           value={listInformation.feature}
                           onChange={(e) =>
                             setListInformation({
@@ -432,7 +432,7 @@ const AddProductForm = ({
                   </div>
                   {/* Additional Info */}
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="admin-form-label">
                       Additional Information
                     </label>
                     <div id="additionalInfoContainer" className="space-y-4">
@@ -440,7 +440,7 @@ const AddProductForm = ({
                         <input
                           type="text"
                           name="additionalInfo"
-                          className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 shadow-sm focus:ring-teal-500 focus:border-teal-500 transition"
+                          className="admin-form-input"
                           value={listInformation.addInfo}
                           onChange={(e) =>
                             setListInformation({
@@ -683,7 +683,7 @@ const AddProductForm = ({
                   <button
                     type="button"
                     onClick={handleCreateProduct} // Use the new wrapped handler
-                    className="order-1 px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition shadow-lg shadow-teal-500/50 disabled:cursor-progress disabled:bg-teal-400"
+                    className="admin-save-btn"
                     disabled={isUpload || productLoading}
                   >
                     {isUpload || productLoading ? (

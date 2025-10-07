@@ -48,7 +48,7 @@ function resendOtp(e){
 
      dispatch(useVerifyAccount({otp, email: userEmail})).then(res=>{
              if(res.payload?.success){
-               console.log(res.payload)
+              
                sessionStorage.removeItem("isSubmitted")
                setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
                 setIsLoading(false)

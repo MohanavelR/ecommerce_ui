@@ -9,12 +9,12 @@ const CartItemsContainer = ({cartItems}) => {
   const {messageContextState,setMessageContextState}=useContext(MessageContext)
   const {user}=useSelector(state=>state.auth)
   const cartItemsList = cartItems?.items || [];
-  console.log(cartItemsList)
+  
   const dispatch=useDispatch()
   // Handler functions
   const handleUpdateQuantity = (productId, variationKey,quantity,action) => {
     dispatch(useUpdateCart({productId,variationKey,quantity,action,userId:user.id})).then(res=>{
-      console.log(res.payload)
+  
       if(res.payload?.success){
         dispatch(useGetCart(user.id))
       }

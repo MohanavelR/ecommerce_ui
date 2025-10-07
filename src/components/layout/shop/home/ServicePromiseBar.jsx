@@ -37,20 +37,20 @@ const ServicePromiseBar = () => {
       <div className="grid grid-cols-1 mx-auto gap-8 md:grid-cols-3">
         
         <ImpressiveFeatureItem
-          iconClass="fas fa-shipping-fast" 
+          iconclassName="fas fa-shipping-fast" 
           title="Fast & Free Shipping"
           description="Free shipping on all US orders above $50. No hidden fees."
         />
         
         <ImpressiveFeatureItem
-          iconClass="fas fa-headset"
+          iconclassName="fas fa-headset"
           title="Premium Support"
           description="Contact our expert team 24 hours a day, 7 days a week."
         />
         
         {/* Re-introducing the third item to match the 3-column grid structure */}
         <ImpressiveFeatureItem
-          iconClass="fas fa-shield-alt"
+          iconclassName="fas fa-shield-alt"
           title="100% Secure Payment"
           description="We ensure your payment details are always encrypted and safe."
         />

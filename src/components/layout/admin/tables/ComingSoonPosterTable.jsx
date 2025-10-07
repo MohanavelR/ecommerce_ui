@@ -16,11 +16,11 @@ const ComingSoonPosterTable = ({comingsoon,handleDeletePoster,setIsEditModeMetho
                     {/* <!-- Table Header: Updated padding and text style --> */}
                     <thead className="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">#</th>
-                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Title</th>
-                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Image Preview</th>
-                            <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
-                            <th scope="col" className="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                            <th scope="col" className="admin-table-th">#</th>
+                            <th scope="col" className="admin-table-th">Title</th>
+                            <th scope="col" className="admin-table-th">Image Preview</th>
+                            <th scope="col" className="admin-table-th">Status</th>
+                            <th scope="col" className="admin-table-th">Actions</th>
                         </tr>
                     </thead>
                     
@@ -28,9 +28,9 @@ const ComingSoonPosterTable = ({comingsoon,handleDeletePoster,setIsEditModeMetho
                     <tbody className="bg-white divide-y divide-gray-100">
                         {
                             comingsoon && (comingsoon.length > 0 ?comingsoon.map(data=>(
-                                 <tr key={data._id} className="hover:bg-indigo-50/20 transition-colors duration-150">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">{page.next().value}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                                 <tr key={data._id} className="admin-table-tr">
+                            <td className="admin-table-td">{page.next().value}</td>
+                            <td className="admin-table-td">
                                 <div className="flex items-center">
                                     {/* Removed unnecessary image/icon placeholder divs */}
                                     <div className="ml-4">
@@ -40,7 +40,7 @@ const ComingSoonPosterTable = ({comingsoon,handleDeletePoster,setIsEditModeMetho
                             </td>
                             {/* Image Preview Column: Applied modern styling and error handler */}
                             <td className="px-6 py-4">
-                                <div className='w-24 h-16 object-cover overflow-hidden rounded-lg border border-gray-200'>
+                                <div className='admin-table-img'>
                                    <img 
                                       src={data?.image} 
                                       alt={`Poster: ${data?.title}`} 
@@ -50,7 +50,7 @@ const ComingSoonPosterTable = ({comingsoon,handleDeletePoster,setIsEditModeMetho
                                 </div>
                             </td>
                             {/* Status Badge: Applied consistent styling */}
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="admin-table-td">
                                 <p className={`px-3 inline-flex text-xs leading-5 font-semibold rounded-full 
                                     ${data?.isActive?"bg-green-100 text-green-800":"bg-red-100 text-red-800"}  `}>
 
@@ -61,7 +61,7 @@ const ComingSoonPosterTable = ({comingsoon,handleDeletePoster,setIsEditModeMetho
                             </td>
 
                             {/* Action Buttons: Applied consistent styling */}
-                            <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-3">
+                            <td className="admin-table-td text-center text-sm font-medium space-x-3">
                                 <button 
                                     onClick={()=>setIsEditModeMethod(data)} 
                                     className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"

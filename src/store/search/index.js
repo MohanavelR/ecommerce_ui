@@ -41,7 +41,7 @@ const searchProductSlice=createSlice({
               .addCase(useGetAllSearchProducts.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.searchProductList =action.payload.success? action?.payload?.data:[];
-                console.log(action?.payload?.data)
+              
                  state.count =action.payload.success? action?.payload?.count:0
               })
               .addCase(useGetAllSearchProducts.rejected, (state) => {

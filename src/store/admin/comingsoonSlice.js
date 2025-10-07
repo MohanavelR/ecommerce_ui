@@ -135,7 +135,6 @@ const comingSoonSlice = createSlice({
         state.isLoading = false;
       });
 
-    // ✅ Delete product
     builder
       .addCase(useDeleteComingSoon.pending, (state) => {
         state.isLoading = true;

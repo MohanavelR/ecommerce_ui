@@ -1,41 +1,36 @@
 import { Link } from "react-router-dom";
-
+import {useSelector} from "react-redux"
 const ShopFooter = () => {
   const quickLinks = [
-    { name: "About Us", href: "/about" },
-    { name: "Shop", href: "/shop" },
-    { name: "New Arrivals", href: "/shop?sort=newest" },
-    { name: "Best Sellers", href: "/shop?sort=bestselling" },
-    { name: "Discounts", href: "/shop?discount=true" },
+    { name: "Home", href: "/shop/home" },
+    { name: "Shop", href: "/shop/products" },
+    { name: "About Us", href: "/shop/about-us" },
+    { name: "Contact Us", href: "/shop/contact-us" },
+     { name: "FAQ", href: "/shop/faq" },
+   
+  ];
+    const legalLinks = [
+    { name: "Privacy Policy", href: "/privacy" },
+    { name: "Terms & Conditions", href: "/terms" },
+    { name: "Cookie Policy", href: "/cookies" },
   ];
 
   // NOTE: This array is now long again (21 items for testing the dynamic split)
-  const categories = [
-
-     // 14
-   // 18
-    { name: "Office Supplies", href: "/shop?category=office" },     // 19
-    { name: "Collectibles", href: "/shop?category=collectibles" },  // 20
-    { name: "Virtual Reality", href: "/shop?category=vr" },    
-     { name: "Appliances", href: "/shop?category=appliances" },
-    { name: "DIY & Tools", href: "/shop?category=diy" },
-    { name: "Footwear", href: "/shop?category=footwear" },
-  
-  ];
-  
+const {categoryList,isLoading}=useSelector(state=>state.category)
 const PER_COLUMN_LIST = 8;
-const totalSizeOfCategory = categories.length;
+const totalSizeOfCategory =(categoryList && categoryList.length)  || 0;
 
 // This calculates the minimum number of columns needed.
 const countOfColumns = Math.ceil(totalSizeOfCategory / PER_COLUMN_LIST);
 
+
   return (
     <footer className="bg-accent-foreground">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-5">
           
           {/* Brand Section ... (no change) */}
-          <div className="space-y-4">
+          <div className="space-y-4 col-span-2">
             {/* ... (Brand content) ... */}
             <div className="flex items-center space-x-2">
               <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
@@ -68,8 +63,8 @@ const countOfColumns = Math.ceil(totalSizeOfCategory / PER_COLUMN_LIST);
           </div>
 
           {/* Quick Links ... (no change) */}
-          <div className="space-y-4 max-w-45">
-            <h4 className="text-lg font-semibold text-white">Quick Links</h4>
+          <div className="space-y-4 ">
+            {/* <h4 className="text-lg font-semibold text-white">Quick Links</h4> */}
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.name}>
@@ -85,7 +80,7 @@ const countOfColumns = Math.ceil(totalSizeOfCategory / PER_COLUMN_LIST);
           </div>
 
           {/* Categories - DYNAMIC SPLIT APPLIED HERE */}
-          <div className={`space-y-4 col-span-${totalSizeOfCategory>=8?2:1}`}>
+          <div className={`space-y-4 ${countOfColumns>1?countOfColumns>2?"col-span-4":"col-span-3":"col-span-2"}`}>
             <h4 className="text-lg font-semibold text-white">Categories</h4>
             
             <div 
@@ -100,7 +95,7 @@ const countOfColumns = Math.ceil(totalSizeOfCategory / PER_COLUMN_LIST);
                   const startIndex = colIndex * PER_COLUMN_LIST;
                   
                   // Slice the categories array to get the items for this column
-                  const columnCategories = categories.slice(
+                  const columnCategories = categoryList.slice(
                     startIndex,
                     startIndex + PER_COLUMN_LIST
                   );
@@ -108,12 +103,12 @@ const countOfColumns = Math.ceil(totalSizeOfCategory / PER_COLUMN_LIST);
                   return (
                     <ul key={colIndex} className="space-y-2">
                       {columnCategories.map((link) => (
-                        <li key={link.name}>
+                        <li key={link.categoryName}>
                           <Link 
-                            to={link.href} 
+                            to={`/shop/category/${link.categorySKU}`} 
                             className="text-indigo-100 hover:text-white transition-colors duration-200 text-sm"
                           >
-                            {link.name}
+                            {link.categoryName}
                           </Link>
                         </li>
                       ))}
@@ -152,7 +147,7 @@ const countOfColumns = Math.ceil(totalSizeOfCategory / PER_COLUMN_LIST);
             © 2024 EcoShop. All rights reserved.
           </p>
           <div className="flex space-x-4">
-            {/* {legalLinks.map((link) => (
+            {legalLinks.map((link) => (
               <Link 
                 key={link.name}
                 to={link.href} 
@@ -160,7 +155,7 @@ const countOfColumns = Math.ceil(totalSizeOfCategory / PER_COLUMN_LIST);
               >
                 {link.name}
               </Link>
-            ))} */}
+            ))}
           </div>
         </div>
       </div>

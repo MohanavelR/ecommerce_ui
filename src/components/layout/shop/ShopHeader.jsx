@@ -173,7 +173,7 @@ const ShopHeader = () => {
           </div>
         </div>
         {/* Mobile View Header */}
-        <MobileViewHeader isOpen={openMenu} toggleMenu={() => setOpenMenu(!openMenu)} />
+        <MobileViewHeader setOpenMenu={setOpenMenu} isOpen={openMenu} toggleMenu={() => setOpenMenu(!openMenu)} />
       </div>
     </header>
   );

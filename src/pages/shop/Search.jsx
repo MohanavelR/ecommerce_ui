@@ -21,13 +21,15 @@ function handleSearch(keyword){
     if(keyword.trim().length >= 3){
     setTimeout(()=>{
         dispatch(useGetAllSearchProducts (keyword.trim())).then(res=>{
-            console.log("res",res)
+           
         })
     },1000)
+
 }
 else{
-     setSearchTerm(keyword)
+    setSearchTerm(keyword)
     dispatch(resetSearchProducts())
+    // dispatch(resetSearchProducts())
 }
 }
 
@@ -77,10 +79,15 @@ else{
                     </p>
                 </header>
                 
-                <div className="grid grid-cols-2 gap-x-1 gap-y-4 sm:grid-cols-3 sm:gap-x-2 lg:gap-x-4 md:grid-cols-4 lg: 2xl:grid-cols-5">
+                <div className="grid grid-cols-1 gap-x-1 gap-y-4 
+                sm:grid-cols-2 sm:gap-x-2 
+                md:grid-cols-3 
+                lg:grid-cols-4 
+                2xl:grid-cols-5 
+                justify-items-center">
                     {(searchProductList && searchProductList.length > 0) ? (
                         searchProductList.map(product => (
-                            <HomeShopCard key={product._id} product={product} />
+                            <HomeShopCard width='w-[90%] md:w-61' key={product._id} product={product} />
                         ))
                     ) : <NotSearch/>}
                 </div>

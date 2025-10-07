@@ -19,7 +19,6 @@ const AddSliderForm = ({
   });
   const [isUpload, setUpload] = useState(false);
 
-
   const handleImage = async (files) => {
     setUpload(true);
     setprogressbar({
@@ -54,15 +53,13 @@ const AddSliderForm = ({
     }, 3000);
   };
 
-
-
   return (
     // Backdrop remains black/gray overlay, modal centered
-    <div className="fixed inset-0 p-5 bg-black/60  z-[900] overflow-y-auto">
+    <div className="admin-form-box">
       <div className="container mx-auto max-w-4xl">
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
           {/* Header - PRESERVED ORIGINAL STYLES */}
-          <div className="bg-accent-foreground p-6 text-white">
+          <div className="admin-form-header">
             <h1 className="text-2xl font-bold">
               {isEditMode ? "Update" : "Add New"} Slider
             </h1>
@@ -72,61 +69,67 @@ const AddSliderForm = ({
           <form className="p-6 space-y-6" onSubmit={(e) => e.preventDefault()}>
             {/* Title */}
             <div>
-              <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="title" className="admin-form-label">
                 Title <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 id="title"
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
                 // Updated input styling
-                className="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                className="admin-form-input"
                 placeholder="Enter Title"
               />
               {fielderrors.title && (
-                <p className="text-xs font-medium text-red-700 mt-1">Title is Required</p>
+                <p className="fielderror">Title is Required</p>
               )}
             </div>
 
             {/* Subtitle */}
             <div>
-              <label htmlFor="subtitle" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="subtitle" className="admin-form-label">
                 Subtitle
               </label>
               <input
                 type="text"
                 id="subtitle"
                 value={formData.subtitle}
-                onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, subtitle: e.target.value })
+                }
                 // Updated input styling
-                className="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                className="admin-form-input"
                 placeholder="Enter Subtitle"
               />
             </div>
 
             {/* Description */}
             <div>
-              <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="description" className="admin-form-label">
                 Description
               </label>
               <textarea
                 id="description"
                 rows="3"
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 // Updated textarea styling
-                className="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                className="admin-form-input"
                 placeholder="Enter a brief description for the slider"
               />
               {fielderrors.description && (
-                <p className="text-xs font-medium text-red-700 mt-1">Description is Required</p>
+                <p className="fielderror">Description is Required</p>
               )}
             </div>
 
             {/* Image Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="admin-form-label">
                 Image <span className="text-red-500">*</span>
               </label>
               <input
@@ -146,7 +149,12 @@ const AddSliderForm = ({
                     : "bg-gray-50 border-gray-300 hover:bg-gray-100"
                 }`}
               >
-                <svg className="w-12 h-12 mb-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-12 h-12 mb-2 text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -155,14 +163,19 @@ const AddSliderForm = ({
                   />
                 </svg>
                 <p className="mb-1 text-sm text-gray-500">
-                  <span className="font-semibold">Click to upload</span> or drag and drop
+                  <span className="font-semibold">Click to upload</span> or drag
+                  and drop
                 </p>
-                <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                <p className="text-xs text-gray-500">
+                  PNG, JPG, GIF up to 10MB
+                </p>
               </label>
 
               {progressbar.is_show && (
                 <div className="mt-3">
-                  <p className="text-end text-sm font-medium text-gray-600">{progressbar.text}</p>
+                  <p className="text-end text-sm font-medium text-gray-600">
+                    {progressbar.text}
+                  </p>
                   <Progress width={progressbar.percentage} />
                 </div>
               )}
@@ -170,13 +183,19 @@ const AddSliderForm = ({
               {formData.image && (
                 // Added border and shadow to preview image
                 <div className="w-40 mt-3 p-2 border border-gray-300 rounded-lg shadow-sm">
-                  <p className="text-xs font-medium text-gray-600 mb-1">Preview:</p>
-                  <img src={formData.image} alt="preview" className="rounded w-full h-auto object-cover" />
+                  <p className="text-xs font-medium text-gray-600 mb-1">
+                    Preview:
+                  </p>
+                  <img
+                    src={formData.image}
+                    alt="preview"
+                    className="rounded w-full h-auto object-cover"
+                  />
                 </div>
               )}
 
               {fielderrors.image && (
-                <p className="text-xs font-medium text-red-700 mt-1">Image is required</p>
+                <p className="fielderror">Image is required</p>
               )}
             </div>
 
@@ -186,11 +205,16 @@ const AddSliderForm = ({
                 type="checkbox"
                 id="active"
                 checked={formData.isActive}
-                onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                onChange={(e) =>
+                  setFormData({ ...formData, isActive: e.target.checked })
+                }
                 // Updated checkbox style to match primary color
                 className="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
               />
-              <label htmlFor="active" className="text-sm font-semibold text-gray-700">
+              <label
+                htmlFor="active"
+                className="text-sm font-semibold text-gray-700"
+              >
                 Is Active (Show slider on homepage)
               </label>
             </div>
@@ -209,14 +233,11 @@ const AddSliderForm = ({
                 type="submit" // Changed to type="submit" for better form practice, though onClick handles logic
                 onClick={onSubmitMethod}
                 // Kept original primary button styling
-                className={`px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors duration-200 flex items-center font-medium shadow-md shadow-indigo-500/50 ${isUpload ? 'opacity-70 cursor-not-allowed' : ''}`}
+                className="admin-save-btn"
                 disabled={isUpload}
               >
                 <i className="fas fa-save mr-2"></i>
-                 {
-                               isUpload ?<Loader/>:
-                               isEditMode ? "Update " : "Save " 
-                              } 
+                {isUpload ? <Loader /> : isEditMode ? "Update " : "Save "}
               </button>
             </div>
           </form>
