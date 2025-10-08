@@ -1,5 +1,6 @@
 import React from 'react';
 import Loader from '../../../common/Loader';
+import EyeIcon from '../../../common/Icons/EyeIcon';
 // Assuming the use of Font Awesome for icons
 
 // --- OrderStatusBadge Component (Unchanged, as it's already well-designed) ---
@@ -55,7 +56,6 @@ const AdminOrderTable = ({ orders,isLoading,openOrderDetailMethod }) => {
                 <th className="admin-table-th">Total Amount</th>
                 <th className="admin-table-th">Status</th>
                 <th className="admin-table-th">Items</th>
-                {/* REMOVED the redundant 'Product' column */}
                 <th className="relative py-3 pr-6 pl-3"><span className="sr-only">Actions</span></th>
               </tr>
             </thead>
@@ -64,12 +64,6 @@ const AdminOrderTable = ({ orders,isLoading,openOrderDetailMethod }) => {
             <tbody className="divide-y divide-gray-100">
               {orders.map((order, index) => {
                 const itemsCount = order.cartItems?.length || 0;
-                
-                // Add a striped background based on the index
-                const rowClasses = index % 2 === 0 
-                  ? 'bg-white hover:bg-gray-50 transition duration-150' 
-                  : 'bg-gray-50 hover:bg-gray-100 transition duration-150';
-
                 return (
                   <tr key={order._id} className="admin-table-tr">
                     
@@ -90,24 +84,24 @@ const AdminOrderTable = ({ orders,isLoading,openOrderDetailMethod }) => {
                     </td>
                     
                     {/* Total: Large, bold, and green for finance visibility */}
-                    <td className="px-3 py-4 whitespace-nowrap text-lg font-medium text-primary">
+                    <td className="admin-table-td">
                       ₹{order.totalAmount?.toLocaleString('en-IN')}
                     </td>
                     
                     {/* Status: Using the Badge component */}
-                    <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="admin-table-td">
                       <OrderStatusBadge status={order.orderStatus} />
                     </td>
                     
                     {/* Items: Hidden on small screens to save space */}
-                    <td className="px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-700 hidden sm:table-cell">
+                    <td className="admin-table-td">
                       {itemsCount} {itemsCount > 1 ? 'items' : 'item'}
                     </td>
                     
                     {/* Action Button: Focused on the right */}
-                    <td className="py-4 pl-3 pr-6 text-right whitespace-nowrap text-sm font-medium">
-                      <button onClick={()=>openOrderDetailMethod(order?._id)} className="text-indigo-600 hover:text-indigo-900 transition duration-150 p-1 rounded">
-                        View Details
+                    <td className="admin-table-td whitespace-nowrap">
+                      <button onClick={()=>openOrderDetailMethod(order?._id)} className="text-white bg-blue-600 whitespace-nowrap hover:bg-indigo-900 transition duration-300 px-3 py-1 rounded ">
+                        <EyeIcon/>
                       </button>
                     </td>
                   </tr>

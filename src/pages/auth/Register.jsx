@@ -75,17 +75,17 @@ const Register = () => {
   return (
     // IMPRESSIVE CARD: High contrast white background, prominent shadow, subtle hover lift (shadow-2xl, hover:shadow-primary/30).
     // Width increased to max-w-lg (512px)
-    <div className="bg-white rounded-3xl shadow-2xl p-8  max-w-md w-full mx-auto border border-gray-100 transition-all duration-300 hover:shadow-primary/30 transform hover:-translate-y-1 my-8">
-     <div className="text-center mb-10">
+    <div className="auth-form-box">
+     <div className="text-center mb-5">
         {/* IMPRESSIVE HEADER: Gradient text for strong visual appeal */}
-        <h2 className="text-4xl font-extrabold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-teal-600 tracking-tight">
+        <h2 className="auth-heading">
           Create Account
         </h2>
         <p className="text-gray-500 text-lg">Join EcoShop for a sustainable future</p>
       </div>
 
-      <div className="sm:mx-auto sm:w-full">
-        <form onSubmit={handlesubmit} className="space-y-6">
+      <div className="sm:mx-auto  sm:w-full ">
+        <form onSubmit={handlesubmit} className="space-y-3">
           
           {/* First Name / Last Name Group: Using flex-1 to distribute width equally */}
           <div className="flex space-x-4">
@@ -234,7 +234,7 @@ const Register = () => {
               onClick={handlesubmit}
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-primary to-green-600 text-white font-bold rounded-xl py-3.5 text-lg shadow-lg shadow-primary/40 hover:shadow-xl hover:shadow-primary/50 transition-all duration-300 transform hover:scale-[1.01] flex justify-center items-center h-14 disabled:opacity-70 disabled:shadow-none"
+              className="auth-btn"
             >
               {
                 isLoading ?<Loader/>:"Create Account"
@@ -245,7 +245,7 @@ const Register = () => {
         </form>
 
         {/* IMPRESSIVE FOOTER: Clear separation and bold link */}
-        <div className="px-6 py-4 mt-8 border-t border-gray-200 text-center">
+        <div className="px-6 py-4 mt-4 border-t border-gray-200 text-center">
           <p className="text-center text-sm text-gray-500">
           Already have an account?{" "}
           <Link 

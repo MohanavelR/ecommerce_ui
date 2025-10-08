@@ -1,111 +1,165 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import Badge from '../../../common/Badge';
+
+const THREE_DAYS_AGO = Date.now() - 3 * 24 * 60 * 60 * 1000;
 
 // Component for a single collapsible category block
-const MobileCategoryBlock = ({ category,navigatePath }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
-    
-    
+const MobileCategoryBlock = ({ category, navigatePath }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
 
-    return (
-        <div className="border-b border-gray-100 last:border-b-0">
-            {/* Category Header (Clickable Toggle) */}
-            <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className={`w-full flex justify-between  hover:text-primary items-center py-3 px-1 font-medium transition-all duration-500`}
+  // Check if category itself or any subcategory is new
+  const isCategoryNew =
+    new Date(category.createdAt).getTime() > THREE_DAYS_AGO ||
+    (category.subcategories &&
+      category.subcategories.some(
+        (sub) => new Date(sub.createdAt).getTime() > THREE_DAYS_AGO
+      ));
+
+  return (
+    <div className="border-b border-gray-100 last:border-b-0">
+      {/* Category Header */}
+      <div className="flex justify-between items-center py-3 px-1">
+        <button
+          onClick={() => navigatePath(`/shop/category/${category.categorySKU}`)}
+          className="flex items-center font-medium hover:text-primary transition-all duration-500"
+        >
+          <span className="relative inline-block">
+            {category.categoryName}
+            {isCategoryNew && (
+              <Badge className="ml-2" text="New" />
+            )}
+          </span>
+        </button>
+
+        {/* Expand/Collapse Arrow */}
+        {category.subcategories && category.subcategories.length > 0 && (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="p-1"
+          >
+            <svg
+              className={`w-4 h-4 transition-transform duration-300 ${
+                isExpanded ? 'rotate-180' : 'rotate-0'
+              }`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-                <button onClick={()=>navigatePath(`/shop/category/${category.categorySKU}`)}   className=' hover:text-primary'>{category.categoryName}</button>
-                <svg 
-                    className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`} 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+        )}
+      </div>
+
+      {/* Subcategories */}
+      {category.subcategories && category.subcategories.length > 0 && (
+        <div
+          className={`overflow-hidden transition-all duration-500 ease-in-out ${
+            isExpanded ? 'max-h-96' : 'max-h-0'
+          }`}
+        >
+          <div className="pl-5 pb-3 space-y-2">
+            {category.subcategories.map((sub, index) => {
+              const isSubNew =
+                new Date(sub.createdAt).getTime() > THREE_DAYS_AGO;
+              return (
+                <button
+                  key={index}
+                  onClick={() =>
+                    navigatePath(
+                      `/shop/sub-category/${category.categorySKU}/${sub.sku}`
+                    )
+                  }
+                  className="block text-sm text-gray-600 hover:text-primary transition-all duration-500"
                 >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </button>
-            
-            {/* Subcategories (Collapsible Content) */}
-            <div 
-                className={`overflow-hidden transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-96' : 'max-h-0'}`}
-                // style={{ maxHeight: isExpanded ? '400px' : '0px' }} // Tailwind can be tricky with dynamic height, so use inline style for robust transition
-            >
-                <div className="pl-5 pb-3 space-y-2 transition-all duration-500">
-                    {category.subcategories && category.subcategories.map((subcategory, index) => (
-                        <button 
-                            key={index} 
-                            onClick={()=>navigatePath(`/shop/sub-category/${category.categorySKU}/${subcategory.sku}`)}
-                            className={`block text-sm text-gray-600 hover:text-primary transition-all duration-500`}
-                        >
-                            {subcategory.name}
-                        </button>
-                    ))}
-                </div>
-            </div>
+                  <span className="relative inline-block">
+                    {sub.name}
+                    {isSubNew && <Badge className="ml-2" text="New" />}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
+const MobileViewHeader = ({ isOpen, setOpenMenu }) => {
+  const { categoryList } = useSelector((state) => state.category);
+  const navigate = useNavigate();
 
-const MobileViewHeader = ({isOpen,setOpenMenu}) => {
-    const {categoryList} = useSelector(state => state.category);
-    const nav=useNavigate()
-    function navigatePath(path){
-       nav(path)
-       setOpenMenu(false)
-    }
+  function navigatePath(path) {
+    navigate(path);
+    setOpenMenu(false);
+  }
+
   return (
     <>
-{
-    isOpen &&
-// 2. RESPONSIVE CONTAINER & STYLING CHANGES
-<div id="mobile-nav-menu" className="lg:hidden absolute top-full left-0 w-full bg-white shadow-lg z-40 overflow-y-auto max-h-[85vh]">
-    <nav className="p-4 divide-y divide-gray-100">
-        
-        {/* Static Links - Converted to Link components */}
-
-            <Link to="/" className="block py-2  hover:text-primary font-medium transition-all duration-500">
-                Home
+      {isOpen && (
+        <div className="lg:hidden absolute top-full left-0 w-full bg-white shadow-lg z-40 overflow-y-auto max-h-[85vh]">
+          <nav className="p-4 divide-y divide-gray-100">
+            {/* Static Links */}
+            <Link
+              to="/"
+              className="block py-2 hover:text-primary font-medium transition-all duration-500"
+            >
+              Home
             </Link>
-            <Link to="/about" className="block py-2 hover:text-primary font-medium transition-all duration-500">
-                Shop
+            <Link
+              to="/shop/products"
+              className="block py-2 hover:text-primary font-medium transition-all duration-500"
+            >
+              Shop
             </Link>
-       
 
+            {/* Dynamic Categories */}
+            {categoryList && categoryList.length > 0 ? (
+              categoryList.map((category, index) => (
+                <MobileCategoryBlock
+                  key={index}
+                  category={category}
+                  navigatePath={navigatePath}
+                />
+              ))
+            ) : (
+              <p className="py-3 px-1 text-sm text-gray-400">
+                No Categories Found.
+              </p>
+            )}
 
-        {/* Dynamic Categories (Using Accordion Blocks) */}
-       
-            {/* <h3 className="px-1 pt-2 pb-1 text-sm font-semibold uppercase text-gray-500">Shop by Category</h3> */}
-            {
-                (categoryList && categoryList.length > 0) ?
-                categoryList.map((category, index) => (
-                   
-                    <MobileCategoryBlock navigatePath={navigatePath}  key={index} category={category} />
-                ))
-                : <p className='py-3 px-1 text-sm text-gray-400'>No Categories Found.</p>
-            }
-      
-        
-     
-                 
-                <Link to="/contact" className="block py-2  hover:text-primary font-medium transition-all duration-500">
-                    About Us
-                </Link>
-                <Link to="/faq" className="block py-2  hover:text-primary font-medium transition-all duration-500">
-                    Contact Us
-                </Link>
-                <Link to="/orders" className="block py-2  hover:text-primary font-medium transition-all duration-500">
-                    Track Order
-                </Link>
-         
-        
-        
-    </nav>
-</div>
-}
+            {/* Other Static Links */}
+            <Link
+              to="/shop/about-us"
+              className="block py-2 hover:text-primary font-medium transition-all duration-500"
+            >
+              About Us
+            </Link>
+            <Link
+              to="/shop/contact-us"
+              className="block py-2 hover:text-primary font-medium transition-all duration-500"
+            >
+              Contact Us
+            </Link>
+            <Link
+              to="/orders"
+              className="block py-2 hover:text-primary font-medium transition-all duration-500"
+            >
+              Track Order
+            </Link>
+          </nav>
+        </div>
+      )}
     </>
-  )
-}
+  );
+};
 
-export default MobileViewHeader
+export default MobileViewHeader;

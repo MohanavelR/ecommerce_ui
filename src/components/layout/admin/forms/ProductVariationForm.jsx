@@ -107,7 +107,11 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
     localError.price.original.mustBePositive = true;
   }
   
-
+  if ( currentPrice > originalPrice && !localError.price.original.mustBePositive ) {
+    hasError = true;
+    localError.price.original.mustBeBig = true;
+  }
+  
   const offerInput = variationData.offer;
   const offer = parseFloat(offerInput);
   
@@ -145,6 +149,11 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
     else{
       save("variations",deepcopyObj({...variationData,key:generateVariationKey(productData.productName)}))
     }
+  }
+  else{
+    setTimeout(()=>{
+      setFieldErrors(deepcopyObj(variationError))
+    },3000)
   }
 }
 
@@ -257,6 +266,11 @@ const ProductVariationForm = ({variationData,setProductData,isVariationEditMode,
                  {fieldErrors.price.original?.mustBePositive && (
                   <p className="fielderror">
                     Original Price cannot be negative.
+                  </p>
+                )}
+                {fieldErrors.price.original?.mustBeBig && (
+                  <p className="fielderror">
+                    Original Price is Must Be Greater Than current price .
                   </p>
                 )}
               </div>

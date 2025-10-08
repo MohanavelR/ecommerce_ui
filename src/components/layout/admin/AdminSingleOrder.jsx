@@ -4,7 +4,7 @@ import {useGetOrderById} from "../../../store/order/index"
 
 import AdminOrderDetail from './ AdminOrderDetail'
 
-const AdminSingleOrder = ({orderId,closeOrderDetailMethod}) => {
+const AdminSingleOrder = ({orderId,closeOrderDetailMethod,isLoading}) => {
   const dispatch=useDispatch()
  useEffect(()=>{
   dispatch(useGetOrderById(orderId))
@@ -13,7 +13,7 @@ const AdminSingleOrder = ({orderId,closeOrderDetailMethod}) => {
   return (
    <div className="fixed inset-0 bg-black/60 z-[4000] overflow-y-auto p-4">
       <div className="container mx-auto max-w-5xl ">
-      <AdminOrderDetail closeOrderDetailMethod={closeOrderDetailMethod} />
+      <AdminOrderDetail isLoading={isLoading} closeOrderDetailMethod={closeOrderDetailMethod} />
     </div>
     </div>
   )

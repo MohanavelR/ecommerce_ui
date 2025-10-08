@@ -78,7 +78,7 @@ const AdminOrders = () => {
   return (
     <div>
       {
-        openOrderDetail && <AdminSingleOrder closeOrderDetailMethod={closeOrderDetailMethod} orderId={orderId}/>
+        openOrderDetail && <AdminSingleOrder closeOrderDetailMethod={closeOrderDetailMethod} isLoading={isLoading} orderId={orderId}/>
       }
       {
         isLoading ?<Loader/>:
@@ -91,7 +91,7 @@ const AdminOrders = () => {
     </div>
     <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4' >
       {
-        statsConfig.map((state)=><StateCard title={state.title} count={state.count} iconclassName={state.iconClass} colorclassName={state.colorClass}  />)
+        statsConfig.map((state)=><StateCard title={state.title} count={state.count} iconClass={state.iconClass} colorClass={state.colorClass}  />)
       }
     </div>
   <AdminOrderTable openOrderDetailMethod={openOrderDetailMethod} orders={orderList} isLoading={isLoading} />

@@ -1,6 +1,9 @@
 import React from 'react'
 import NotAvailable from '../../../common/NotAvailable'
 import { generatSerialNumber } from '../../../../utils/generatePageNumber'
+import DeleteIcon from '../../../common/Icons/DeleteIcon'
+import EditIcon from '../../../common/Icons/EditIcon'
+import EyeIcon from '../../../common/Icons/EyeIcon'
 // import { generatepageNumber } from '../../../../utils/generatePageNumber'
 
 const CategoryTable = ({categoryList,handleDeleteCategory,setIsEditModeMethod}) => {
@@ -49,15 +52,15 @@ const CategoryTable = ({categoryList,handleDeleteCategory,setIsEditModeMethod}) 
                             <td className="admin-table-td text-center text-sm font-medium space-x-3">
                                 <button 
                                     onClick={()=>setIsEditModeMethod(category)} 
-                                    className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
+                                    className="inline-flex whitespace-nowrap items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
                                 >
-                                    <i className="fas fa-edit mr-1"></i>Edit/View
+                                    <EditIcon/><span className='mx-1 font-bold text-sm'>/</span><EyeIcon/>
                                 </button>
                                 <button 
                                     onClick={()=>handleDeleteCategory(category._id)} 
                                     className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200"
                                 >
-                                    <i className="fas fa-trash-alt mr-1"></i>Delete
+                                   <DeleteIcon/>
                                 </button>
                             </td>
                         </tr>

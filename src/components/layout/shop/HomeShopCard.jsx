@@ -1,18 +1,21 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAddToCart, useGetCart } from "../../../store/cart";
 import { MessageContext } from "../../../context/context";
 import { useDispatch, useSelector } from "react-redux";
 
 const HomeShopCard = ({ product ,width="w-65" }) => {
   const {messageContextState,setMessageContextState}=useContext(MessageContext)
-  const {user}=useSelector(state=>state.auth)
+  const {user,isAuthenticated}=useSelector(state=>state.auth)
   
   const dispatch=useDispatch()
   // Use the first variation for initial display information
   const variation = product.variations ? product.variations[0] : null; 
 async function handleAddToCart() {
-    if(user.isVerified){
+    if(!isAuthenticated){
+      return <Navigate to="/auth/login" />
+    }  
+    if(user?.isVerified){
       dispatch(useAddToCart({userId:user.id,productId:product._id,variation,quantity:1})).then(res=>{
        if(res.payload?.success){
           setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})

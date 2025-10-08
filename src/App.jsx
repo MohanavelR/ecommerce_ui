@@ -114,7 +114,7 @@ const App = () => {
 
 
       <Route
-        path="/admin/*"
+        path="/admin"
         element={
           <MainLayout isAuthenticated={isAuthenticated} user={user}>
             <AdminLayout />

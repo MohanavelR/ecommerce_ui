@@ -50,7 +50,7 @@ export const variationError = {
   value: { isRequired: false },
   price: {
     current: { isRequired: false, mustBePositive: false },
-    original: { mustBePositive: false },
+    original: { mustBePositive: false,mustBeBig:false },
     currency: { invalidFormat: false }
   },
   offer: { mustBePositive: false },
