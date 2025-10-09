@@ -13,7 +13,10 @@ const initialState = {
   isLoading: false,
   productList: null,
   productDetails: null,
-  count:0
+  currentCount:0,
+  totalCount:0,
+  totalPages:0,
+  page:1
 };
 
 // ---------------- Thunks ----------------
@@ -32,9 +35,9 @@ export const useCreateProduct = createAsyncThunk(
 // Get All Products
 export const useGetAllProducts = createAsyncThunk(
   "/product/getAll",
-  async (_, thunkAPI) => {
+  async ({page,limit,keyword=""}, thunkAPI) => {
     try {
-      return await apiOfGetAllProducts();
+      return await apiOfGetAllProducts(page,limit,keyword);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -97,6 +100,7 @@ const productSlice = createSlice({
     setProduct: (state, action) => {
       state.productDetails = action.payload;
     },
+    
   },
   extraReducers: (builder) => {
     // Create
@@ -118,8 +122,16 @@ const productSlice = createSlice({
       })
       .addCase(useGetAllProducts.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.productList = action.payload?.success ? action.payload?.data : [];
-        state.count = action.payload?.success ? action.payload?.count : 0;
+        console.log(action.payload)
+        if(action.payload?.success){
+
+          state.productList = action.payload?.data ;
+          state.totalCount = action.payload?.totalCount;
+          state.currentCount=action.payload?.currentCount
+          state.page=action.payload?.page
+          state.totalPages=action.payload?.totalPages
+        }
+
       })
       .addCase(useGetAllProducts.rejected, (state) => {
         state.isLoading = false;

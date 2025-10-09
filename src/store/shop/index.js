@@ -8,15 +8,19 @@ const initialState = {
   productDetail: null,
   categoryByProducts: [],
   subcategoryByProducts: [],
-  isError: false
+  isError: false,
+   currentCount:0,
+      totalCount:0,
+      totalPages:0,
+            page: 1
 };
 
 // Existing Thunks
 export const useGetFilterProducts = createAsyncThunk(
   'products/getfilter',
-  async ({ filterParams, sortParams }, thunkAPI) => {
+  async ({ filterParams, sortParams,page }, thunkAPI) => {
     try {
-      return await getFilterProducts({ filterParams, sortParams });
+      return await getFilterProducts({ filterParams, sortParams ,page});
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -76,8 +80,14 @@ const shopProductSlice = createSlice({
       .addCase(useGetFilterProducts.fulfilled, (state, action) => {
         state.isError = false;
         state.isLoading = false;
-        state.filterProducts = action.payload?.success ? action.payload?.data : [];
-        state.count = action.payload?.success ? action.payload?.count : 0;
+        if(action.payload?.success){
+          state.filterProducts = action.payload?.data ;
+          state.totalCount = action.payload?.totalCount;
+          state.currentCount=action.payload?.currentCount
+          state.page=action.payload?.page
+          state.totalPages=action.payload?.totalPages
+        }
+       
       })
       .addCase(useGetFilterProducts.rejected, (state) => {
         state.isLoading = false;

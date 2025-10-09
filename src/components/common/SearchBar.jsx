@@ -1,47 +1,9 @@
 import React from 'react'
-import UserTable from '../../components/layout/admin/tables/UserTable'
-import { useDispatch, useSelector } from 'react-redux'
-import Loader from '../../components/common/Loader'
-import { useGetAllUsers } from '../../store/admin/userSlice'
 
-const AdminCustomers = () => {
-   const {users,isLoading}=useSelector(state=>state.users)
-   const dispatch=useDispatch()
-async function onChangeSearch(keyword){
-
-if(keyword.length>= 3){
-  setTimeout(()=>{
-    dispatch(useGetAllUsers(keyword.trim())).then(res=>{
-  },2000)  
- })
-}
-else{
-  setTimeout(()=>{
-    dispatch(useGetAllUsers()).then(res=>{
-    })
-  },3000)
-}   
-}
-
-
+const SearchBar = ({handleSearch,onSearch,isWantSearchBtn}) => {
   return (
     <div>
-
-        <div>
-
-          <div className="max-w-7xl mx-auto ">
-            {/* <!-- Header Section --> */}
-            <div className="admin-header-box">
-                <h1 className="admin-heading">Manage Users</h1>
-                
-                {/* <!-- Add Category Button --> */}
-                {/* <button  className="admin-add-btn">
-                    <i className="fas fa-plus mr-2"></i>
-                    Add Category
-                </button> */}
-            </div>
-        </div>
-           <div
+       <div
                     className="flex items-center w-full max-w-5xl mx-auto mb-10 p-1.5 bg-white border border-gray-300 rounded-lg shadow-md focus-within:border-primary focus-within:shadow-indigo-200/50 transition-all duration-300"
                 >
                     <div className="relative flex-1">
@@ -51,12 +13,12 @@ else{
                         </svg>
                         <input
                             type="search" 
-                            onChange={(e) =>onChangeSearch(e.target.value)}
-                            placeholder="Search Name, email, or phone..."
+                            onChange={(e) =>handleSearch(e.target.value)}
+                            placeholder="Search products, brands, or categories..."
                             className="w-full text-lg py-3 pl-12 pr-4 outline-none focus:ring-0 border-none bg-transparent placeholder:text-gray-400 text-gray-800"
                         />
                     </div>
-                    {/* {
+                    {
                         isWantSearchBtn &&
                     <button
                         type="submit"
@@ -67,17 +29,11 @@ else{
                     >
                         Search
                     </button>
-                    } */}
+                    }
                     {/* Search Button (Solid, but not pill-shaped anymore) */}
                 </div>
-                {
-                  isLoading ? <Loader/>:
-        <UserTable users={users}/>
-                }
-        </div>
-      
     </div>
   )
 }
 
-export default AdminCustomers
+export default SearchBar

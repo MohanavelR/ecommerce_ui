@@ -5,11 +5,11 @@ const api = axios.create({
 });
 
 
-export const getFilterProducts = async ({filterParams,sortParams}) => {
+export const getFilterProducts = async ({filterParams,sortParams,page}) => {
 
   try {
     const query=new URLSearchParams({
-      ...filterParams,sortBy:sortParams
+      ...filterParams,sortBy:sortParams,page
     })
     const response = await api.get(`/products?${query}`);
     return response.data;

@@ -5,14 +5,21 @@ const api=axios.create({
 })
 
 
-export const apiGetAllUsers = async () => {
+export const apiGetAllUsers = async (search = "") => {
   try {
-    const response = await api.get("/get_all");
+    const query = search ? `?search=${encodeURIComponent(search)}` : "";
+    const response = await api.get(`/get_all${query}`);
     return response.data;
   } catch (error) {
-    return error;
+    console.error("Failed to fetch users:", error);
+    return {
+      success: false,
+      message: "Error fetching users",
+      error: error.message,
+    };
   }
 };
+
 
 
 export const apiUpdateUserRole = async (id, role) => {

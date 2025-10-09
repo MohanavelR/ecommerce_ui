@@ -9,15 +9,18 @@ import Loader from '../../components/common/Loader'
 import { useGetFilterProducts } from '../../store/shop'
 import NotAvailable from '../../components/common/NotAvailable'
 import HomeShopCard from '../../components/layout/shop/HomeShopCard'
+import { current } from '@reduxjs/toolkit'
+import Pagination from '../../components/common/Pagination'
 
 
 const ProductList = () => {
-  const {filterProducts,isLoading,count}=useSelector(state=>state.filterProducts)
+const {filterProducts,isLoading,totalCount,page,currentCount,totalPages}=useSelector(state=>state.filterProducts)
 
 const [filters, setFilters] = useState({})
 const [sort, setSort] = useState(null)
 const location=useLocation()
 const dispatch=useDispatch()
+const [currentPage,setCurrentPage]=useState(page)
   const [searchparams, setSearchParams] = useSearchParams()
   function handlesort(value) {
     setSort(value)
@@ -42,6 +45,7 @@ const dispatch=useDispatch()
       }
     }
     setFilters(filterobjects)
+    setCurrentPage(1)
     sessionStorage.setItem('filters', JSON.stringify(filterobjects))
   }
   useEffect(() => {
@@ -51,15 +55,14 @@ const dispatch=useDispatch()
 
   useEffect(() => {
     if (filters !== null && sort !== null) {
-      dispatch(useGetFilterProducts({ filterParams: filters, sortParams: sort }))
+      dispatch(useGetFilterProducts({ filterParams: filters, sortParams: sort,page:currentPage }))
     }
     dispatch(useGetFilterProducts())
-  }, [sort, filters])
+  }, [sort, filters,currentPage])
 
   useEffect(() => {
     if (filters && Object.keys(filters).length > 0) {
       const createQuery = createSearchParams(filters)
-      
       setSearchParams(new URLSearchParams(createQuery))
     }
   }, [filters])  
@@ -81,7 +84,7 @@ const dispatch=useDispatch()
         </h1>
         <p className="text-lg font-medium text-indigo-600">
          {
-          count > 1?`Products(${count})`:`product(${count})`
+         totalCount > 1?`Products(${totalCount})`:`product(${totalCount})`
          }
           
         </p>
@@ -94,7 +97,8 @@ const dispatch=useDispatch()
   ) : (
 
     (filterProducts && filterProducts.length > 0) ? (
-
+<>
+  
       <div className='relative'>
         <div className="grid grid-cols-1 justify-items-center sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8">
           {/* Using optional chaining `?.` is a good practice here too */}
@@ -103,6 +107,9 @@ const dispatch=useDispatch()
           ))}
         </div>
       </div>
+       <Pagination totalPages={totalPages} onPageChange={setCurrentPage} currentPage={currentPage}   />
+       
+</>
     ) : (
       // 4. If data is loaded but no products are available
       <p className='md:text-2xl text-gray-600 text-center'>Not Available</p>

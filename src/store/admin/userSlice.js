@@ -8,13 +8,19 @@ const initialState = {
   count:0
 };
 
-export const useGetAllUsers = createAsyncThunk("/users/getAll", async (_, thunkAPI) => {
-  try {
-    return await apiGetAllUsers();
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error);
+export const useGetAllUsers = createAsyncThunk(
+  "/users/getAll",
+  async (search = "", thunkAPI) => {
+    try {
+      // pass search to API
+      const response = await apiGetAllUsers(search);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
+
 
 
 export const useUpdateUserRole = createAsyncThunk("/users/updateRole", async ({ id, role }, thunkAPI) => {

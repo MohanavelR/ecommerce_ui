@@ -18,14 +18,19 @@ export const apiOfCreateProduct = async (data) => {
 };
 
 // Get All Products
-export const apiOfGetAllProducts = async () => {
+export const apiOfGetAllProducts = async (page = 1, limit = 9, keyword = "") => {
   try {
-    const response = await api.get("/get_all");
+    // Construct query params
+    let query = `?page=${page}&limit=${limit}`;
+    if (keyword) query += `&keyword=${encodeURIComponent(keyword)}`;
+
+    const response = await api.get(`/get_all${query}`);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
   }
 };
+
 
 // Get Product By ID
 export const apiOfGetProductById = async (id) => {

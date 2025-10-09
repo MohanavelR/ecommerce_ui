@@ -19,7 +19,6 @@ function handleSearch(keyword){
     if(keyword.trim().length >= 3){
     setTimeout(()=>{
         dispatch(useGetAllSearchProducts (keyword.trim())).then(res=>{
-           
         })
     },1000)
 

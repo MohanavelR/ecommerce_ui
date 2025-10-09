@@ -15,9 +15,13 @@ import {
 } from "../../store/productSlice";
 import { productError } from "../../utils/errorObj";
 import { MessageContext } from "../../context/context";
+import Pagination from "../../components/common/Pagination";
+import { useLocation, useNavigate } from "react-router-dom";
+import SearchBar from "../../components/common/SearchBar";
+
 
 const AdminProducts = () => {
-  const { productList, productDetails } = useSelector(
+  const { productList, productDetails,totalCount,page,currentCount,totalPages ,isLoading} = useSelector(
     (state) => state.adminProducts
   );
   const [openAddProductForm, setOpenAddProductForm] = useState(false);
@@ -28,6 +32,14 @@ const AdminProducts = () => {
   const [productData, setProductData] = useState(deepcopyObj(productFormData));
   const [id, setId] = useState(null);
   const dispatch = useDispatch();
+  const [currentPage,setCurrentPage]=useState(page)
+  const navigate = useNavigate();
+  const location = useLocation();
+  const limit = 9; // items per page
+
+  const startItem = (currentPage - 1) * limit + 1;
+  const endItem = Math.min(currentPage * limit, totalCount);
+
   function closeProductForm() {
     setOpenAddProductForm(false);
     setProductData(deepcopyObj(productFormData));
@@ -120,6 +132,39 @@ const AdminProducts = () => {
       }, 3000);
     }
   }
+useEffect(() => {
+
+    dispatch(useGetAllProducts({ page: currentPage, limit })).then(res=>{
+      
+    });
+
+    if(currentPage > 1){
+
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set("page", currentPage); // set current page
+      navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+    }
+
+  }, [currentPage]); 
+
+async function onChangeSearch(keyword){
+
+if(keyword.length>= 3){  
+ dispatch(useGetAllProducts({keyword,page:1,limit})).then(res=>{
+ setCurrentPage(1)
+ const searchParams = new URLSearchParams(location.search);
+      searchParams.delete("page"); // set current page
+      navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+ })
+}
+else{
+  dispatch(useGetAllProducts({page:1,limit})).then(res=>{
+
+  })
+}   
+}
+
+
 
   return (
     <>
@@ -153,8 +198,16 @@ const AdminProducts = () => {
           </button>
         </div>
       </div>
+      <SearchBar isWantSearchBtn={false} handleSearch={onChangeSearch}  />
+       {
+        isLoading ?<Loader/>:
+       <div >
       {productList &&
         (productList.length > 0 ? (
+          <>
+              <div className="max-w-7xl mx-auto my-4 text-gray-700">
+            Showing  {totalCount} products
+          </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
             {productList.map((product) => (
               <ProductCard
@@ -168,9 +221,13 @@ const AdminProducts = () => {
               />
             ))}
           </div>
+          </>
         ) : (
           <NotAvailable />
         ))}
+        <Pagination totalPages={totalPages} onPageChange={setCurrentPage} currentPage={currentPage}   />
+       </div>
+       }
     </>
   );
 };
