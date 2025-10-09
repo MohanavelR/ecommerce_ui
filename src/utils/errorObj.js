@@ -1,11 +1,12 @@
-export const loginErrorObj={
-    email:{
-        isRequired:false,
-    },
-    password:{
-     isRequired:false
-    }
-}
+export const loginErrorObj = {
+  loginId: {
+    isRequired: false, // Email or Phone
+  },
+  password: {
+    isRequired: false,
+  },
+};
+
 
 export const registerError={
     email:{
@@ -22,6 +23,10 @@ export const registerError={
     re_password:{
         isRequired:false,
         matchError:false
+    },
+    phoneNumber:{
+        isRequired:false,
+        isValidError:false
     }
 }
 

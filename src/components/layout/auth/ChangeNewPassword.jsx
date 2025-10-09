@@ -52,7 +52,7 @@ const ChangeNewPassword = ({ otp }) => {
     setFieldErrors(deepcopyObj(localError));
     if (!has_error) {
       const data = {
-        email: sessionStorage.getItem("resetEmail"),
+        resetId: sessionStorage.getItem("resetEmail"),
         otp,
         newpassword: formData.password,
       };

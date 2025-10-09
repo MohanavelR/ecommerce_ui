@@ -27,7 +27,7 @@ const ResetOTPVerify = ({ setOTP }) => {
     const email = sessionStorage.getItem("resetEmail");
     if (email === "") {
     } else {
-      dispatch(useSendResetOTP({ email }))
+      dispatch(useSendResetOTP({ resetId:email }))
         .then((res) => {
           if (res.payload?.success) {
             setMessageContextState({

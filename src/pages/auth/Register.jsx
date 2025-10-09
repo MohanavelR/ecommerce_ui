@@ -2,261 +2,310 @@ import React, { useContext, useState } from "react";
 import { deepcopyObj } from "../../utils/deepCopyObj";
 import { registerError } from "../../utils/errorObj";
 import Loader from "../../components/common/Loader";
-import { useDispatch } from "react-redux"
+import { useDispatch } from "react-redux";
 import { useCreateUser } from "../../store/authSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { MessageContext } from '../../context/context'
+import { MessageContext } from "../../context/context";
+import isValidPhoneNumber from "../../utils/CheckVaildPhoneNumber";
 
 const Register = () => {
-    const {  messageContextState,setMessageContextState}=useContext(MessageContext)
-  const [formData,setFormData]=useState({
-    firstName:"",
-    lastName:"",
-    email:"",
-    password:""
-  })
-  const [isLoading,setIsLoading]=useState(false)
-  const [fieldErrors,setFieldErrors]=useState(deepcopyObj(registerError))
-  const [confirm_password,setconfirm_password]=useState("")
-  const dispatch=useDispatch()
-  const nav = useNavigate()
-  
-  async function handlesubmit(e){
-    setIsLoading(true)
-    e.preventDefault()
-    let hasError=false;
-    const localError=deepcopyObj(registerError)
-    
-    if(formData.firstName===""){
-      hasError=true
-      localError.firstname.isRequired=true
+  const { messageContextState, setMessageContextState } =
+    useContext(MessageContext);
+const [showPasswords, setShowPasswords] = useState(false);
+
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    phoneNumber: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState(deepcopyObj(registerError));
+  const [confirm_password, setconfirm_password] = useState("");
+  const dispatch = useDispatch();
+  const nav = useNavigate();
+
+  async function handlesubmit(e) {
+    setIsLoading(true);
+    e.preventDefault();
+    let hasError = false;
+    const localError = deepcopyObj(registerError);
+
+    if (formData.firstName === "") {
+      hasError = true;
+      localError.firstname.isRequired = true;
     }
-    if(formData.email===""){
-      hasError=true
-       localError.email.isRequired=true
+    if (formData.phoneNumber === "") {
+      hasError = true;
+      localError.phoneNumber.isRequired = true;
     }
-    if(formData.password===""){
-      hasError=true
-       localError.password.isRequired=true
+    if (
+      !localError.phoneNumber.isRequired &&
+      !isValidPhoneNumber(formData.phoneNumber)
+    ) {
+      hasError = true;
+      localError.phoneNumber.isValidError = true;
     }
-    if(formData.password.length < 8 && !(localError.password.isRequired)){
-      hasError=true
-      localError.password.lengthError=true
+    if (formData.email === "") {
+      hasError = true;
+      localError.email.isRequired = true;
     }
-    if(!(localError.password.lengthError) && formData.password!==confirm_password ){
-         hasError=true
-        localError.re_password.matchError=true
+    if (formData.password === "") {
+      hasError = true;
+      localError.password.isRequired = true;
     }
-    setFieldErrors({...localError})
-    if(!hasError){
-     dispatch(useCreateUser(formData)).then(res=>{
-      if(res.payload?.success){
-   
-        setIsLoading(false)
-        setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
-         nav("/auth/login")
-      }
-      else{
-        setIsLoading(false)
-        setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:false})
-        
-      }
-     })
+    if (formData.password.length < 8 && !localError.password.isRequired) {
+      hasError = true;
+      localError.password.lengthError = true;
     }
-    else{
-      setIsLoading(false)
-      setTimeout(()=>{
-        setFieldErrors(deepcopyObj(registerError))
-      },3000)
+    if (
+      !localError.password.lengthError &&
+      formData.password !== confirm_password
+    ) {
+      hasError = true;
+      localError.re_password.matchError = true;
     }
-    
+    setFieldErrors({ ...localError });
+    if (!hasError) {
+      dispatch(useCreateUser(formData)).then((res) => {
+        if (res.payload?.success) {
+          setIsLoading(false);
+          setMessageContextState({
+            ...messageContextState,
+            is_show: true,
+            text: res.payload?.message,
+            success: true,
+          });
+          nav("/auth/login");
+        } else {
+          setIsLoading(false);
+          setMessageContextState({
+            ...messageContextState,
+            is_show: true,
+            text: res.payload?.message,
+            success: false,
+          });
+        }
+      });
+    } else {
+      setIsLoading(false);
+      setTimeout(() => {
+        setFieldErrors(deepcopyObj(registerError));
+      }, 3000);
+    }
   }
-   
+
   return (
-    // IMPRESSIVE CARD: High contrast white background, prominent shadow, subtle hover lift (shadow-2xl, hover:shadow-primary/30).
-    // Width increased to max-w-lg (512px)
     <div className="auth-form-box">
-     <div className="text-center mb-5">
-        {/* IMPRESSIVE HEADER: Gradient text for strong visual appeal */}
-        <h2 className="auth-heading">
-          Create Account
-        </h2>
-        <p className="text-gray-500 text-lg">Join EcoShop for a sustainable future</p>
+      {/* Header */}
+      <div className="text-center mb-8">
+        <h2 className="auth-heading">Create Account</h2>
+        <p className="text-gray-500 text-lg">
+          Join EcoShop for a sustainable future
+        </p>
       </div>
 
-      <div className="sm:mx-auto  sm:w-full ">
-        <form onSubmit={handlesubmit} className="space-y-3">
-          
-          {/* First Name / Last Name Group: Using flex-1 to distribute width equally */}
-          <div className="flex space-x-4">
-            <div className="flex-1">
-              <label
-                htmlFor="firstname"
-                className="auth-form-label"
-              >
-                First Name<span className="text-red-500 ">*</span>
-              </label>
-              <div className="relative">
-                <i className="fas fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-primary w-5 h-5"></i>
-                <input
-                  id="firstname"
-                  type="text"
-                  name="firstname"
-                  value={formData.firstName}
-                  onChange={(e)=>setFormData({...formData,firstName:e.target.value})}
-                  autoComplete="given-name"
-                  // IMPRESSIVE INPUTS: Clean design, strong primary focus ring/shadow, large padding
-                  className="auth-form-input-with-icon"
-                  placeholder="John"
-                />
-              </div>
-              {
-                fieldErrors.firstname.isRequired && 
-              <p className="text-xs font-medium text-red-600 mt-1">First name is required</p>
-              }
-            </div>
-            
-            <div className="flex-1">
-              <label
-                htmlFor="lastname"
-                className="auth-form-label"
-              >
-                Last Name
-              </label>
-               <div className="relative">
-                <i className="fas fa-user-tag absolute left-4 top-1/2 transform -translate-y-1/2 text-primary w-5 h-5"></i>
-                <input
-                  id="lastname"
-                  type="text"
-                  value={formData.lastName}
-                  name="lastname"
-                  onChange={(e)=>setFormData({...formData,lastName:e.target.value})}
-                  autoComplete="family-name"
-                  // IMPRESSIVE INPUTS: Clean design, strong primary focus ring/shadow, large padding
-                  className="auth-form-input-with-icon"
-                  placeholder="Doe"
-                />
-              </div>
-            </div>
-          </div>
-          
-          {/* Email */}
+      {/* Form */}
+      <form onSubmit={handlesubmit} className="space-y-5">
+        {/* Name Fields */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* First Name */}
           <div>
-            <label
-              htmlFor="email"
-              className="auth-form-label"
-            >
-              Email address<span className="text-red-500 text-lg">*</span>
+            <label htmlFor="firstname" className="auth-form-label">
+              First Name<span className="text-red-500">*</span>
             </label>
-            <div className="mt-1 relative">
-               <i className="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-primary w-5 h-5"></i>
+            <div className="relative">
+              <i className="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-primary"></i>
               <input
-                id="email"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={(e)=>setFormData({...formData,email:e.target.value})}
-                autoComplete="email"
-                // IMPRESSIVE INPUTS
+                id="firstname"
+                type="text"
+                name="firstname"
+                value={formData.firstName}
+                onChange={(e) =>
+                  setFormData({ ...formData, firstName: e.target.value })
+                }
                 className="auth-form-input-with-icon"
-                placeholder="you@example.com"
+                placeholder="John"
               />
-              {
-                fieldErrors.email.isRequired && 
-              <p className="text-xs font-medium text-red-600 mt-1">Email is required</p>
-              }
             </div>
-          </div>
-          
-          {/* Password */}
-          <div>
-            <label
-              htmlFor="password"
-              className="auth-form-label"
-            >
-              Password<span className="text-red-500 text-lg">*</span>
-            </label>
-            <div className="mt-1 relative">
-                <i className="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-primary w-5 h-5"></i>
-              <input
-                id="password"
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={(e)=>setFormData({...formData,password:e.target.value})}
-                autoComplete="new-password"
-                // IMPRESSIVE INPUTS
-                className="auth-form-input-with-icon"
-                placeholder="••••••••"
-              />
-              {
-                fieldErrors.password.isRequired && 
-              <p className="text-xs font-medium text-red-600 mt-1">Password is required</p>
-              }
-              {
-                fieldErrors.password.lengthError && 
-              <p className="text-xs font-medium text-red-600 mt-1">Password must be at least 8 characters</p>
-              }
-            </div>
-          </div>
-          
-          {/* Confirm Password */}
-          <div>
-            <label
-              htmlFor="confirm-password"
-              className="auth-form-label"
-            >
-              Confirm Password<span className="text-red-500 text-lg">*</span>
-            </label>
-            <div className="mt-1 relative">
-                <i className="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-primary w-5 h-5"></i>
-              <input
-                id="confirm-password"
-                type="password"
-                value={confirm_password}
-                name="confirm-password"
-                onChange={(e)=>setconfirm_password(e.target.value)}
-                autoComplete="new-password"
-                // IMPRESSIVE INPUTS
-                className="auth-form-input-with-icon"
-                placeholder="••••••••"
-              />
-              {
-              fieldErrors.re_password.matchError && 
-              <p className="text-xs font-medium text-red-600 mt-1">Passwords do not match</p>
-              }
-            </div>
+            {fieldErrors.firstname.isRequired && (
+              <p className="fielderror">
+                First name is required
+              </p>
+            )}
           </div>
 
+          {/* Last Name */}
           <div>
-            {/* IMPRESSIVE BUTTON: Gradient background, large size, shadow/lift on hover */}
-            <button
-              onClick={handlesubmit}
-              type="submit"
-              disabled={isLoading}
-              className="auth-btn"
-            >
-              {
-                isLoading ?<Loader/>:"Create Account"
-              }
-              
-            </button>
+            <label htmlFor="lastname" className="auth-form-label">
+              Last Name
+            </label>
+            <div className="relative">
+              <i className="fas fa-user-tag absolute left-4 top-1/2 -translate-y-1/2 text-primary"></i>
+              <input
+                id="lastname"
+                type="text"
+                name="lastname"
+                value={formData.lastName}
+                onChange={(e) =>
+                  setFormData({ ...formData, lastName: e.target.value })
+                }
+                className="auth-form-input-with-icon"
+                placeholder="Doe"
+              />
+            </div>
           </div>
-        </form>
+        </div>
 
-        {/* IMPRESSIVE FOOTER: Clear separation and bold link */}
-        <div className="px-6 py-4 mt-4 border-t border-gray-200 text-center">
-          <p className="text-center text-sm text-gray-500">
-          Already have an account?{" "}
-          <Link 
-            to="/auth/login" 
-            className="text-primary hover:text-green-700 transition-colors duration-200 font-bold ml-1"
+        {/* Email */}
+        <div>
+          <label htmlFor="email" className="auth-form-label">
+            Email Address<span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <i className="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-primary"></i>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+              className="auth-form-input-with-icon"
+              placeholder="you@example.com"
+            />
+          </div>
+          {fieldErrors.email.isRequired && (
+            <p className="fielderror">Email is required</p>
+          )}
+        </div>
+
+        {/* Phone */}
+        <div>
+          <label htmlFor="phone" className="auth-form-label">
+            Mobile<span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <i className="fas fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-primary"></i>
+            <input
+              id="phone"
+              type="text"
+              name="phone"
+              value={formData.phoneNumber}
+              onChange={(e) =>
+                setFormData({ ...formData, phoneNumber: e.target.value })
+              }
+              className="auth-form-input-with-icon"
+              placeholder="Enter mobile number"
+            />
+          </div>
+          {fieldErrors.phoneNumber.isRequired && (
+            <p className="fielderror">
+              Mobile number is required
+            </p>
+          )}
+          {fieldErrors.phoneNumber.isValidError && (
+            <p className="fielderror">Invalid mobile number</p>
+          )}
+        </div>
+
+        {/* Password + Confirm Password */}
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+  {/* Password */}
+  <div>
+    <label htmlFor="password" className="auth-form-label">
+      Password<span className="text-red-500">*</span>
+    </label>
+    <div className="mt-1 relative">
+      <i className="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-primary"></i>
+      <input
+        id="password"
+        type={showPasswords ? "text" : "password"}
+        name="password"
+        value={formData.password}
+        onChange={(e) =>
+          setFormData({ ...formData, password: e.target.value })
+        }
+        className="auth-form-input-with-icon"
+        placeholder="••••••••"
+      />
+    </div>
+
+    {fieldErrors.password.isRequired && (
+      <p className="fielderror">Password is required</p>
+    )}
+    {fieldErrors.password.lengthError && (
+      <p className="fielderror">
+        Password must be at least 8 characters
+      </p>
+    )}
+  </div>
+
+  {/* Confirm Password */}
+  <div>
+    <label htmlFor="confirm-password" className="auth-form-label">
+      Confirm Password<span className="text-red-500">*</span>
+    </label>
+    <div className="mt-1 relative">
+      <i className="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-primary"></i>
+      <input
+        id="confirm-password"
+        type={showPasswords ? "text" : "password"}
+        name="confirm-password"
+        value={confirm_password}
+        onChange={(e) => setconfirm_password(e.target.value)}
+        className="auth-form-input-with-icon"
+        placeholder="••••••••"
+      />
+    </div>
+
+    {fieldErrors.re_password.matchError && (
+      <p className="fielderror">Passwords do not match</p>
+    )}
+  </div>
+</div>
+
+{/* Checkbox: show/hide password */}
+<div className="flex items-center mt-2">
+  <input
+    id="showPasswords"
+    type="checkbox"
+    checked={showPasswords}
+    onChange={() => setShowPasswords(!showPasswords)}
+    className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary cursor-pointer"
+  />
+  <label
+    htmlFor="showPasswords"
+    className="ml-2 text-sm text-gray-600 cursor-pointer select-none"
+  >
+    Show Password 
+  </label>
+</div>
+
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="auth-btn w-full mt-6"
+        >
+          {isLoading ? <Loader /> : "Create Account"}
+        </button>
+
+        {/* Footer */}
+        <p className="text-center text-sm text-gray-500 mt-4 border-t pt-4">
+          Already have an account?
+          <Link
+            to="/auth/login"
+            className="text-primary font-semibold ml-1 hover:text-green-700"
           >
             Sign in
           </Link>
         </p>
-        </div>
-      </div>
+      </form>
     </div>
   );
 };

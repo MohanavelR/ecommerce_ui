@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import FadeIn from "../common/FadeIn";
 
 const AboutSection = () => {
   const location=useLocation()
@@ -8,6 +9,7 @@ const AboutSection = () => {
                 'Customer support by passionate pet care experts'
               ]
   return (
+    <FadeIn>
     <section className="py-5 px-3 lg:py-10">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap items-center -mx-4">
@@ -62,6 +64,7 @@ About Us
         </div>
       </div>
     </section>
+    </FadeIn>
   );
 };
 

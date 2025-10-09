@@ -1,7 +1,9 @@
 import React from 'react';
+import FadeIn from '../common/FadeIn';
 
 const HeadingHome = ({ heading, primaryText = "Our" }) => {
   return (
+    <FadeIn>
     <div className="flex flex-col items-center justify-center py-6 px-4 text-center">
       {/* Main heading */}
       <h2 className="relative text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-gray-800 leading-snug">
@@ -21,6 +23,7 @@ const HeadingHome = ({ heading, primaryText = "Our" }) => {
         <div className="flex-grow max-w-[80px] sm:max-w-[120px] md:max-w-[160px] border-t border-gray-300"></div>
       </div>
     </div>
+    </FadeIn>
   );
 };
 

@@ -6,7 +6,7 @@ import ResetOTPVerify from "../../components/layout/auth/ResetOTPVerify";
 import ChangeNewPassword from "../../components/layout/auth/ChangeNewPassword";
 
 const ResetPassword = () => {
-  const [email, setEmail] = useState("");
+  const [resetId, setResetId] = useState("");
   const [otp, setOTP] = useState("");
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const ResetPassword = () => {
       setError(true);
     } else {
       setError(false);
-      dispatch(useSendResetOTP({ email }))
+      dispatch(useSendResetOTP({ resetId }))
         .then((res) => {
           if (res.payload?.success) {
             setMessageContextState({
@@ -28,8 +28,8 @@ const ResetPassword = () => {
               text: res.payload?.message,
               success: true,
             });
-            sessionStorage.setItem("resetEmail", email);
-            setEmail("");
+            sessionStorage.setItem("resetEmail", resetId);
+            setResetId("");
           } else {
             setMessageContextState({
               ...messageContextState,
@@ -54,7 +54,7 @@ const ResetPassword = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
       {/* Main Card Container */}
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-2xl border border-gray-100">
-        <h2 className="auth-heading t">Reset Password</h2>
+        <h2 className="auth-heading ">Reset Password</h2>
 
         {!sessionStorage.getItem("resetEmail") ? (
           // Email Input Form
@@ -67,23 +67,23 @@ const ResetPassword = () => {
                 htmlFor="email"
                 className="block text-sm font-semibold text-gray-700"
               >
-                Email address<span className="text-red-500 ml-1">*</span>
+                Email or Mobile<span className="text-red-500 ml-1">*</span>
               </label>
               <div className="mt-1 relative">
                 <i className="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"></i>
                 <input
                   id="email"
-                  type="email"
-                  className={`w-full pl-12 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-500 bg-gray-50 text-gray-900 placeholder-gray-500 transition duration-150 ease-in-out ${
+                  type="text"
+                  className={`auth-form-input-with-icon mb-4 ${
                     error ? "border-red-500" : "border-gray-300"
                   }`}
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value.trim())}
+                  placeholder="Enter your email or Phone Number"
+                  value={resetId}
+                  onChange={(e) => setResetId(e.target.value.trim())}
                 />
                 {error && (
                   <p className="mt-1 text-sm font-medium text-red-600">
-                    Email is required
+                    This is required
                   </p>
                 )}
               </div>

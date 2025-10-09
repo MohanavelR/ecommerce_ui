@@ -1,3 +1,4 @@
+import FadeIn from "../common/FadeIn";
 import AboutProgressBar from "./AboutProgressBar";
 
 const WhyChooseUs = () => {
@@ -8,6 +9,7 @@ const WhyChooseUs = () => {
   ];
 
   return (
+    <FadeIn>
     <section className="py-5 lg:py-10">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap  items-center -mx-4">
@@ -58,6 +60,7 @@ const WhyChooseUs = () => {
         </div>
       </div>
     </section>
+    </FadeIn>
   );
 };
 

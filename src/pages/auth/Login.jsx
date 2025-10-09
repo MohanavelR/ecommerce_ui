@@ -14,7 +14,7 @@ const Login = () => {
   const [fieldErrors, setFieldErrors] = useState(deepcopyObj(loginErrorObj));
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    email: "",
+    loginId: "",
     password: "",
   });
 
@@ -25,9 +25,9 @@ const Login = () => {
     e.preventDefault();
     let hasError = false;
     const localError = deepcopyObj(loginErrorObj);
-    if (formData.email === "") {
+    if (formData.loginId === "") {
       hasError = true;
-      localError.email.isRequired = true;
+      localError.loginId.isRequired = true;
     }
     if (formData.password === "") {
       hasError = true;
@@ -71,29 +71,30 @@ const Login = () => {
       </div>
       <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={handlesubmit} className="space-y-3">
-          <div>
-            <label htmlFor="email" className="auth-form-label">
-              Email address<span className="text-red-500 text-lg">*</span>
-            </label>
-            <div className="mt-1 relative">         
-              <i className="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-primary w-5 h-5"></i>
-              <input
-                id="email"
-                type="email"
-                className="auth-form-input-with-icon"
-                placeholder="you@example.com"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
-            </div>
-              {fieldErrors.email.isRequired && (
-                <p className="text-xs font-medium text-red-600 mt-1">
-                  Email is required
-                </p>
-              )}
-          </div>
+      <div>
+  <label htmlFor="loginId" className="auth-form-label">
+    Email or Mobile<span className="text-red-500 text-lg">*</span>
+  </label>
+  <div className="mt-1 relative">
+    <i className="fas fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-primary w-5 h-5"></i>
+    <input
+      id="loginId"
+      type="text" // use text so both email and phone can be entered
+      className="auth-form-input-with-icon"
+      placeholder="Enter email or mobile number"
+      value={formData.loginId}
+      onChange={(e) =>
+        setFormData({ ...formData, loginId: e.target.value })
+      }
+    />
+  </div>
+  {fieldErrors.loginId.isRequired && (
+    <p className="text-xs font-medium text-red-600 mt-1">
+      This field is required
+    </p>
+  )}
+</div>
+
           <div>
             <label htmlFor="password" className="auth-form-label">
               Password<span className="text-red-500 text-lg">*</span>

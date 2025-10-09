@@ -11,6 +11,7 @@ const ShopBannerCarousel = ({banner,index}) => {
           key={index}
           src={banner.image}
           alt={banner.title}
+          loading='lazy'
           className="w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-100"
         /> 
         {/* Simple text overlay to demonstrate content */}

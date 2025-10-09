@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 // Layouts
@@ -51,10 +51,11 @@ const App = () => {
   const {logoutContextState,setLogoutContextState}=useContext(LogoutContext)
   const { isAuthenticated, user,isLoading } = useSelector((state) => state.auth);
   const dispatch= useDispatch()
-
+ const location=useLocation()
   useEffect(()=>{
     dispatch(useAuth())
   },[dispatch])
+
   if(isLoading){
     return <PageLoader/>
   }

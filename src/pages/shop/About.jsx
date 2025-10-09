@@ -3,6 +3,7 @@ import BreadcrumbBanner from '../../components/layout/shop/common/BreadcrumbBann
 import AboutSection from '../../components/layout/shop/about/AboutSection';
 import WhoWAreWe from '../../components/layout/shop/about/WhoAreWe';
 import WhyChooseUs from '../../components/layout/shop/about/WhyChooseUs';
+import FadeIn from '../../components/layout/shop/common/FadeIn';
 
 const About = () => {
   return (
@@ -10,16 +11,24 @@ const About = () => {
       <BreadcrumbBanner />
       <main className="bg-white">
         {/* Page Heading */}
-        <section className="text-center py-4">
+        <section className="text-center py-4 mt-4">
+          <FadeIn>
+
           <h1 className="text-4xl font-bold text-gray-800 mb-1">About Us</h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Learn more about our mission, values, and what makes us stand out from the rest.
           </p>
+          </FadeIn>
         </section>
-
+        <FadeIn>
         <AboutSection />
+        </FadeIn>
+        <FadeIn>
         <WhoWAreWe />
+        </FadeIn>
+        <FadeIn>
         <WhyChooseUs />
+        </FadeIn>
       </main>
     </>
   );

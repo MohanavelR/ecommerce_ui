@@ -5,10 +5,10 @@ import { OrderStatusBadge } from './ShopOrderListTable';
 import OrderSummary from '../cart/orderSummary';
 import { MessageContext } from '../../../../context/context';
 import { useCancelOrder, useGetUserOrders } from '../../../../store/order';
-
+const THREE_DAYS_AGO = Date.now() - 3 * 24 * 60 * 60 * 1000;
 // Helper line component
 const DetailLine = ({ label, value, highlight = false, large = false }) => (
-  <div className="flex justify-between items-center text-gray-700">
+  <div className="flex justify-between mt-3 items-center text-gray-700">
     <dt className={`font-medium ${large ? 'text-lg text-gray-900' : 'text-sm'}`}>{label}</dt>
     <dd
       className={`${
@@ -44,6 +44,7 @@ const OrderItemRow = ({ item }) => {
             src={item.image}
             alt={item.title}
             className="w-full h-full object-cover"
+            loading='lazy'
           />
         ) : (
           <div className="flex items-center justify-center h-full text-xs text-gray-400">
@@ -105,7 +106,7 @@ const OrderDetail = ({closeOrderDetailMethod}) => {
     cartItems,
     paymentId,
   } = orderDetails;
-
+ console.log(orderStatus)
   const items = cartItems || [];
  const calculateTotals = (items) => {
   if (!items || items.length === 0) {
@@ -214,11 +215,17 @@ function cancelorder(id){
               total={total}
             />
       </div>
-      {
-       orderStatus !=="cancelled" &&
-          <button  className='mt-3 w-full py-3 bg-red-500 text-white hover:bg-red-800 ' onClick={()=>cancelorder(orderDetails._id)}>Cancel order</button>
-      }
-    
+{
+  (orderStatus !== "Cancelled" && new Date(createdAt).getTime() > THREE_DAYS_AGO) && (
+    <button
+      className='mt-3 w-full py-3 bg-red-500 text-white hover:bg-red-800'
+      onClick={() => cancelorder(orderDetails._id)}
+    >
+      Cancel order
+    </button>
+  )
+}
+
       <button  className='mt-3 w-full py-3 bg-blue-700 text-white hover:bg-blue-900 ' onClick={closeOrderDetailMethod}>Close</button>
     </div>
   );

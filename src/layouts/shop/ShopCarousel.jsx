@@ -17,6 +17,7 @@ const ShopCarousel = () => {
             src="https://picsum.photos/200"
             alt="https://picsum.photos/200"
             className="absolute inset-0 w-full h-full object-cover"
+
           />
 
           {/* Overlay for Contrast */}
@@ -88,6 +89,7 @@ const ShopCarousel = () => {
                 src={data.image}
                 alt={data.title}
                 className="absolute inset-0 w-full h-full object-cover"
+                loading='lazy'
               />
 
               {/* Overlay for Contrast */}

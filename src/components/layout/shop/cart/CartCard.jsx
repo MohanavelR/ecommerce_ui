@@ -108,10 +108,10 @@ const CartItemCard = ({ item, productName, onUpdateQuantity, onDelete }) => {
                 >
                     Remove
                 </button>
-                <span className="text-gray-300">|</span>
+                {/* <span className="text-gray-300">|</span>
                 <button className="text-indigo-500 hover:text-indigo-700 font-medium transition">
                     Wishlist
-                </button>
+                </button> */}
             </div>
         </div>
     </div>

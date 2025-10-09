@@ -1,6 +1,9 @@
+import FadeIn from "../common/FadeIn";
+
 const AboutProgressBar = ({ label, percentage }) => {
     const progressStyle = { width: `${percentage}%` };
     return (
+        <FadeIn>     
         <div className="mb-6">
             <div className="flex justify-between items-center mb-1">
                 <div className="text-gray-700 font-medium">{label}</div>
@@ -13,6 +16,7 @@ const AboutProgressBar = ({ label, percentage }) => {
                 ></div>
             </div>
         </div>
+        </FadeIn>
     );
 };
 export default AboutProgressBar

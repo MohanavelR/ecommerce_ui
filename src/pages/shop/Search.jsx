@@ -29,6 +29,12 @@ else{
     dispatch(resetSearchProducts())
 }
 }
+function onSearch(e){
+    e.preventDefault()
+        dispatch(useGetAllSearchProducts (searchTerm.trim())).then(res=>{      
+        })
+ 
+}
 
     return (
         <div className="min-h-screen bg-gray-50 py-12">
@@ -52,6 +58,7 @@ else{
                     {/* Search Button (Solid, but not pill-shaped anymore) */}
                     <button
                         type="submit"
+                        onClick={onSearch}
                         className="flex-shrink-0 btn-hero  text-white text-base font- py-3 px-6 rounded-md ml-2 
                                     transition-colors duration-200 active:scale-95"
                         aria-label="Execute Search"

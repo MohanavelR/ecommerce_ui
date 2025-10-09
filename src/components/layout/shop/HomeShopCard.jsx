@@ -61,6 +61,7 @@ async function handleAddToCart() {
           src={mainImage}
           alt={product.productName}
           className="w-full h-full object-cover"
+          loading='lazy'
         />
 
         {/* Status Badges - Reduced text size to 'xs' (was 'text-xs' on the inner span) and used smaller text classes on the outer container if possible*/}

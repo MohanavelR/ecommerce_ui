@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
+import FadeIn from '../../components/layout/shop/common/FadeIn';
 const FaqItem = ({ question, answer, isOpen, onToggle }) => {
     return (
+        <FadeIn>
         <div className="border-b border-gray-200">
             {/* Header/Button */}
             <button
-                className="flex justify-between items-center w-full py-4 text-lg font-semibold text-left text-gray-800 hover:text-blue-600 transition-colors duration-200 focus:outline-none"
+                className="flex justify-between items-center w-full py-4 text-lg font-semibold text-left text-gray-800 hover:text-primary transition-colors duration-200 focus:outline-none"
                 onClick={onToggle}
                 aria-expanded={isOpen}
             >
                 {question}
                 <span className="ml-6 text-blue-600 shrink-0">
-                    {/* {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />} */}
+                  
                 </span>
             </button>
 
@@ -27,45 +29,51 @@ const FaqItem = ({ question, answer, isOpen, onToggle }) => {
                 </div>
             </div>
         </div>
+        </FadeIn>
     );
 };
 // Data from Section 1 (Copy the array here or import it)
 const faqData = [
-    { id: '1', question: 'How do I sign up for your electricity services?', answer: "Signing up is easy! You can visit our Plans page and select the package that fits your needs, or call our customer service line at 123-456-7890. Whether you're wondering about our pricing plans, the installation process, or sustainability initiatives, our team is here to help." },
-    { id: '2', question: 'What types of electricity plans do you offer?', answer: "We offer fixed-rate plans for budget certainty, variable-rate plans for market flexibility, and 100% renewable energy plans for eco-conscious customers. Visit our Plans page for a detailed breakdown." },
-    { id: '3', question: 'What are your billing and payment options?', answer: "We support paperless billing, automatic bank transfers, and online payments via credit card. You can also pay over the phone or by mail. We strive to make payment as convenient as possible." },
-    { id: '4', question: 'How can I track my energy usage with your services?', answer: "Our online customer portal and mobile app provide real-time tracking of your energy consumption, allowing you to monitor usage, set alerts, and identify opportunities for savings." },
-    { id: '5', question: 'Are there any cancellation fees or long-term contracts?', answer: "Our terms vary by plan. While our fixed-rate plans may include an early termination fee, our month-to-month plans offer maximum flexibility with no cancellation fees. Please review your plan details for specifics." },
-    { id: '6', question: 'What makes your energy sources sustainable?', answer: "We invest heavily in solar, wind, and hydro power generation. Our commitment to sustainability is reflected in our 100% green energy options and carbon-offset programs." },
-    { id: '7', question: 'How long does it take to switch providers?', answer: "The switching process typically takes 10 to 14 business days, during which time your service remains uninterrupted. We handle all coordination with your previous provider." },
-    { id: '8', question: 'Do you offer commercial or business plans?', answer: "Yes, we provide tailored solutions for small businesses and large commercial enterprises, including energy efficiency audits and dedicated account management." },
-    { id: '9', question: 'What should I do during a power outage?', answer: "In the event of an outage, please call our 24/7 emergency line. We also recommend checking your local utility provider's outage map, as they are responsible for grid maintenance." },
-    { id: '10', question: 'Is my personal data secure with your platform?', answer: "We adhere to strict data protection regulations and use industry-leading encryption to ensure your personal and billing information remains completely secure." },
+  { id: '1', question: 'How do I create an account for my pets?', answer: "Creating an account is easy! Simply click the Sign Up button, fill in your details, and add your pet’s information. This helps us personalize services and track orders." },
+  { id: '2', question: 'What types of pet products do you offer?', answer: "We offer a wide range of products including pet food, toys, grooming supplies, accessories, and health supplements for dogs, cats, and other small pets." },
+  { id: '3', question: 'Do you offer grooming services?', answer: "Yes! Our grooming services include bathing, haircuts, nail trimming, and ear cleaning. You can book an appointment online or in-store." },
+  { id: '4', question: 'How can I track my pet order?', answer: "Once your order is confirmed, you will receive a tracking link via email and SMS. You can also check your order status in your account dashboard." },
+  { id: '5', question: 'Are there any return or refund policies?', answer: "We accept returns within 14 days of purchase for most products. Refunds are processed once the item is received and inspected. Please review our Return Policy for details." },
+  { id: '6', question: 'Do you have organic or specialty pet foods?', answer: "Yes, we offer a selection of organic, grain-free, and specialty diets to meet your pet’s nutritional needs. Check the product descriptions for details." },
+  { id: '7', question: 'How long does delivery take?', answer: "Standard delivery typically takes 3-5 business days. Express delivery options are available at checkout for faster service." },
+  { id: '8', question: 'Do you offer pet care tips?', answer: "Absolutely! Our blog and newsletter provide tips on pet health, nutrition, training, and general care for all types of pets." },
+  { id: '9', question: 'Can I cancel or modify my order?', answer: "Yes, orders can be modified or cancelled within 24 hours of placing them. Please contact our customer support for assistance." },
+  { id: '10', question: 'Is my payment information secure?', answer: "We use industry-standard encryption to ensure your payment details are completely secure. All transactions are processed through trusted payment gateways." },
 ];
 
 const FAQ = () => {
  const [openId, setOpenId] = useState('1'); 
     
-    // Split the data into two columns (5 items each)
-    const column1Data = faqData.slice(0, 5);
-    const column2Data = faqData.slice(5, 10);
+   
 
     const handleToggle = (id) => {
-        // Close the current item if it's clicked again, otherwise open the new one.
         setOpenId(openId === id ? null : id);
     };
 
     return (
-        <div className="faq1-section-area bg-white py-16 md:py-24">
+        <div className="faq1-section-area bg-white py-10 ">
             <div className="container mx-auto px-4 max-w-7xl">
                 {/* Header Section */}
+                <FadeIn>
+
                 <div className="flex justify-center mb-12">
-                    <div className="text-center">
-                        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900">
-                            Questions
-                        </h2>
-                    </div>
-                </div>
+  <div className="text-center max-w-2xl">
+    <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+      Frequently Asked Questions
+    </h2>
+    <p className="text-gray-600 text-lg">
+  Here are some of the most common questions about our pet products and services. 
+  Click on a question to view the answer.
+</p>
+
+  </div>
+</div>
+                </FadeIn>
 
                 {/* FAQ Content Area */}
                 <div className="flex flex-wrap -mx-4">

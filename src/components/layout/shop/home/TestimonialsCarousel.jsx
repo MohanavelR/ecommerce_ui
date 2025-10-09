@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import FadeIn from '../common/FadeIn';
 
 const ALL_TESTIMONIALS = [
   {
@@ -39,16 +40,12 @@ const TestimonialsSection = () => {
       setActiveIndex((prevIndex) => 
         (prevIndex + 1) % ALL_TESTIMONIALS.length
       );
-    }, 5000); // 5000 milliseconds = 5 seconds
-
-    // Cleanup function to stop the timer when the component unmounts
+    }, 5000); 
     return () => clearInterval(interval);
-  }, []); // Empty dependency array ensures this runs only once on mount
-
-  // 3. TRANSITION CLASS: We use a key change on the card to force a re-render 
-  // with a CSS transition class for the "slide" look.
+  }, []); 
 
   return (
+    <FadeIn>
     <div className="py-20 lg:py-32 bg-gray-100">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap -mx-4">
@@ -126,14 +123,9 @@ const TestimonialsSection = () => {
         </div>
       </div>
     </div>
+    </FadeIn>
   );
 };
 
 export default TestimonialsSection;
 
-/* NOTE: For the visual "slide-in" effect, you would typically define a 
-  CSS animation (e.g., using @keyframes for 'animate-slideIn' that 
-  translates the element from off-screen to its final position). 
-  Since external CSS/keyframes are not provided, the 'transition-all' 
-  class provides a simple fade/change effect between slides.
-*/

@@ -1,3 +1,5 @@
+import FadeIn from "../common/FadeIn";
+
 const WhoWAreWe = () => {
     const content=[
                   'Offer the highest quality pet products online',
@@ -5,6 +7,8 @@ const WhoWAreWe = () => {
                   'Provide expert advice and resources for pet wellness'
                 ]
   return (
+    <FadeIn>
+
     <section className="py-5 lg:py-10 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap flex-col-reverse md:flex-row items-center -mx-4">
@@ -80,6 +84,7 @@ const WhoWAreWe = () => {
         </div>
       </div>
     </section>
+    </FadeIn>
   );
 };
 

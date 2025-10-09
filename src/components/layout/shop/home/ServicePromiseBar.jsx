@@ -1,4 +1,5 @@
 import React from 'react';
+import FadeIn from '../common/FadeIn';
 
 // --- Reusable Feature Item Component ---
 const ImpressiveFeatureItem = ({ iconClass, title, description }) => (
@@ -26,7 +27,7 @@ const ImpressiveFeatureItem = ({ iconClass, title, description }) => (
 // --- Main Service Bar Component ---
 const ServicePromiseBar = () => {
   return (
-    // Main container: No internal borders, relying on card shadows
+    <FadeIn>
     <div className="w-full max-w-7xl mx-auto my-12 md:my-16">
       
       {/* Grid Layout: 
@@ -57,6 +58,8 @@ const ServicePromiseBar = () => {
         
       </div>
     </div>
+    </FadeIn>
+  
   );
 };
 

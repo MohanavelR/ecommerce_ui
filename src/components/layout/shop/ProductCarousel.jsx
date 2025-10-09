@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import HomeShopCard from "./HomeShopCard";
+import FadeIn from "./common/FadeIn";
 
 
 const ProductCarousel = ({ products, interval = 7000 }) => {
@@ -59,6 +60,7 @@ const ProductCarousel = ({ products, interval = 7000 }) => {
   }, [currentIndex, products.length, visibleItems]);
 
   return (
+    <FadeIn>
     <div className="mx-auto px-4 sm:px-6 lg:px-8 my-8">
       <div className="overflow-hidden relative rounded-xl bg-gray-50 p-4">
         <div
@@ -82,6 +84,7 @@ const ProductCarousel = ({ products, interval = 7000 }) => {
         </div>
       </div>
     </div>
+    </FadeIn>
   );
 };
 

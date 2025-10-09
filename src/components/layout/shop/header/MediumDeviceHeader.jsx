@@ -8,7 +8,12 @@ const MediumDeviceHeader = () => {
   const { categoryList, isLoading, count } = useSelector(
     (state) => state.category
   );
-
+  const getGridCols = (count) => {
+  if (count === 1) return "grid-cols-1";
+  if (count >= 2 && count <= 4) return count === 2 ? "grid-cols-2" : count === 3 ? "grid-cols-3" : "grid-cols-4";
+  return Math.ceil(count / 2) === 5 ? "grid-cols-5" : `grid-cols-${Math.ceil(count / 2)}`;
+};
+  
   return (
     <>
       <nav className="hidden lg:flex items-center z-[9998] space-x-6 xl:space-x-8 font-medium">
@@ -70,8 +75,14 @@ const MediumDeviceHeader = () => {
             {/* Max height applied to ensure content stays within the viewport, if content is too large, you might need to reconsider the number of categories per column. */}
             {!isLoading && (
               <div
-                className={`grid w-full grid-cols-5 divide-x divide-gray-200 p-5 `}
-              >
+  className={`grid w-full divide-x divide-gray-200 p-5 ${
+    count === 1
+      ? "grid-cols-1"
+      : count === 2 
+      ? `grid-cols-2`
+      : count===3?"grid-cols-3":count===4?"grid-cols-4":"grid-cols-5"
+  }`}
+>
                 {categoryList && categoryList.length > 0 ? (
                   categoryList.map((category) => (
                     <div key={category.categoryName} className="px-4 mt-2">
@@ -91,7 +102,7 @@ const MediumDeviceHeader = () => {
                                 (sub) =>
                                   new Date(sub.createdAt).getTime() >
                                   THREE_DAYS_AGO
-                              ))) && <Badge />}
+                              ))) && <Badge className="ml-1"  />}
                         </span>
                       </Link>
 
@@ -109,7 +120,7 @@ const MediumDeviceHeader = () => {
                                  <span className="relative inline-block">{subcategory.name}
                                     {
                                     (new Date(subcategory.createdAt).getTime() >
-                            THREE_DAYS_AGO) && <Badge/> }
+                            THREE_DAYS_AGO) && <Badge className="ml-1" /> }
                                     </span> 
                                 </Link>
                               )
