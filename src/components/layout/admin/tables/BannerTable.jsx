@@ -1,0 +1,95 @@
+import React from 'react'
+import NotAvailable from '../../../common/NotAvailable'
+import { generatSerialNumber } from '../../../../utils/generatePageNumber'
+import EditIcon from '../../../common/Icons/EditIcon'
+import EyeIcon from '../../../common/Icons/EyeIcon'
+import DeleteIcon from '../../../common/Icons/DeleteIcon'
+
+const BannerTable = ({banners,handleDeleteBanner,setIsEditModeMethod}) => {
+  const page=generatSerialNumber()
+    return (
+    <div>
+       {/* <!-- Table Container: Updated to shadow-xl, rounded-xl, and border-gray-100 --> */}
+        <div className="bg-white shadow-xl rounded-xl overflow-hidden border border-gray-100">
+            {/* <!-- Responsive Table Wrapper --> */}
+            <div className="overflow-x-auto">
+                {
+                  banners && (banners.length > 0)?   
+                <table className="min-w-full divide-y divide-gray-200">
+                    {/* <!-- Table Header: Updated padding and text style --> */}
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th scope="col" className="admin-table-th ">#</th>
+                            <th scope="col" className="admin-table-th ">Title</th>
+                            <th scope="col" className="admin-table-th ">Image Preview</th>
+                            <th scope="col" className="admin-table-th ">Status</th>
+                            <th scope="col" className="admin-table-th ">Actions</th>
+                        </tr>
+                    </thead>
+                    
+                    {/* <!-- Table Body --> */}
+                    <tbody className="bg-white divide-y divide-gray-100">
+                        {
+                            banners && (banners.length > 0 ?banners.map(data=>(
+                                 <tr key={data._id} className="admin-table-tr">
+                            <td className="admin-table-td">{page.next().value}</td>
+                            <td className="admin-table-td">
+                                <div className="flex items-center">
+                                    <div className="ml-4">
+                                        <div className="text-sm font-medium text-gray-900">{data?.title}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            {/* Image Preview Column */}
+                            <td className="px-6 py-4">
+                                <div className='admin-table-img'>
+                                   <img 
+                                      src={data?.image} 
+                                      alt={`Banner: ${data?.title}`} 
+                                      className='w-full h-full object-cover'  
+                                      onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/96x64/E0E7FF/4338CA?text=No+Image" }}
+                                    />
+                                </div>
+                            </td>
+                            {/* Status Badge */}
+                            <td className="admin-table-td">
+                                <p className={`px-3 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    ${data?.isActive?"bg-green-100 text-green-800":"bg-red-100 text-red-800"}  `}>
+
+                                {
+                                    data.isActive?"Active":"Inactive"
+                                }
+                                </p>
+                            </td>
+
+                            {/* Action Buttons: Styled for modern look */}
+                            <td className="admin-table-td text-center text-sm font-medium space-x-3">
+                                <button 
+                                    onClick={()=>setIsEditModeMethod(data)} 
+                                    className="inline-flex items-center whitespace-nowrap px-3 py-1 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
+                                >
+                                    <EditIcon/><span className='mx-1 font-bold text-sm'>/</span><EyeIcon/>
+                                </button>
+                                <button 
+                                    onClick={()=>handleDeleteBanner(data._id)} 
+                                    className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200"
+                                >
+                                    <DeleteIcon/>
+                                </button>
+                            </td>
+                        </tr>
+                            ))
+                                
+                                :<NotAvailable/>)
+                        
+                        }
+                    </tbody>
+                </table>:<NotAvailable/>
+                }
+            </div>
+        </div>
+    </div>
+  )
+}
+
+export default BannerTable

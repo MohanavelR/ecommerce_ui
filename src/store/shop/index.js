@@ -1,0 +1,138 @@
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { getFilterProducts, getProductDetail, getProductsByCategory, getProductsByCategoryAndSubcategory } from '../../services/shop/service';
+
+const initialState = {
+  filterProducts: [],
+  isLoading: false,
+  count: 0,
+  productDetail: null,
+  categoryByProducts: [],
+  subcategoryByProducts: [],
+  isError: false,
+   currentCount:0,
+      totalCount:0,
+      totalPages:0,
+            page: 1
+};
+
+// Existing Thunks
+export const useGetFilterProducts = createAsyncThunk(
+  'products/getfilter',
+  async ({ filterParams, sortParams,page }, thunkAPI) => {
+    try {
+      return await getFilterProducts({ filterParams, sortParams ,page});
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const useGetProductDetails = createAsyncThunk(
+  'products/getproductDetails',
+  async (sku, thunkAPI) => {
+    try {
+      return await getProductDetail(sku);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+// 🔹 New Thunks for Category
+export const useGetCategoryProducts = createAsyncThunk(
+  'products/getCategoryProducts',
+  async (category, thunkAPI) => {
+    try {
+      return await getProductsByCategory(category);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const useGetCategorySubProducts = createAsyncThunk(
+  'products/getCategorySubProducts',
+  async ({ categoryName, subCategoryName }, thunkAPI) => {
+    try {
+      return await getProductsByCategoryAndSubcategory(categoryName, subCategoryName);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+// Slice
+const shopProductSlice = createSlice({
+  name: 'shopProducts',
+  initialState,
+  reducers: {
+    resetFilterProducts:(state)=>{
+       state.filterProducts=[]
+       state.count=0
+    }
+  },
+  extraReducers: (builder) => {
+    builder
+      // Get All Products
+      .addCase(useGetFilterProducts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(useGetFilterProducts.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        if(action.payload?.success){
+          state.filterProducts = action.payload?.data ;
+          state.totalCount = action.payload?.totalCount;
+          state.currentCount=action.payload?.currentCount
+          state.page=action.payload?.page
+          state.totalPages=action.payload?.totalPages
+        }
+       
+      })
+      .addCase(useGetFilterProducts.rejected, (state) => {
+        state.isLoading = false;
+        state.filterProducts = [];
+      })
+
+      // Get Product Details
+      .addCase(useGetProductDetails.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(useGetProductDetails.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.productDetail = action.payload?.product || null;
+      })
+      .addCase(useGetProductDetails.rejected, (state) => {
+        state.isLoading = false;
+        state.productDetail = null;
+      })
+
+      // Get Category Products
+      .addCase(useGetCategoryProducts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(useGetCategoryProducts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.categoryByProducts = action.payload?.success ? action.payload?.data : [];
+      })
+      .addCase(useGetCategoryProducts.rejected, (state) => {
+        state.isLoading = false;
+        state.categoryByProducts = [];
+      })
+
+
+      .addCase(useGetCategorySubProducts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(useGetCategorySubProducts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.subcategoryByProducts = action.payload?.success ? action.payload?.data : [];
+      })
+      .addCase(useGetCategorySubProducts.rejected, (state) => {
+        state.isLoading = false;
+        state.subcategoryByProducts = [];
+      });
+  }
+});
+const {resetFilterProducts}=shopProductSlice.actions
+export default shopProductSlice.reducer;
