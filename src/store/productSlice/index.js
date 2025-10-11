@@ -122,7 +122,6 @@ const productSlice = createSlice({
       })
       .addCase(useGetAllProducts.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log(action.payload)
         if(action.payload?.success){
 
           state.productList = action.payload?.data ;

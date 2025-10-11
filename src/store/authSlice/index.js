@@ -121,12 +121,12 @@ const authSlice=createSlice({
              
         }).addCase(useLogout.fulfilled,(state,action)=>{
             state.isLoading=false
-            state.user=!(action?.payload?.success)?action?.payload?.user:null
-            state.isAuthenticated=!(action?.payload?.success)     
+            if(action?.payload?.success){
+              state.user=null
+              state.isAuthenticated=!(action?.payload?.success)     
+            }
         }).addCase(useLogout.rejected,(state,action)=>{
             state.isLoading=true
-            state.user=null
-            state.isAuthenticated=false 
         })
         .addCase(useSendResetOTP.pending,(state)=>{
             state.isLoading=true
