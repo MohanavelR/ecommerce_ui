@@ -46,6 +46,11 @@ const ShopHeader = () => {
     setIsDropdownOpen(false); // Close dropdown on logout attempt
   };
 
+function navPath(path){
+ navigate(path)
+  setOpenMenu(false)
+}
+
   async function sendOTPforverify(){
     setIsDropdownOpen(false); // Close dropdown before action
     dispatch(useSendverifyOTP({email: user?.email})).then(res => {
@@ -76,11 +81,11 @@ const ShopHeader = () => {
           <div className="flex  items-center space-x-2 sm:space-x-4">
             
             {/* Search Icon */}
-            <Link to="/shop/search" className="p-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200" aria-label="Search">
+            <button onClick={()=>handleNavigation("/shop/search")} className="p-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200" aria-label="Search">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-            </Link>
+            </button>
 
             {/* Wishlist Icon with count */}
             {/* <a href="/wishlist" className="p-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200 relative" aria-label="Wishlist">
@@ -93,13 +98,13 @@ const ShopHeader = () => {
              {/* Cart Icon with count */}
             {
               isAuthenticated &&
-            <Link to="/shop/cart" className="p-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200 relative" aria-label="Cart">
+            <button  onClick={()=>handleNavigation("/shop/cart")} className="p-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200 relative" aria-label="Cart">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5H21M7 13-1.6 8M14 21a1 1 0 100-2 1 1 0 000 2zM17 21a1 1 0 100-2 1 1 0 000 2z" />
               </svg>
               {/* Refined badge styling */}
               <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center leading-none transform translate-x-1/4 -translate-y-1/4">{isLoading?<Loader/> :count }</span>
-            </Link>
+            </button>
             }
            
             

@@ -51,12 +51,12 @@ const AddressContainer = ({isSeletedMode,setIdOfAddress}) => {
       const pincodeRegex = /^\d{6}$/;
       if (formData.pincode.trim() !== '' && !pincodeRegex.test(formData.pincode)) {
           newErrors.pincode.invalidFormat = true;
-         hasError = false;
+         hasError = true;
       }
       const phoneRegex = /^\d{10}$/;
       if (formData.phone.trim() !== '' && !phoneRegex.test(formData.phone)) {
           newErrors.phone.invalidFormat = true;
-         hasError = false;
+         hasError = true;
       }
       setFieldErrors(deepcopyObj(newErrors));
       if(!hasError){
