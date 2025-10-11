@@ -103,7 +103,7 @@ const [currentPage,setCurrentPage]=useState(page)
         <div className="grid grid-cols-1 justify-items-center sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8">
           {/* Using optional chaining `?.` is a good practice here too */}
           {filterProducts.map((product) => (
-            <HomeShopCard width={"w-[80%] md:w-61"} key={product.sku} product={product} />
+            <HomeShopCard width={"w-[90%] md:w-61"} key={product.sku} product={product} />
           ))}
         </div>
       </div>
