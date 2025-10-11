@@ -15,7 +15,7 @@ const RelatedProductsView = ({products}) => {
             </h2>
             
             {/* Enhanced the grid for more columns on larger screens and better spacing between cards */}
-            <div className="grid grid-cols-1 justify-items-center sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8">
+            <div className="grid grid-cols-1 justify-content-center sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8">
                 {
                     products.map(product => (
                         // Added a key for better React performance and stability
