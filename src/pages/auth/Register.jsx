@@ -102,7 +102,7 @@ const [showPasswords, setShowPasswords] = useState(false);
       {/* Header */}
       <div className="text-center mb-8">
         <h2 className="auth-heading">Create Account</h2>
-        <p className="text-gray-500 text-lg">
+        <p className="auth-sub-heading">
           Join EcoShop for a sustainable future
         </p>
       </div>
@@ -296,11 +296,11 @@ const [showPasswords, setShowPasswords] = useState(false);
         </button>
 
         {/* Footer */}
-        <p className="text-center text-sm text-gray-500 mt-4 border-t pt-4">
+        <p className="text-center whitespace-nowrap text-sm text-gray-500 mt-4 border-t border-accent pt-4">
           Already have an account?
           <Link
             to="/auth/login"
-            className="text-primary font-semibold ml-1 hover:text-green-700"
+            className="text-primary  font-semibold ml-1 hover:text-green-700"
           >
             Sign in
           </Link>

@@ -67,7 +67,7 @@ const Login = () => {
         <h2 className="auth-heading">
           Welcome Back
         </h2>
-        <p className="text-gray-500 text-lg">Sign in to your EcoShop account</p>
+        <p className="auth-sub-heading">Sign in to your EcoShop account</p>
       </div>
       <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={handlesubmit} className="space-y-3">
@@ -154,8 +154,8 @@ const Login = () => {
             </button>
           </div>
         </form>
-        <div className="px-6 py-4 mt-4 border-t border-gray-200 text-center">
-          <p className="text-center text-sm text-gray-500">
+        <div className="px-6 py-4 mt-4 border-t border-accent text-center">
+          <p className="text-center whitespace-nowrap text-sm text-gray-500">
             Don't have an account?{" "}
             <Link
               to="/auth/register"
