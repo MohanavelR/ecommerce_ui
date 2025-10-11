@@ -178,7 +178,7 @@ function navPath(path){
           </div>
         </div>
         {/* Mobile View Header */}
-        <MobileViewHeader setOpenMenu={setOpenMenu} isOpen={openMenu} toggleMenu={() => setOpenMenu(!openMenu)} />
+        <MobileViewHeader handleNavigation={handleNavigation} isOpen={openMenu} toggleMenu={() => setOpenMenu(!openMenu)} />
       </div>
     </header>
   );

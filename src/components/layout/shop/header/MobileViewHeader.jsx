@@ -93,14 +93,11 @@ const MobileCategoryBlock = ({ category, navigatePath }) => {
   );
 };
 
-const MobileViewHeader = ({ isOpen, setOpenMenu }) => {
+const MobileViewHeader = ({ isOpen, handleNavigation }) => {
   const { categoryList } = useSelector((state) => state.category);
   const navigate = useNavigate();
 
-  function navigatePath(path) {
-    navigate(path);
-    setOpenMenu(false);
-  }
+
 
   return (
     <>
@@ -127,7 +124,7 @@ const MobileViewHeader = ({ isOpen, setOpenMenu }) => {
                 <MobileCategoryBlock
                   key={index}
                   category={category}
-                  navigatePath={navigatePath}
+                  navigatePath={handleNavigation}
                 />
               ))
             ) : (
@@ -137,24 +134,19 @@ const MobileViewHeader = ({ isOpen, setOpenMenu }) => {
             )}
 
             {/* Other Static Links */}
-            <Link
-              to="/shop/about-us"
+            <button onClick={()=>handleNavigation("/shop/about-us")}
               className="block py-2 hover:text-primary font-medium transition-all duration-500"
             >
               About Us
-            </Link>
-            <Link
-              to="/shop/contact-us"
+            </button>
+            <button
+            onClick={()=>handleNavigation("/shop/contact-us")}
+
               className="block py-2 hover:text-primary font-medium transition-all duration-500"
             >
               Contact Us
-            </Link>
-            <Link
-              to="/orders"
-              className="block py-2 hover:text-primary font-medium transition-all duration-500"
-            >
-              Track Order
-            </Link>
+            </button>
+            
           </nav>
         </div>
       )}
