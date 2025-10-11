@@ -12,7 +12,7 @@ const ErrorMessage = ({closeMessage,text}) => {
             </div>
             <div className="ml-3 flex-1">
                 {/* Text is white */}
-                <p className="text-sm font-medium text-white">
+                <p className="md:text-sm text-xs font-medium text-white">
                     <span className="font-bold">Error!</span> {text}
                 </p>
             </div>

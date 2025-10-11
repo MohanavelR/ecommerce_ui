@@ -9,7 +9,7 @@ const SuccessMessage = ({closeMessage, text}) => {
                 </svg>
             </div>
             <div className="ml-3 flex-1">
-                <p className="text-sm font-medium text-white">{text}</p>
+                <p className="md:text-sm text-xs  font-medium text-white">{text}</p>
             </div>
             <div className="ml-auto pl-3">
                 <button onClick={closeMessage} className="inline-flex  text-white hover:text-green-100 focus:outline-none">

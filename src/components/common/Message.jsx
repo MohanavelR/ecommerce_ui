@@ -46,7 +46,7 @@ const Message = () => {
 
   return (
     <div
-      className={`fixed top-10 right-10 z-[9999] transition-all duration-300 ease-out transform ${transitionClass}`}
+      className={`fixed top-10 right-5 md:right-10 z-[9999] transition-all duration-300 ease-out transform ${transitionClass}`}
     >
       {messageContextState.success ? (
         <SuccessMessage closeMessage={closeMessage} text={messageContextState.text} />
