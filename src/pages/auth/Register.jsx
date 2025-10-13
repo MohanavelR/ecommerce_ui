@@ -14,14 +14,6 @@ const Register = () => {
     useContext(MessageContext);
 const [showPasswords, setShowPasswords] = useState(false);
 const [passwordErrors,setPasswordErrors]=useState([])
-useEffect(() => {
-  if (formData.password) {
-    const result = isStrongPassword(formData.password);
-    setPasswordErrors(result.valid ? [] : result.reasons);
-  } else {
-    setPasswordErrors([]);
-  }
-}, [formData.password]);
 
 
   const [formData, setFormData] = useState({
@@ -36,13 +28,21 @@ useEffect(() => {
   const [confirm_password, setconfirm_password] = useState("");
   const dispatch = useDispatch();
   const nav = useNavigate();
+useEffect(() => {
+  if (formData.password) {
+    const result = isStrongPassword(formData.password);
+    setPasswordErrors(result.valid ? [] : result.reasons);
+  } else {
+    setPasswordErrors([]);
+  }
+}, [formData.password]);
 
   async function handlesubmit(e) {
     setIsLoading(true);
     e.preventDefault();
     let hasError = false;
     const localError = deepcopyObj(registerError);
-    const checkPassword=isStrongPassword(formData.password) 
+    const checkPassword=isStrongPassword(formData.password,{minLength:8}) 
     if (formData.firstName === "") {
       hasError = true;
       localError.firstname.isRequired = true;
