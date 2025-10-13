@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Loader from '../../../common/Loader';
 
-const CartItemCard = ({ item, productName, onUpdateQuantity, onDelete }) => {
+const CartItemCard = ({ item, productName, onUpdateQuantity, onDelete,isLoading }) => {
   const uniqueKey = item.productId + item.variationKey;
   const currentPrice = item.price.current;
   const originalPrice = item.price.original;
   const currency = item.price.currency || '₹';
   const stock = item.stock || 10;
   const totalItemPrice = currentPrice * item.quantity;
-
+  const [actionType,setActionType]=useState(null)
   const handleQuantityChange = (quantity,action) => {
      const newQuantity=item.quantity-1
+     setActionType(action)
     if (newQuantity>0 && action==="decrement" ) {
       onUpdateQuantity(item.productId._id, item.variationKey, quantity,action);
     }
@@ -50,7 +52,9 @@ const CartItemCard = ({ item, productName, onUpdateQuantity, onDelete }) => {
                   className="w-8 h-8 rounded-full bg-white text-gray-700 hover:bg-red-50 hover:text-red-600 disabled:opacity-50 disabled:hover:bg-white transition duration-200 shadow-inner flex items-center justify-center"
                   title="Decrease Quantity"
                 >
-                  −
+                  {
+                    isLoading && actionType==="decrement" ?<Loader/>:"-" 
+                  }
                 </button>
                 
                 {/* Quantity Display */}
@@ -66,7 +70,10 @@ const CartItemCard = ({ item, productName, onUpdateQuantity, onDelete }) => {
                   className="w-8 h-8 rounded-full bg-white text-gray-700 hover:bg-green-50 hover:text-green-600 disabled:opacity-50 disabled:hover:bg-white transition duration-200 shadow-inner flex items-center justify-center"
                   title="Increase Quantity"
                 >
-                  +
+                  {
+                    isLoading && actionType==="increment" ?<Loader/>:"+"
+                  }
+                  
                 </button>
             </div>
 

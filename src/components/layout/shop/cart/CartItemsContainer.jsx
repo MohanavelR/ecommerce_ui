@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MessageContext } from '../../../../context/context';
 
 const CartItemsContainer = ({cartItems}) => {
-//    const { cartItems, isLoading } = useSelector(state => state.cart);
+   const {isLoading } = useSelector(state => state.cart);
   const {messageContextState,setMessageContextState}=useContext(MessageContext)
   const {user}=useSelector(state=>state.auth)
   const cartItemsList = cartItems?.items || [];
@@ -42,6 +42,7 @@ const CartItemsContainer = ({cartItems}) => {
                         // Ensure the key is fully unique
                         key={item.productId + '-' + item.variationKey}
                         item={item} 
+                        isLoading={isLoading}
                         onUpdateQuantity={handleUpdateQuantity}
                         onDelete={handleDeleteItem}
                         // Using optional chaining more safely
