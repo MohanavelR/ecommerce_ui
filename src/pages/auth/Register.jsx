@@ -222,7 +222,7 @@ useEffect(() => {
         </div>
 
         {/* Password + Confirm Password */}
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
   {/* Password */}
   <div>
     <label htmlFor="password" className="auth-form-label">
@@ -248,7 +248,7 @@ useEffect(() => {
        passwordErrors.map(error=>(
         <ul>
           {
-          <li>{error}</li>
+          <li className="fielderror">{error}</li>
           }
         </ul>
        ))
@@ -278,7 +278,7 @@ useEffect(() => {
       <p className="fielderror">Passwords do not match</p>
     )}
   </div>
-</div>
+
 
 {/* Checkbox: show/hide password */}
 <div className="flex items-center mt-2">

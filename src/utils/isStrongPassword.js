@@ -1,6 +1,6 @@
 function isStrongPassword(password, opts = {}) {
   const defaults = {
-    minLength: 12,
+    minLength: 8,
     requireUpper: true,
     requireLower: true,
     requireNumber: true,
