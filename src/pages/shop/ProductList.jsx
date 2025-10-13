@@ -58,7 +58,7 @@ const [currentPage,setCurrentPage]=useState(page)
       dispatch(useGetFilterProducts({ filterParams: filters, sortParams: sort,page:currentPage }))
     }
     dispatch(useGetFilterProducts())
-  }, [sort, filters,currentPage])
+  }, [sort, filters,currentPage,dispatch])
 
   useEffect(() => {
     if (filters && Object.keys(filters).length > 0) {
@@ -90,7 +90,7 @@ const [currentPage,setCurrentPage]=useState(page)
         </p>
       </header>
       {
-        isLoading?<Loader/>:(filterProducts && filterProducts.length > 0) ?<div>
+        isLoading?<Loader  />:(filterProducts && filterProducts.length > 0) ?<div>
            <div className='relative'>
         <div className="grid grid-cols-1 justify-items-center sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8">
           {/* Using optional chaining `?.` is a good practice here too */}

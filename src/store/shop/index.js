@@ -78,7 +78,6 @@ const shopProductSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(useGetFilterProducts.fulfilled, (state, action) => {
-        state.isError = false;
         state.isLoading = false;
         if(action.payload?.success){
           state.filterProducts = action.payload?.data ;
