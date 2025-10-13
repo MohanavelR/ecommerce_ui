@@ -102,6 +102,7 @@ useEffect(() => {
       setIsLoading(false);
       setTimeout(() => {
         setFieldErrors(deepcopyObj(registerError));
+        setPasswordErrors([])
       }, 3000);
     }
   }
