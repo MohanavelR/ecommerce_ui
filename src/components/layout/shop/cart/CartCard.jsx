@@ -3,6 +3,7 @@ import Loader from '../../../common/Loader';
 
 const CartItemCard = ({ item, productName, addCartIndex,setAddCartIndex,onUpdateQuantity,index, onDelete,isLoading }) => {
   const uniqueKey = item.productId + item.variationKey;
+  console.log(addCartIndex)
   const currentPrice = item.price.current;
   const originalPrice = item.price.original;
   const currency = item.price.currency || '₹';
