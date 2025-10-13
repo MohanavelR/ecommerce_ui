@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { deepcopyObj } from "../../utils/deepCopyObj";
 import { registerError } from "../../utils/errorObj";
 import Loader from "../../components/common/Loader";
@@ -7,11 +7,21 @@ import { useCreateUser } from "../../store/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { MessageContext } from "../../context/context";
 import isValidPhoneNumber from "../../utils/CheckVaildPhoneNumber";
+import isStrongPassword from "../../utils/isStrongPassword";
 
 const Register = () => {
   const { messageContextState, setMessageContextState } =
     useContext(MessageContext);
 const [showPasswords, setShowPasswords] = useState(false);
+const [passwordErrors,setPasswordErrors]=useState([])
+useEffect(() => {
+  if (formData.password) {
+    const result = isStrongPassword(formData.password);
+    setPasswordErrors(result.valid ? [] : result.reasons);
+  } else {
+    setPasswordErrors([]);
+  }
+}, [formData.password]);
 
 
   const [formData, setFormData] = useState({
@@ -32,7 +42,7 @@ const [showPasswords, setShowPasswords] = useState(false);
     e.preventDefault();
     let hasError = false;
     const localError = deepcopyObj(registerError);
-
+    const checkPassword=isStrongPassword(formData.password) 
     if (formData.firstName === "") {
       hasError = true;
       localError.firstname.isRequired = true;
@@ -52,16 +62,15 @@ const [showPasswords, setShowPasswords] = useState(false);
       hasError = true;
       localError.email.isRequired = true;
     }
-    if (formData.password === "") {
-      hasError = true;
-      localError.password.isRequired = true;
-    }
-    if (formData.password.length < 8 && !localError.password.isRequired) {
-      hasError = true;
-      localError.password.lengthError = true;
-    }
+    if (!checkPassword.valid) {
+  hasError = true;
+  setPasswordErrors(checkPassword.reasons);
+} else {
+  setPasswordErrors([]); // clear old errors
+}
+
     if (
-      !localError.password.lengthError &&
+      checkPassword.valid &&
       formData.password !== confirm_password
     ) {
       hasError = true;
@@ -234,14 +243,17 @@ const [showPasswords, setShowPasswords] = useState(false);
       />
     </div>
 
-    {fieldErrors.password.isRequired && (
-      <p className="fielderror">Password is required</p>
-    )}
-    {fieldErrors.password.lengthError && (
-      <p className="fielderror">
-        Password must be at least 8 characters
-      </p>
-    )}
+    {
+     passwordErrors.length > 0 (   
+       passwordErrors.map(error=>(
+        <ul>
+          {
+          <li>{error}</li>
+          }
+        </ul>
+       ))
+    ) 
+    }
   </div>
 
   {/* Confirm Password */}
