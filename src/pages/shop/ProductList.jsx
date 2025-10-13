@@ -95,17 +95,17 @@ const [currentPage,setCurrentPage]=useState(page)
       </header>
 
       {
-        loading ? <Loader/>:
-        (filterProducts && filterProducts.length > 0) ?
-        <div>
-        <div className="grid grid-cols-1 justify-items-center sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8">
-          {filterProducts.map((product) => (
-            <HomeShopCard width={"w-[90%] md:w-61"} key={product.sku} product={product} />
-          ))}
-      </div>
-       <Pagination totalPages={totalPages} onPageChange={setCurrentPage} currentPage={currentPage}   />
+        loading ? <Loader/>:""
+      //   (filterProducts && filterProducts.length > 0) ?
+      //   <div>
+      //   <div className="grid grid-cols-1 justify-items-center sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8">
+      //     {filterProducts.map((product) => (
+      //       <HomeShopCard width={"w-[90%] md:w-61"} key={product.sku} product={product} />
+      //     ))}
+      // </div>
+      //  <Pagination totalPages={totalPages} onPageChange={setCurrentPage} currentPage={currentPage}   />
 
-        </div>:"Not Available"
+      //   </div>:"Not Available"
       }
 
       
