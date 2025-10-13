@@ -172,7 +172,7 @@ async function handleAddToCart(id) {
         
         {/* Action Button */}
         {product?.variations && product?.variations.length > 1 ? (
-          <div>
+          <div className="mt-1">
             <Link
               to={`/shop/products/${product?.sku}`}
               // Reduced p-2 to p-1.5 for a smaller button
@@ -182,7 +182,7 @@ async function handleAddToCart(id) {
             </Link>
           </div>
         ) : (
-          <div className="flex gap-2">
+          <div className="flex gap-2 mt-1">
             <button
              onClick={()=>handleAddToCart(product?._id)}
              disabled={!isStock || (isLoading && product._id===addCartProductId )}
