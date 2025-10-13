@@ -79,10 +79,10 @@ const [currentPage,setCurrentPage]=useState(page)
       <header className="mb-6 mt-3 flex justify-between border-accent  items-baseline border-b pb-4">
        <button onClick={() => setFilterOpen(!fillterOpen)} className='text-white md:hidden text-xs  absolute right-[0%] -top-5 hover-duration hover:bg-cyan-700  bg-cyan-800 px-4 py-3 rounded-lg font-bold'>
             <i className="fa-solid fa-filter"></i> Filter
-          </button>        <h1 className="text-xl font-extrabold tracking-tight text-gray-900">
+          </button>        <h1 className="md:text-xl text-base  font-extrabold tracking-tight text-gray-900">
           Shopping Products
         </h1>
-        <p className="text-lg font-medium text-indigo-600">
+        <p className="text-xs md:text-lg font-medium text-indigo-600">
          {
          totalCount > 1?`Products(${totalCount})`:`product(${totalCount})`
          }
@@ -90,7 +90,7 @@ const [currentPage,setCurrentPage]=useState(page)
         </p>
       </header>
       {
-        isLoading?<Loader  />:(filterProducts && filterProducts.length > 0) ?<div>
+        isLoading?<Loader/>:filterProducts && filterProducts.length > 0 ?<div>
            <div className='relative'>
         <div className="grid grid-cols-1 justify-items-center sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8">
           {/* Using optional chaining `?.` is a good practice here too */}
