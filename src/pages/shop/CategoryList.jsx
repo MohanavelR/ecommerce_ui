@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useGetCategoryProducts } from '../../store/shop';
 import BreadcrumbBanner from '../../components/layout/shop/common/BreadcrumbBanner';
 import HomeShopCard from '../../components/layout/shop/HomeShopCard';
+import Loader from '../../components/common/Loader';
 
 
 const GridLoader = () => (
@@ -40,7 +41,7 @@ const CategoryList = () => {
   if (isLoading) {
     return (
       <div className="py-8">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">Loading..</h1>
+  <Loader/>
         <GridLoader />
       </div>
     );
