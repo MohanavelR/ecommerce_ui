@@ -49,7 +49,7 @@ const CartItemCard = ({ item, productName, addCartIndex,setAddCartIndex,onUpdate
                 
                 {/* Decrease Button */}
                 <button 
-                  onClick={() => handleQuantityChange(1,"decrement")} 
+                  onClick={() => handleQuantityChange(1,"decrement",index)} 
                   disabled={item.quantity <= 1 || isLoading}
 
                   className="w-8 h-8 rounded-full bg-white text-gray-700 hover:bg-red-50 hover:text-red-600 disabled:opacity-50 disabled:hover:bg-white transition duration-200 shadow-inner flex items-center justify-center"
