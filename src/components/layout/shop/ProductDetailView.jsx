@@ -346,7 +346,7 @@ useEffect(() => {
           <div className="flex space-x-4">
             <button
               onClick={()=>handleAddToCart(product._id,currentVariation,1)}
-              disabled={isOutOfStock}
+              disabled={isOutOfStock || cartLoader}
               className={`flex-1 py-3 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition ${
                 !isOutOfStock
                   ? "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500"
