@@ -176,7 +176,7 @@ async function handleAddToCart(id) {
             <Link
               to={`/shop/products/${product?.sku}`}
               // Reduced p-2 to p-1.5 for a smaller button
-              className={` w-full p-1.5 flex bg-primary text-accent items-center justify-center gap-1 text-sm font-bold transition-all duration-300 rounded-md shadow-md transform hover:scale-[1.01]`}
+              className={` w-full p-1.5 py-2 flex bg-primary text-accent items-center justify-center gap-1 text-sm font-bold transition-all duration-300 rounded-md shadow-md transform hover:scale-[1.01]`}
             >
               Read More
             </Link>
