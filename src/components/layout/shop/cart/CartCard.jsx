@@ -56,7 +56,7 @@ const CartItemCard = ({ item, productName, addCartIndex,setAddCartIndex,onUpdate
                   title="Decrease Quantity"
                 >
                   {
-                    isLoading && actionType==="decrement" && addCartIndex===index ?<Loader size='sm'/>:<i class="fa-solid fa-minus"></i>
+                    isLoading && actionType==="decrement" && addCartIndex===index ?<Loader size='sm'/>:<i class="fa-solid text-xs fa-minus"></i>
                   }
                 </button>
                 
@@ -74,7 +74,7 @@ const CartItemCard = ({ item, productName, addCartIndex,setAddCartIndex,onUpdate
                   title="Increase Quantity"
                 >
                   {
-                    isLoading && actionType==="increment" && addCartIndex===index ?<Loader size='sm'/>:<i class="fa-solid fa-plus"></i>
+                    isLoading && actionType==="increment" && addCartIndex===index ?<Loader size='sm'/>:<i class="fa-solid text-xs fa-plus"></i>
                   }
                   
                 </button>
