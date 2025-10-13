@@ -32,6 +32,7 @@ async function handleAddToCart(id) {
       })
     }
     else{
+        setAddCartProductId(null)
         setMessageContextState({...messageContextState,is_show:true,text:"Please Verify Your Account",success:false})
     }
   }  

@@ -16,7 +16,12 @@ const CartItemsContainer = ({cartItems}) => {
     dispatch(useUpdateCart({productId,variationKey,quantity,action,userId:user.id})).then(res=>{
   
       if(res.payload?.success){
+        setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
+
         dispatch(useGetCart(user.id))
+      }
+      else{
+         setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:false})
       }
     })
   };
