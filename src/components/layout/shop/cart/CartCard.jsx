@@ -47,7 +47,7 @@ const CartItemCard = ({ item, productName, onUpdateQuantity, onDelete,isLoading 
                 {/* Decrease Button */}
                 <button 
                   onClick={() => handleQuantityChange(1,"decrement")} 
-                  disabled={item.quantity <= 1}
+                  disabled={item.quantity <= 1 || isLoading}
 
                   className="w-8 h-8 rounded-full bg-white text-gray-700 hover:bg-red-50 hover:text-red-600 disabled:opacity-50 disabled:hover:bg-white transition duration-200 shadow-inner flex items-center justify-center"
                   title="Decrease Quantity"
@@ -65,13 +65,13 @@ const CartItemCard = ({ item, productName, onUpdateQuantity, onDelete,isLoading 
                 {/* Increase Button */}
                 <button 
                   onClick={() => handleQuantityChange(1,"increment")} 
-                  disabled={item.quantity >= stock}
+                  disabled={item.quantity >= stock || isLoading}
                   // New pill button style
                   className="w-8 h-8 rounded-full bg-white text-gray-700 hover:bg-green-50 hover:text-green-600 disabled:opacity-50 disabled:hover:bg-white transition duration-200 shadow-inner flex items-center justify-center"
                   title="Increase Quantity"
                 >
                   {
-                    isLoading && actionType==="increment" ?<Loader/>:"+"
+                    isLoading && actionType==="increment" ?<Loader size='sm'/>:"+"
                   }
                   
                 </button>
