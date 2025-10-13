@@ -14,6 +14,7 @@ const ProductDetailView = ({ product, isLoading,handleAddToCart }) => {
   const [isSeleted, setSelected] = useState({ type: null, value: null });
   const [currentImage, setCurrentImage] = useState(null);
   const [variation, setVariation] = useState(null);
+  const {isLoading:cartLoader}=useSelector(state=>state.cart)
   // const [currentSavedAmount, setCurrentSavedAmount] = useState(0);
   const isOutOfStock = currentVariation?.stock <= 0;
   const currentSavedAmount = currentVariation?.price?.original > 0 && currentVariation?.price?.current > 0
@@ -352,7 +353,10 @@ useEffect(() => {
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
             >
-              {isOutOfStock ? "Sold Out" : "Add to Cart"}
+              {
+                cartLoader?<Loader/>:
+              isOutOfStock ? "Sold Out" : "Add to Cart"
+              }
             </button>
             <button
               className="p-3 border border-gray-300 rounded-md hover:bg-gray-50"
