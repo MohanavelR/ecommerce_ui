@@ -3,10 +3,12 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAddToCart, useGetCart } from "../../../store/cart";
 import { MessageContext } from "../../../context/context";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "../../common/Loader";
 
 const HomeShopCard = ({ product ,width="w-65" }) => {
   const {messageContextState,setMessageContextState}=useContext(MessageContext)
   const {user,isAuthenticated}=useSelector(state=>state.auth)
+  const {isLoading }=useSelector(state.cart)
   const nav =useNavigate()
   const dispatch=useDispatch()
   // Use the first variation for initial display information
@@ -181,7 +183,7 @@ async function handleAddToCart() {
           <div className="flex gap-2">
             <button
              onClick={handleAddToCart}
-             disabled={!isStock}
+             disabled={!isStock || isLoading}
              title={!isStock ? "Out of Stock" : "Add to Cart"}
              // Reduced p-2 to p-1.5 for a smaller button
              className={`flex-1 p-1.5 flex items-center justify-center gap-1 text-sm font-bold transition-all duration-300 rounded-md shadow-md transform hover:scale-[1.01] ${
@@ -190,10 +192,15 @@ async function handleAddToCart() {
                      : 'bg-indigo-600 hover:bg-indigo-700 text-white'
              }`}
             >
+              {
+                isLoading?<Loader/>:
+              <div>
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 {!isStock ? 'SOLD OUT' : 'ADD TO CART'}
+              </div>
+              }
             </button>
           </div>
         )}

@@ -123,7 +123,6 @@ const productSlice = createSlice({
       .addCase(useGetAllProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         if(action.payload?.success){
-
           state.productList = action.payload?.data ;
           state.totalCount = action.payload?.totalCount;
           state.currentCount=action.payload?.currentCount
