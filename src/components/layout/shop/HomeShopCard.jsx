@@ -24,6 +24,7 @@ async function handleAddToCart(id) {
        if(res.payload?.success){
           setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:true})
           dispatch(useGetCart(user.id))
+          setAddCartProductId(null)
          }
        else{
    setMessageContextState({...messageContextState,is_show:true,text:res.payload?.message,success:false})
