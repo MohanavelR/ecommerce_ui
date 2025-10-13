@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Loader from '../../../common/Loader';
 
-const CartItemCard = ({ item, productName, onUpdateQuantity, onDelete,isLoading }) => {
+const CartItemCard = ({ item, productName, addCartIndex,setAddCartIndex,onUpdateQuantity,index, onDelete,isLoading }) => {
   const uniqueKey = item.productId + item.variationKey;
   const currentPrice = item.price.current;
   const originalPrice = item.price.original;
@@ -9,10 +9,12 @@ const CartItemCard = ({ item, productName, onUpdateQuantity, onDelete,isLoading 
   const stock = item.stock || 10;
   const totalItemPrice = currentPrice * item.quantity;
   const [actionType,setActionType]=useState(null)
-  const handleQuantityChange = (quantity,action) => {
+  const handleQuantityChange = (quantity,action,index) => {
+
      const newQuantity=item.quantity-1
      setActionType(action)
-    if (newQuantity>0 && action==="decrement" ) {
+      setAddCartIndex(index)
+     if (newQuantity>0 && action==="decrement" ) {
       onUpdateQuantity(item.productId._id, item.variationKey, quantity,action);
     }
     else{
@@ -64,14 +66,14 @@ const CartItemCard = ({ item, productName, onUpdateQuantity, onDelete,isLoading 
                 
                 {/* Increase Button */}
                 <button 
-                  onClick={() => handleQuantityChange(1,"increment")} 
+                  onClick={() => handleQuantityChange(1,"increment",index)} 
                   disabled={item.quantity >= stock || isLoading}
                   // New pill button style
                   className="w-8 h-8 rounded-full bg-white text-gray-700 hover:bg-green-50 hover:text-green-600 disabled:opacity-50 disabled:hover:bg-white transition duration-200 shadow-inner flex items-center justify-center"
                   title="Increase Quantity"
                 >
                   {
-                    isLoading && actionType==="increment" ?<Loader size='sm'/>:"+"
+                    isLoading && actionType==="increment" && addCartIndex===index ?<Loader size='sm'/>:"+"
                   }
                   
                 </button>

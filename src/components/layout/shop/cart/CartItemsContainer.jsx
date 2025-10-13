@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import CartItemCard from './CartCard'
 import { useDeleteCartItem, useGetCart, useUpdateCart } from '../../../../store/cart';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +9,7 @@ const CartItemsContainer = ({cartItems}) => {
   const {messageContextState,setMessageContextState}=useContext(MessageContext)
   const {user}=useSelector(state=>state.auth)
   const cartItemsList = cartItems?.items || [];
-  
+  const [addCartIndex,setAddCartIndex]=useState(null)
   const dispatch=useDispatch()
   // Handler functions
   const handleUpdateQuantity = (productId, variationKey,quantity,action) => {
@@ -37,14 +37,17 @@ const CartItemsContainer = ({cartItems}) => {
   return (
     <div>
         <div className="space-y-4">
-                    {cartItemsList.map((item) => (
+                    {cartItemsList.map((item,index) => (
                       <CartItemCard 
                         // Ensure the key is fully unique
                         key={item.productId + '-' + item.variationKey}
                         item={item} 
+                        index={index}
                         isLoading={isLoading}
                         onUpdateQuantity={handleUpdateQuantity}
                         onDelete={handleDeleteItem}
+                        addCartIndex={addCartIndex}
+                        setAddCartIndex={setAddCartIndex}
                         // Using optional chaining more safely
                         productName={item?.productId?.productName || 'Product Name Missing'} 
                       />
