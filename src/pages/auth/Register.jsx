@@ -244,7 +244,7 @@ useEffect(() => {
     </div>
 
     {
-     passwordErrors.length > 0 (   
+     passwordErrors.length > 0 && (   
        passwordErrors.map(error=>(
         <ul>
           {
