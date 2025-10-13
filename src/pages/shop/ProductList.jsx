@@ -15,7 +15,7 @@ import Pagination from '../../components/common/Pagination'
 
 const ProductList = () => {
 const {filterProducts,isLoading,totalCount,page,currentCount,totalPages}=useSelector(state=>state.filterProducts)
-
+console.log(isLoading)
 const [filters, setFilters] = useState({})
 const [sort, setSort] = useState(null)
 const location=useLocation()
@@ -75,7 +75,6 @@ const [currentPage,setCurrentPage]=useState(page)
         <ProductFilterSidebar sort={sort} setSort={setSort} handleFilter={handleFilter} handlesort={handlesort} filters={filters} setFilters={setFilters} fillterOpen={fillterOpen} setFilterOpen={setFilterOpen} />
          <div className="p-4 sm:p-6 mt-9  w-full bg-white relative  rounded-xl shadow-2xl"> {/* Main container is a clean, lifted card */}
       
-      {/* Header Section: Clear separation and highlighted text */}
       <header className="mb-6 mt-3 flex justify-between border-accent  items-baseline border-b pb-4">
        <button onClick={() => setFilterOpen(!fillterOpen)} className='text-white md:hidden text-xs  absolute right-[0%] -top-5 hover-duration hover:bg-cyan-700  bg-cyan-800 px-4 py-3 rounded-lg font-bold'>
             <i className="fa-solid fa-filter"></i> Filter
@@ -91,7 +90,7 @@ const [currentPage,setCurrentPage]=useState(page)
       </header>
 
       {
-        isLoading?<Loader/>:
+        isLoading ? <Loader/>:
         (filterProducts && filterProducts.length > 0) ?
         <div>
         <div className="grid grid-cols-1 justify-items-center sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8">
