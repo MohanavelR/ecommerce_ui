@@ -151,7 +151,7 @@ const countOfColumns = Math.ceil(totalSizeOfCategory / PER_COLUMN_LIST);
               <Link 
                 key={link.name}
                 to={link.href} 
-                className="text-indigo-200 hover:text-white transition-colors duration-200 text-sm"
+                className="text-indigo-200 hover:text-white transition-colors duration-200 whitespace-nowrap text-xs md:text-sm"
               >
                 {link.name}
               </Link>
