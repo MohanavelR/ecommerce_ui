@@ -15,8 +15,8 @@ import Pagination from '../../components/common/Pagination'
 
 const ProductList = () => {
 const {filterProducts,isLoading,totalCount,page,currentCount,totalPages}=useSelector(state=>state.filterProducts)
-console.log(isLoading)
 const [filters, setFilters] = useState({})
+const [loading,setLoading]=useState(false)
 const [sort, setSort] = useState(null)
 const location=useLocation()
 const dispatch=useDispatch()
@@ -54,10 +54,15 @@ const [currentPage,setCurrentPage]=useState(page)
   },[location.search])
 
   useEffect(() => {
+    setLoading(true)
     if (filters !== null && sort !== null) {
-      dispatch(useGetFilterProducts({ filterParams: filters, sortParams: sort,page:currentPage }))
+      dispatch(useGetFilterProducts({ filterParams: filters, sortParams: sort,page:currentPage })).then(res=>{
+         setLoading(false)
+      })
     }
-    dispatch(useGetFilterProducts())
+    dispatch(useGetFilterProducts()).then(res=>{
+         setLoading(false)
+      })
   }, [sort, filters,currentPage,dispatch])
 
   useEffect(() => {
@@ -90,7 +95,7 @@ const [currentPage,setCurrentPage]=useState(page)
       </header>
 
       {
-        isLoading ? <Loader/>:
+        loading ? <Loader/>:
         (filterProducts && filterProducts.length > 0) ?
         <div>
         <div className="grid grid-cols-1 justify-items-center sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8">
