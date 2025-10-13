@@ -78,6 +78,10 @@ const [currentPage,setCurrentPage]=useState(page)
         <BreadcrumbBanner pageTitle='Products' currentPage='Products' />
         <div className='flex space-x-2'>
         <ProductFilterSidebar sort={sort} setSort={setSort} handleFilter={handleFilter} handlesort={handlesort} filters={filters} setFilters={setFilters} fillterOpen={fillterOpen} setFilterOpen={setFilterOpen} />
+    {
+      filterProducts.length===0?<div className="p-6 bg-white border border-gray-200 rounded-lg shadow-md text-gray-500">
+      Not Available
+      </div>:
          <div className="p-4 sm:p-6 mt-9  w-full bg-white relative  rounded-xl shadow-2xl"> {/* Main container is a clean, lifted card */}
       
       <header className="mb-6 mt-3 flex justify-between border-accent  items-baseline border-b pb-4">
@@ -107,27 +111,13 @@ const [currentPage,setCurrentPage]=useState(page)
                   </div>
                 :
                 <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-md text-gray-500">
-      Not Available
+      Loading...
       </div>
                 }
      
-     
-      {
-        // loading ? <Loader/>:""
-      //   (filterProducts && filterProducts.length > 0) ?
-      //   <div>
-      //   <div className="grid grid-cols-1 justify-items-center sm:grid-rows-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8">
-      //     {filterProducts.map((product) => (
-      //       <HomeShopCard width={"w-[90%] md:w-61"} key={product.sku} product={product} />
-      //     ))}
-      // </div>
-      //  <Pagination totalPages={totalPages} onPageChange={setCurrentPage} currentPage={currentPage}   />
-
-      //   </div>:"Not Available"
-      }
-
       
        </div>
+    }
 
         </div>
       </div>
