@@ -8,7 +8,7 @@ import Loader from "../../common/Loader";
 const HomeShopCard = ({ product ,width="w-65" }) => {
   const {messageContextState,setMessageContextState}=useContext(MessageContext)
   const {user,isAuthenticated}=useSelector(state=>state.auth)
-  const {isLoading }=useSelector(state.cart)
+  const {isLoading }=useSelector(state=>state.cart)
   const nav =useNavigate()
   const dispatch=useDispatch()
   // Use the first variation for initial display information
