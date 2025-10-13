@@ -248,7 +248,7 @@ useEffect(() => {
        passwordErrors.map(error=>(
         <ul>
           {
-          <li className="list-disc mt-2 fielderror">{error}</li>
+          <li className="list-disc ms-5 mt-2 fielderror">{error}</li>
           }
         </ul>
        ))
