@@ -1,7 +1,7 @@
 import React from 'react'
 import HomeShopCard from '../HomeShopCard'
 
-const RelatedProductsView = ({products}) => {
+const RelatedProductsView = ({products,totalCount}) => {
   return (
     <div>
         {
@@ -11,7 +11,7 @@ const RelatedProductsView = ({products}) => {
             
             {/* Improved the heading's typography and spacing */}
             <h2 className='md:text-3xl text-lg  font-extrabold text-gray-900 tracking-tight mb-8 border-b border-accent pb-2 inline-block'>
-                Related Products ({products.length})
+                Related Products  ({totalCount})
             </h2>
             
             {/* Enhanced the grid for more columns on larger screens and better spacing between cards */}

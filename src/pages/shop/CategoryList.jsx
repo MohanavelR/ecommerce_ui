@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom'; 
 
@@ -8,6 +8,7 @@ import { useGetCategoryProducts } from '../../store/shop';
 import BreadcrumbBanner from '../../components/layout/shop/common/BreadcrumbBanner';
 import HomeShopCard from '../../components/layout/shop/HomeShopCard';
 import Loader from '../../components/common/Loader';
+import Pagination from '../../components/common/Pagination';
 
 
 const GridLoader = () => (
@@ -24,19 +25,20 @@ const CategoryList = () => {
   const dispatch = useDispatch();
 
 
-  const {isLoading,categoryByProducts} = useSelector(state => state.filterProducts);
-
+  const {isLoading,categoryByProducts,categoryDetails } = useSelector(state => state.filterProducts);
+const [currentPage,setCurrentPage]=useState(categoryDetails?.page)
 
   // Calculate the product count for display
   const productCount = categoryByProducts ? categoryByProducts.length : 0;
  const category=categorySKU.replaceAll("-"," ")
   useEffect(() => {
     if (categorySKU) {
-      dispatch(useGetCategoryProducts(categorySKU));
+      dispatch(useGetCategoryProducts({category:categorySKU,page:currentPage,limit:10}));
     }
-  }, [dispatch, categorySKU]);
-
-  // --- Rendering Logic ---
+  }, [dispatch, categorySKU,currentPage]);
+   useEffect(()=>{
+   setCurrentPage(1)
+   },[categorySKU])
 
   if (isLoading) {
     return (
@@ -72,23 +74,25 @@ const CategoryList = () => {
       <div>
       {/* Updated Category Heading with Product Count */}
       <h1 className="text-3xl font-extrabold capitalize tracking-tight text-gray-900 sm:text-4xl mb-8 border-b border-accent  pb-2">
-        {category} <span className="text-xl font-medium text-gray-600">Products ({productCount})</span>
+        {category} <span className="text-xl font-medium text-gray-600">Products ({productCount}) of {categoryDetails?.totalCount}</span>
       </h1>
 
       </div>
       {/* Category Heading */}
 
       {/* Product Grid */}
-      <div className="grid grid-cols-1 gap-x-1 gap-y-4 sm:grid-cols-2 sm:gap-x-2 lg:gap-x-4 md:grid-cols-3 lg: lg:grid-cols-4">
+      <div className="grid grid-cols-1 justify-items-center gap-x-1 gap-y-4 sm:grid-cols-2 sm:gap-x-2 lg:gap-x-4 md:grid-cols-3 lg: lg:grid-cols-4">
         
         {categoryByProducts.map(product => (
           <HomeShopCard 
             key={product._id} 
             product={product} 
+            width='w-[80%] md:w-64'
           />
         ))}
 
       </div>
+      <Pagination currentPage={currentPage} onPageChange={setCurrentPage} totalPages={categoryDetails.totalPages} />
     </div>
     )
 }

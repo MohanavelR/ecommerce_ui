@@ -3,20 +3,26 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useGetRelatedProducts } from '../../../../store/related'
 import Loader from '../../../common/Loader'
 import RelatedProductsView from './RelatedProductsView'
+import Pagination from '../../../common/Pagination'
 
 const RelatedProducts = ({productDetail}) => {
-  const {relatedProducts,isLoading}=useSelector(state=>state.related)
+  const {relatedProducts,isLoading,relatedProductDetails}=useSelector(state=>state.related)
+  const [currentPage,setCurrentPage]=useState(relatedProductDetails.page)
   const dispatch=useDispatch()
   useEffect(()=>{
     if(productDetail?.sku){
-        dispatch(useGetRelatedProducts({category:productDetail?.category, excludeSku:productDetail.sku}))
+        dispatch(useGetRelatedProducts({category:productDetail?.category, excludeSku:productDetail.sku,page:currentPage,limit:10}))
     }
-  },[productDetail,dispatch])
+  },[productDetail,dispatch,currentPage])
+  useEffect(()=>{
+    setCurrentPage(1)
+  },[productDetail])
   return (
     <div>
       {
-        isLoading?<Loader/>:<RelatedProductsView products={relatedProducts} />
+        isLoading?<Loader/>:<RelatedProductsView totalCount={relatedProductDetails.totalCount} products={relatedProducts} />
       }
+      <Pagination currentPage={currentPage} totalPages={relatedProductDetails.totalPages} onPageChange={setCurrentPage}/>
     </div>
   )
 }

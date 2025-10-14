@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom'; 
 
@@ -8,6 +8,7 @@ import BreadcrumbBanner from '../../components/layout/shop/common/BreadcrumbBann
 import { useGetCategorySubProducts } from '../../store/shop';
 import HomeShopCard from '../../components/layout/shop/HomeShopCard';
 import Loader from '../../components/common/Loader';
+import Pagination from '../../components/common/Pagination';
 
 const GridLoader = () => (
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
@@ -22,8 +23,8 @@ const SubCategoryList = () => {
   const dispatch = useDispatch();
   const category=categoryName.replaceAll("-"," ")
   const subCategory=subCategoryName.replaceAll("-"," ")
-  
-  const { isLoading, subcategoryByProducts } = useSelector(state => state.filterProducts);
+  const { isLoading, subcategoryByProducts,subCategoryDetails } = useSelector(state => state.filterProducts);
+  const [currentPage,setCurrentPage]=useState(subCategoryDetails?.page)
 
   
 
@@ -35,10 +36,12 @@ const SubCategoryList = () => {
 
   useEffect(() => {
     if (subCategoryName) {
-      dispatch(useGetCategorySubProducts({ categoryName, subCategoryName }));
+      dispatch(useGetCategorySubProducts({ categoryName, subCategoryName,page:currentPage,limit:10 }));
     } 
-  }, [dispatch, categoryName, subCategoryName]); // Added 'category' to dependency array
-
+  }, [dispatch, categoryName, subCategoryName,currentPage]); // Added 'category' to dependency array
+   useEffect(()=>{
+   setCurrentPage(1)
+   },[categoryName,subCategoryName])
   // Loader
   if (isLoading) {
     return (
@@ -68,7 +71,8 @@ const SubCategoryList = () => {
             {/* Updated Heading with Product Count */}
             <h1 className="text-3xl capitalize font-extrabold tracking-tight text-gray-900 sm:text-4xl mb-8 border-b border-accent pb-2">
               {pageTitle} 
-              <span className="text-xl font-medium text-gray-600"> Products ({productCount})</span>
+              <span className="text-xl font-medium text-gray-600"> Products <span className="font-semibold text-blue-600">({productCount})</span> of{" "}
+  <span className="font-semibold text-gray-900">{subCategoryDetails?.totalCount}</span></span>
             </h1>
 
 <div className="grid grid-cols-1 gap-x-1 gap-y-4 
@@ -81,6 +85,7 @@ const SubCategoryList = () => {
                 <HomeShopCard width='w-[80%] md:w-64' key={product._id} product={product} />
               ))}
             </div>
+          <Pagination currentPage={currentPage} onPageChange={setCurrentPage} totalPages={subCategoryDetails.totalPages} />
           </div>
         )
       }

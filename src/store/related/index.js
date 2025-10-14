@@ -10,6 +10,12 @@ const initialState = {
   offerProducts: [],
   trendingProducts: [],
   relatedProducts: [],
+  relatedProductDetails:{
+  page:1,
+  currentCount:0,
+  totalCount:0,
+  totalPages:0,
+  }
 };
 // Get Grouped Products (feature, offer, trending)
 export const useGetGroupedProducts = createAsyncThunk(
@@ -26,9 +32,9 @@ export const useGetGroupedProducts = createAsyncThunk(
 // Get Related Products by Category
 export const useGetRelatedProducts = createAsyncThunk(
   "/related/getRelated",
-  async ({ category, excludeSku = "" }, thunkAPI) => {
+  async ({ category, excludeSku = "" ,page=1,limit=10}, thunkAPI) => {
     try {
-      return await apiOfGetRelatedProducts(category, excludeSku);
+      return await apiOfGetRelatedProducts(category, excludeSku,page,limit);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -68,8 +74,11 @@ builder
     state.isLoading = false;
     console.log(action.payload)
     if (action.payload?.success) {
-      state.relatedProducts = action.payload.relatedProducts || [];
-      state.relatedProductCount=action.payload.count|| 0
+      state.relatedProducts = action.payload.data || [];
+      state.relatedProductDetails.totalCount = action.payload?.totalCount;
+      state.relatedProductDetails.currentCount=action.payload?.currentCount
+      state.relatedProductDetails.page=action.payload?.page
+      state.relatedProductDetails.totalPages=action.payload?.totalPages
     }
   })
   .addCase(useGetRelatedProducts.rejected, (state) => {

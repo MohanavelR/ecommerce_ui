@@ -9,10 +9,23 @@ const initialState = {
   categoryByProducts: [],
   subcategoryByProducts: [],
   isError: false,
-   currentCount:0,
-      totalCount:0,
-      totalPages:0,
-            page: 1
+  currentCount:0,
+  totalCount:0,
+  categoryDetails:{
+  page:1,
+  currentCount:0,
+  totalCount:0,
+  totalPages:0,
+  },
+  subCategoryDetails:{
+  page:1,
+  currentCount:0,
+  totalCount:0,
+  totalPages:0,
+  },
+
+  totalPages:0,
+  page: 1
 };
 
 // Existing Thunks
@@ -41,9 +54,9 @@ export const useGetProductDetails = createAsyncThunk(
 // 🔹 New Thunks for Category
 export const useGetCategoryProducts = createAsyncThunk(
   'products/getCategoryProducts',
-  async (category, thunkAPI) => {
+  async ({category,page=1,limit=10}, thunkAPI) => {
     try {
-      return await getProductsByCategory(category);
+      return await getProductsByCategory(category,page,limit);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -52,9 +65,9 @@ export const useGetCategoryProducts = createAsyncThunk(
 
 export const useGetCategorySubProducts = createAsyncThunk(
   'products/getCategorySubProducts',
-  async ({ categoryName, subCategoryName }, thunkAPI) => {
+  async ({ categoryName, subCategoryName ,page=1,limit=10}, thunkAPI) => {
     try {
-      return await getProductsByCategoryAndSubcategory(categoryName, subCategoryName);
+      return await getProductsByCategoryAndSubcategory(categoryName, subCategoryName,page,limit);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -112,7 +125,14 @@ const shopProductSlice = createSlice({
       })
       .addCase(useGetCategoryProducts.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.categoryByProducts = action.payload?.success ? action.payload?.data : [];
+        if(action.payload?.success){
+          state.categoryByProducts = action.payload?.success ? action.payload?.data : [];
+          state.categoryDetails.totalCount = action.payload?.totalCount;
+          state.categoryDetails.currentCount=action.payload?.currentCount
+          state.categoryDetails.page=action.payload?.page
+          state.categoryDetails.totalPages=action.payload?.totalPages
+        }
+       
       })
       .addCase(useGetCategoryProducts.rejected, (state) => {
         state.isLoading = false;
@@ -125,7 +145,14 @@ const shopProductSlice = createSlice({
       })
       .addCase(useGetCategorySubProducts.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.subcategoryByProducts = action.payload?.success ? action.payload?.data : [];
+        if(action.payload?.success){
+          state.subcategoryByProducts = action.payload?.success ? action.payload?.data : [];
+          state.subCategoryDetails.totalCount = action.payload?.totalCount;
+          state.subCategoryDetails.currentCount=action.payload?.currentCount
+          state.subCategoryDetails.page=action.payload?.page
+          state.subCategoryDetails.totalPages=action.payload?.totalPages
+        }
+     
       })
       .addCase(useGetCategorySubProducts.rejected, (state) => {
         state.isLoading = false;

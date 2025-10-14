@@ -16,9 +16,9 @@ export const apiOfGetGroupedProducts = async () => {
 };
 
 // ----------------- Related Products -----------------
-export const apiOfGetRelatedProducts = async (category, excludeSku = "") => {
+export const apiOfGetRelatedProducts = async (category, excludeSku = "",page,limit) => {
   try {
-    const response = await api.get(`/related`, {
+    const response = await api.get(`/related?page=${page}&limit=${limit}`, {
       params: { category, excludeSku },
     });
     return response.data;

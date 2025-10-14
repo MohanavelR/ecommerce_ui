@@ -30,10 +30,10 @@ export const getProductDetail = async (sku) => {
 
 
 // 1️⃣ Fetch products by category
-export const getProductsByCategory = async (category) => {
+export const getProductsByCategory = async (category,page,limit) => {
 
   try {
-    const response = await api.get(`/products/category/${category}`);
+    const response = await api.get(`/products/category/${category}?page=${page}&limit=${limit}`);
     return response.data; // { success, message, data }
   } catch (error) {
     return { success: false, message: error.message };
@@ -41,9 +41,9 @@ export const getProductsByCategory = async (category) => {
 };
 
 // 2️⃣ Fetch products by category and subcategory
-export const getProductsByCategoryAndSubcategory = async (category, subCategory) => {
+export const getProductsByCategoryAndSubcategory = async (category, subCategory,page,limit) => {
   try {
-    const response = await api.get(`/products/sub-category/${category}/${subCategory}`);
+    const response = await api.get(`/products/sub-category/${category}/${subCategory}?page=${page}&limit=${limit}`);
     return response.data; // { success, message, data }
   } catch (error) {
     return { success: false, message: error.message };
