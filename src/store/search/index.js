@@ -6,16 +6,19 @@ import { apiGetSearchProducts } from '../../services/search/service';
 const initialState={
     searchProductList:[],
     isLoading:false,
-    count:0,
+    page:1,
+    currentCount:0,
+    totalCount:0,
+    totalPages:0,
 }
 
 // Get All Products
 export const useGetAllSearchProducts = createAsyncThunk(
   'search/products',
-  async (keyword, thunkAPI) => {
+  async ({keyword,page=1,limit=12}, thunkAPI) => {
     
     try {
-      return await apiGetSearchProducts(keyword);
+      return await apiGetSearchProducts(keyword,page,limit);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -28,7 +31,10 @@ const searchProductSlice=createSlice({
     reducers:{
       resetSearchProducts:(state)=>{
         state.searchProductList=[]
-        state.count=0
+        state.totalCount = 0;
+        state.currentCount=0
+        state.page=1
+        state.totalPages=0
       }
     },
     extraReducers:(builder)=>{
@@ -40,9 +46,14 @@ const searchProductSlice=createSlice({
               })
               .addCase(useGetAllSearchProducts.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.searchProductList =action.payload.success? action?.payload?.data:[];
-              
-                 state.count =action.payload.success? action?.payload?.count:0
+                if (action.payload?.success) {
+      state.searchProductList =action.payload.success? action?.payload?.data:[];
+      state.totalCount = action.payload?.totalCount;
+      state.currentCount=action.payload?.currentCount
+      state.page=action.payload?.page
+      state.totalPages=action.payload?.totalPages
+    }
+               
               })
               .addCase(useGetAllSearchProducts.rejected, (state) => {
                 state.isLoading = false;

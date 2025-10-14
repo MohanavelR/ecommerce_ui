@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 // Ensure your ShopCard is correctly imported here
 import ShopCard from '../../components/layout/shop/products/ShopCard'; 
@@ -8,17 +8,19 @@ import Loader from '../../components/common/Loader';
 import NotFound from '../../components/common/NotFound';
 import NotSearch from '../../components/layout/shop/search/NotSearch';
 import HomeShopCard from '../../components/layout/shop/HomeShopCard';
+import Pagination from '../../components/common/Pagination';
 
 const Search = () => {
     const [searchTerm, setSearchTerm] = useState();
     const dispatch=useDispatch()
-    const {searchProductList,count,isLoading}=useSelector(state=>state.searchProducts)
-    
+    const {searchProductList,totalCount,page,totalPages,isLoading}=useSelector(state=>state.searchProducts)
+    const [currentPage,setCurrentPage]=useState(page)
 function handleSearch(keyword){
     setSearchTerm(keyword)
     if(keyword.trim().length >= 3){
     setTimeout(()=>{
-        dispatch(useGetAllSearchProducts (keyword.trim())).then(res=>{
+        dispatch(useGetAllSearchProducts ({keyword:keyword.trim(),page:currentPage,limit:12})).then(res=>{
+        setCurrentPage(1)
         })
     },1000)
 
@@ -30,11 +32,16 @@ else{
 }
 function onSearch(e){
     e.preventDefault()
-        dispatch(useGetAllSearchProducts (searchTerm.trim())).then(res=>{      
+        dispatch(useGetAllSearchProducts ({keyword:searchTerm.trim(),page:currentPage,limit:12})).then(res=>{      
         })
  
 }
-
+useEffect(()=>{
+ if(searchTerm){
+      dispatch(useGetAllSearchProducts ({keyword:searchTerm.trim(),page:currentPage,limit:12})).then(res=>{      
+        }) 
+ }
+},[currentPage])
     return (
         <div className="min-h-screen bg-gray-50 py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -74,7 +81,7 @@ function onSearch(e){
                         Search Results
                     </p>
                     <p className="text-md text-gray-600 mt-1">
-                        Showing <span className="font-bold text-indigo-600">{count}</span> results for "<span className="font-medium text-gray-900">{searchTerm}</span>"
+                        Showing <span className="font-bold text-indigo-600">{totalCount}</span> results for "<span className="font-medium text-gray-900">{searchTerm}</span>"
                     </p>
                 </header>
                 {
@@ -93,6 +100,7 @@ function onSearch(e){
                 }
                </div>     
                 }
+                <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage}/>
             </div>
         </div>
     );
