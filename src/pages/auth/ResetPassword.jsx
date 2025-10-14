@@ -11,6 +11,7 @@ const ResetPassword = () => {
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
 
+
   const { messageContextState, setMessageContextState } =
     useContext(MessageContext);
 
@@ -98,7 +99,7 @@ const ResetPassword = () => {
             </button>
           </div>
         ) : (
-          // OTP Verification or Change Password Components
+
           sessionStorage.getItem("resetEmail") &&
           (otp !== "" ? (
             <ChangeNewPassword otp={otp} />

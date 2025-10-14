@@ -13,8 +13,8 @@ const ResetOTPVerify = ({ setOTP }) => {
 
   const setOTPMethod = (e, otp) => {
     e.preventDefault();
-    if (otp.length !== 6) {
-      setError(false);
+    if (otp.length!== 6) {
+      setError(true);
       return;
     }
     setOTP(otp);
