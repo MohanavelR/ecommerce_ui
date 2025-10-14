@@ -105,18 +105,19 @@ const MobileViewHeader = ({ isOpen, handleNavigation }) => {
         <div className="lg:hidden absolute top-full left-0 w-full bg-white shadow-lg z-40 overflow-y-auto max-h-[85vh]">
           <nav className="p-4 divide-y divide-gray-100">
             {/* Static Links */}
-            <Link
-              to="/"
+            <button 
+              onClick={()=>handleNavigation("/")}
               className="block py-2 hover:text-primary font-medium transition-all duration-500"
             >
               Home
-            </Link>
-            <Link
-              to="/shop/products"
+            </button>
+            <button
+             onClick={()=>handleNavigation("/shop/products")}
+
               className="block py-2 hover:text-primary font-medium transition-all duration-500"
             >
               Shop
-            </Link>
+            </button>
 
             {/* Dynamic Categories */}
             {categoryList && categoryList.length > 0 ? (

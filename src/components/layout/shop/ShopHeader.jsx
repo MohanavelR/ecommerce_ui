@@ -28,6 +28,8 @@ const ShopHeader = () => {
   // Unified function to toggle dropdown
   const toggleUserDropdown = () => {
     setIsDropdownOpen(prev => !prev);
+    setIsDropdownOpen(false)
+    setOpenMenu(false);
   };
   useEffect(()=>{
   if(isAuthenticated){
@@ -46,10 +48,7 @@ const ShopHeader = () => {
     setIsDropdownOpen(false); // Close dropdown on logout attempt
   };
 
-function navPath(path){
- navigate(path)
-  setOpenMenu(false)
-}
+
 
   async function sendOTPforverify(){
     setIsDropdownOpen(false); // Close dropdown before action
