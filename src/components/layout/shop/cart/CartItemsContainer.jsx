@@ -80,7 +80,7 @@ const CartItemsContainer = ({ cartItems }) => {
   return (
     <div>
       {
-        isLoading?<Loader/>:
+        loading?<Loader/>:
       <div className="space-y-4">
         {cartItemsList.map((item, index) => (
           <CartItemCard
