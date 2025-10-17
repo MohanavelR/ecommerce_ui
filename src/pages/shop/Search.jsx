@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // Ensure your ShopCard is correctly imported here
 import ShopCard from '../../components/layout/shop/products/ShopCard'; 
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +13,7 @@ import Pagination from '../../components/common/Pagination';
 const Search = () => {
     const [searchTerm, setSearchTerm] = useState();
     const dispatch=useDispatch()
+    const navigate=useNavigate()
     const {searchProductList,totalCount,page,totalPages,isLoading}=useSelector(state=>state.searchProducts)
     const [currentPage,setCurrentPage]=useState(page)
 function handleSearch(keyword){
@@ -41,6 +42,15 @@ useEffect(()=>{
       dispatch(useGetAllSearchProducts ({keyword:searchTerm.trim(),page:currentPage,limit:12})).then(res=>{      
         }) 
  }
+ const searchParams = new URLSearchParams(location.search);
+    if(currentPage > 1){
+      searchParams.set("page", currentPage); // set current page
+      navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+    }
+    else{
+    searchParams.delete("page")
+    navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+    }
 },[currentPage])
     return (
         <div className="min-h-screen bg-gray-50 py-12">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom'; 
+import { useNavigate, useParams } from 'react-router-dom'; 
 
 import ShopCard from '../../components/layout/shop/products/ShopCard';
 
@@ -25,7 +25,7 @@ const SubCategoryList = () => {
   const subCategory=subCategoryName.replaceAll("-"," ")
   const { isLoading, subcategoryByProducts,subCategoryDetails } = useSelector(state => state.filterProducts);
   const [currentPage,setCurrentPage]=useState(subCategoryDetails?.page)
-
+  const navigate=useNavigate()
   
 
   // Calculate the product count for display
@@ -38,6 +38,15 @@ const SubCategoryList = () => {
     if (subCategoryName) {
       dispatch(useGetCategorySubProducts({ categoryName, subCategoryName,page:currentPage,limit:10 }));
     } 
+    const searchParams = new URLSearchParams(location.search);
+    if(currentPage > 1){
+      searchParams.set("page", currentPage); // set current page
+      navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+    }
+    else{
+    searchParams.delete("page")
+    navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+    }
   }, [dispatch, categoryName, subCategoryName,currentPage]); // Added 'category' to dependency array
    useEffect(()=>{
    setCurrentPage(1)

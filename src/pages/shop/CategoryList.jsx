@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom'; 
+import { useNavigate, useParams } from 'react-router-dom'; 
 
 
 
@@ -22,8 +22,8 @@ const GridLoader = () => (
 const CategoryList = () => {
  
   const { categorySKU } = useParams();
-  const dispatch = useDispatch();
-
+   const dispatch = useDispatch();
+   const navigate=useNavigate()
 
   const {isLoading,categoryByProducts,categoryDetails } = useSelector(state => state.filterProducts);
 const [currentPage,setCurrentPage]=useState(categoryDetails?.page)
@@ -35,6 +35,16 @@ const [currentPage,setCurrentPage]=useState(categoryDetails?.page)
     if (categorySKU) {
       dispatch(useGetCategoryProducts({category:categorySKU,page:currentPage,limit:10}));
     }
+    const searchParams = new URLSearchParams(location.search);
+    if(currentPage > 1){
+      searchParams.set("page", currentPage); // set current page
+      navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+    }
+    else{
+    searchParams.delete("page")
+    navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+    }
+
   }, [dispatch, categorySKU,currentPage]);
    useEffect(()=>{
    setCurrentPage(1)

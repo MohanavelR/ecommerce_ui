@@ -138,11 +138,14 @@ useEffect(() => {
       
     });
 
+    const searchParams = new URLSearchParams(location.search);
     if(currentPage > 1){
-
-      const searchParams = new URLSearchParams(location.search);
       searchParams.set("page", currentPage); // set current page
       navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+    }
+    else{
+    searchParams.delete("page")
+    navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
     }
 
   }, [currentPage]); 

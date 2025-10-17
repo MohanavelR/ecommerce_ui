@@ -1,20 +1,24 @@
 import React, { useState } from 'react'
 import CloseBtn from '../../../common/CloseBtn'
 import Loader from '../../../common/Loader'
+import generateSKU from '../../../../utils/generateSKU'
 
 const AddCategory = ({formData,setFormData,handleCategoryMethod,fielderrors,closeCategoryFormMethod,isEditMode,setIsEditMode}) => {
   const [subCategory,setSubCategory]=useState("")
+
   function addSubCategoryinList(e) {
   e.preventDefault();
   
   if (subCategory.trim() !== "") {
+
     setFormData({
       ...formData,
       subcategories: [
         ...formData.subcategories,
         {
           name: subCategory.trim(),
-          createdAt: new Date().toISOString() // Use ISO string for consistency
+          createdAt: new Date().toISOString(),
+          sku:generateSKU(subCategory.trim()) // Use ISO string for consistency
         }
       ]
     });
@@ -59,7 +63,7 @@ const AddCategory = ({formData,setFormData,handleCategoryMethod,fielderrors,clos
                             type="text" 
                             id="categoryName" 
                             name="categoryName"
-                            value={formData.categoryName.trim()}
+                            value={formData.categoryName}
                             onChange={(e)=>setFormData({...formData,categoryName:e.target.value})}
                             // Updated input styling for cleaner look
                             className="admin-form-input-with-icon"
